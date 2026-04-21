@@ -1,0 +1,399 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Sweet Treats & Desserts Bar Menu | Adventure Awaits Amusement Park</title>
+  <link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@400;700&family=Baloo+2:wght@600&display=swap" rel="stylesheet">
+  <style>
+    body {
+      margin: 0;
+      background: linear-gradient(135deg, #0f2027 0%, #203a43 50%, #2c5364 100%);
+      font-family: 'Fredoka', 'Baloo 2', Arial, sans-serif;
+      color: #f2f7fa;
+      min-height: 100vh;
+    }
+    header {
+      background: rgba(44, 83, 100, 0.95);
+      color: #fff;
+      text-align: center;
+      padding: 36px 0 16px 0;
+      border-bottom: 4px solid #5bbcff;
+    }
+    h1 {
+      font-family: 'Baloo 2', cursive;
+      font-size: 2em;
+      margin-bottom: 8px;
+      letter-spacing: 1px;
+    }
+    .intro {
+      font-size: 1.1em;
+      color: #b3d2e6;
+      margin-bottom: 30px;
+      text-align: center;
+      max-width: 700px;
+      margin-left: auto;
+      margin-right: auto;
+    }
+    .menu-section {
+      max-width: 1100px;
+      margin: 40px auto;
+      background: rgba(32, 58, 67, 0.92);
+      border-radius: 18px;
+      box-shadow: 0 4px 16px rgba(44, 83, 100, 0.15);
+      padding: 40px 24px;
+    }
+    .menu-category {
+      margin-bottom: 40px;
+    }
+    .menu-category h2 {
+      color: #5bbcff;
+      font-family: 'Baloo 2', cursive;
+      margin-bottom: 18px;
+      font-size: 1.3em;
+      border-bottom: 2px solid #5bbcff;
+      display: inline-block;
+      padding-bottom: 4px;
+    }
+    .menu-items-grid {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 20px;
+      justify-content: flex-start;
+    }
+    .menu-card {
+      background: #1b2a38;
+      border-radius: 15px;
+      box-shadow: 0 2px 12px rgba(44, 83, 100, 0.13);
+      width: 170px;
+      padding: 10px 8px 12px 8px;
+      text-align: center;
+      border: 2px solid #203a43;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      transition: transform 0.3s, box-shadow 0.3s, border-color 0.3s;
+      position: relative;
+    }
+    .menu-card:hover {
+      transform: translateY(-7px) scale(1.04);
+      box-shadow: 0 8px 24px 0 rgba(44, 83, 100, 0.22);
+      border-color: #5bbcff;
+    }
+    .menu-card img {
+      width: 100%;
+      height: 75px;
+      object-fit: cover;
+      border-radius: 10px;
+      margin-bottom: 8px;
+      border: 1.5px solid #5bbcff55;
+      background: #e6f4ff;
+    }
+    .menu-item-name {
+      font-weight: 700;
+      color: #fff;
+      font-size: 1em;
+      margin-bottom: 4px;
+      font-family: 'Baloo 2', cursive;
+    }
+    .menu-item-description {
+      font-size: 0.78em;
+      color: #a9c5e0;
+      margin-bottom: 8px;
+    }
+    .menu-item-price {
+      color: #b3d2e6;
+      font-weight: 600;
+      font-size: 0.98em;
+      margin-bottom: 0;
+      margin-top: auto;
+    }
+    .back-link {
+      display: inline-block;
+      margin-top: 30px;
+      padding: 10px 22px;
+      background: #5bbcff;
+      color: #fff;
+      border-radius: 8px;
+      text-decoration: none;
+      font-family: 'Fredoka', Arial, sans-serif;
+      font-weight: 700;
+      transition: background 0.2s;
+    }
+    .back-link:hover {
+      background: #3399cc;
+    }
+    @media (max-width: 800px) {
+      .menu-items-grid {
+        gap: 18px;
+        justify-content: center;
+      }
+      .menu-card {
+        width: 80vw;
+        max-width: 270px;
+      }
+    }
+    @media (max-width: 500px) {
+      .menu-section {
+        padding: 12px 2vw;
+      }
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <h1>Sweet Treats & Desserts Bar</h1>
+    <div class="intro">
+      Indulge in a world of cakes, pastries, doughnuts, ice creams, cupcakes, and more! Find your favorite sweet treat or try something new at our Desserts Bar.
+    </div>
+  </header>
+  <section class="menu-section">
+    <div class="menu-category">
+      <h2>🍰 Cakes & Pastries</h2>
+      <div class="menu-items-grid">
+        <div class="menu-card">
+          <img src="https://images.unsplash.com/photo-1504674900247-0877df9cc836?auto=format&fit=crop&w=400&q=80" alt="Classic New York Cheesecake">
+          <div class="menu-item-name">Classic New York Cheesecake</div>
+          <div class="menu-item-description">Creamy, smooth cheesecake on a buttery biscuit base.</div>
+          <div class="menu-item-price">₹150</div>
+        </div>
+        <div class="menu-card">
+          <img src="https://images.unsplash.com/photo-1519125323398-675f0ddb6308?auto=format&fit=crop&w=400&q=80" alt="Red Velvet Cake Slice">
+          <div class="menu-item-name">Red Velvet Cake Slice</div>
+          <div class="menu-item-description">Moist red velvet cake with cream cheese frosting.</div>
+          <div class="menu-item-price">₹130</div>
+        </div>
+        <div class="menu-card">
+          <img src="https://images.unsplash.com/photo-1464306076886-debca5e8a6b0?auto=format&fit=crop&w=400&q=80" alt="Chocolate Fudge Brownie">
+          <div class="menu-item-name">Chocolate Fudge Brownie</div>
+          <div class="menu-item-description">Rich, gooey chocolate brownie with fudge chunks.</div>
+          <div class="menu-item-price">₹90</div>
+        </div>
+        <div class="menu-card">
+          <img src="https://images.unsplash.com/photo-1513104890138-7c749659a591?auto=format&fit=crop&w=400&q=80" alt="Tiramisu">
+          <div class="menu-item-name">Tiramisu</div>
+          <div class="menu-item-description">Classic Italian dessert with coffee-soaked layers and mascarpone.</div>
+          <div class="menu-item-price">₹140</div>
+        </div>
+        <div class="menu-card">
+          <img src="https://images.unsplash.com/photo-1543353071-873f17a7a088?auto=format&fit=crop&w=400&q=80" alt="Black Forest Gateau">
+          <div class="menu-item-name">Black Forest Gateau</div>
+          <div class="menu-item-description">Chocolate sponge cake layered with cream and cherries.</div>
+          <div class="menu-item-price">₹120</div>
+        </div>
+        <div class="menu-card">
+          <img src="https://images.unsplash.com/photo-1506368083636-6defb67639f0?auto=format&fit=crop&w=400&q=80" alt="Lemon Tart">
+          <div class="menu-item-name">Lemon Tart</div>
+          <div class="menu-item-description">Tangy lemon curd in a crisp pastry shell.</div>
+          <div class="menu-item-price">₹100</div>
+        </div>
+      </div>
+    </div>
+    <div class="menu-category">
+      <h2>🍩 Doughnuts & Baked Goods</h2>
+      <div class="menu-items-grid">
+        <div class="menu-card">
+          <img src="https://images.unsplash.com/photo-1519864600265-abb23847ef2c?auto=format&fit=crop&w=400&q=80" alt="Glazed Doughnut">
+          <div class="menu-item-name">Glazed Doughnut</div>
+          <div class="menu-item-description">Soft, fluffy doughnut with a sweet glaze.</div>
+          <div class="menu-item-price">₹60</div>
+        </div>
+        <div class="menu-card">
+          <img src="https://images.unsplash.com/photo-1467003909585-2f8a72700288?auto=format&fit=crop&w=400&q=80" alt="Chocolate-Filled Doughnut">
+          <div class="menu-item-name">Chocolate-Filled Doughnut</div>
+          <div class="menu-item-description">Doughnut filled with smooth chocolate cream.</div>
+          <div class="menu-item-price">₹70</div>
+        </div>
+        <div class="menu-card">
+          <img src="https://images.unsplash.com/photo-1517248135467-4c7edcad34c4?auto=format&fit=crop&w=400&q=80" alt="Cinnamon Rolls">
+          <div class="menu-item-name">Cinnamon Rolls</div>
+          <div class="menu-item-description">Soft rolls swirled with cinnamon and topped with icing.</div>
+          <div class="menu-item-price">₹80</div>
+        </div>
+        <div class="menu-card">
+          <img src="https://images.unsplash.com/photo-1513104890138-7c749659a591?auto=format&fit=crop&w=400&q=80" alt="Fruit Danish">
+          <div class="menu-item-name">Fruit Danish</div>
+          <div class="menu-item-description">Flaky pastry with a sweet fruit filling.</div>
+          <div class="menu-item-price">₹75</div>
+        </div>
+        <div class="menu-card">
+          <img src="https://images.unsplash.com/photo-1543353071-873f17a7a088?auto=format&fit=crop&w=400&q=80" alt="Croissants">
+          <div class="menu-item-name">Croissants (Butter / Almond / Chocolate)</div>
+          <div class="menu-item-description">Choose from classic butter, almond, or chocolate-filled croissants.</div>
+          <div class="menu-item-price">₹90</div>
+        </div>
+      </div>
+    </div>
+    <div class="menu-category">
+      <h2>🍦 Ice Cream & Frozen Delights</h2>
+      <div class="menu-items-grid">
+        <div class="menu-card">
+          <img src="https://images.unsplash.com/photo-1464306076886-debca5e8a6b0?auto=format&fit=crop&w=400&q=80" alt="Sundae Cup">
+          <div class="menu-item-name">Sundae Cup (Vanilla, Chocolate, Strawberry)</div>
+          <div class="menu-item-description">Classic sundae with your choice of ice cream and toppings.</div>
+          <div class="menu-item-price">₹70</div>
+        </div>
+        <div class="menu-card">
+          <img src="https://images.unsplash.com/photo-1506368083636-6defb67639f0?auto=format&fit=crop&w=400&q=80" alt="Brownie Sundae">
+          <div class="menu-item-name">Brownie Sundae</div>
+          <div class="menu-item-description">Warm brownie topped with ice cream, nuts, and chocolate sauce.</div>
+          <div class="menu-item-price">₹110</div>
+        </div>
+        <div class="menu-card">
+          <img src="https://images.unsplash.com/photo-1519125323398-675f0ddb6308?auto=format&fit=crop&w=400&q=80" alt="Ice Cream Sandwich">
+          <div class="menu-item-name">Ice Cream Sandwich</div>
+          <div class="menu-item-description">Ice cream between two soft cookies or wafers.</div>
+          <div class="menu-item-price">₹80</div>
+        </div>
+        <div class="menu-card">
+          <img src="https://images.unsplash.com/photo-1513104890138-7c749659a591?auto=format&fit=crop&w=400&q=80" alt="Banana Split">
+          <div class="menu-item-name">Banana Split</div>
+          <div class="menu-item-description">Banana, ice cream scoops, sauces, nuts, and whipped cream.</div>
+          <div class="menu-item-price">₹120</div>
+        </div>
+        <div class="menu-card">
+          <img src="https://images.unsplash.com/photo-1543353071-873f17a7a088?auto=format&fit=crop&w=400&q=80" alt="Soft Serve Cones">
+          <div class="menu-item-name">Soft Serve Cones</div>
+          <div class="menu-item-description">Swirls of soft ice cream in a crispy cone.</div>
+          <div class="menu-item-price">₹40</div>
+        </div>
+      </div>
+    </div>
+    <div class="menu-category">
+      <h2>🧁 Cupcakes & Muffins</h2>
+      <div class="menu-items-grid">
+        <div class="menu-card">
+          <img src="https://images.unsplash.com/photo-1504674900247-0877df9cc836?auto=format&fit=crop&w=400&q=80" alt="Vanilla Bean Cupcake">
+          <div class="menu-item-name">Vanilla Bean Cupcake</div>
+          <div class="menu-item-description">Moist vanilla cupcake topped with creamy vanilla frosting.</div>
+          <div class="menu-item-price">₹60</div>
+        </div>
+        <div class="menu-card">
+          <img src="https://images.unsplash.com/photo-1519125323398-675f0ddb6308?auto=format&fit=crop&w=400&q=80" alt="Oreo Blast Cupcake">
+          <div class="menu-item-name">Oreo Blast Cupcake</div>
+          <div class="menu-item-description">Chocolate cupcake with Oreo bits and cookies & cream frosting.</div>
+          <div class="menu-item-price">₹70</div>
+        </div>
+        <div class="menu-card">
+          <img src="https://images.unsplash.com/photo-1464306076886-debca5e8a6b0?auto=format&fit=crop&w=400&q=80" alt="Blueberry Muffin">
+          <div class="menu-item-name">Blueberry Muffin</div>
+          <div class="menu-item-description">Soft muffin loaded with juicy blueberries.</div>
+          <div class="menu-item-price">₹65</div>
+        </div>
+        <div class="menu-card">
+          <img src="https://images.unsplash.com/photo-1513104890138-7c749659a591?auto=format&fit=crop&w=400&q=80" alt="Choco Chip Muffin">
+          <div class="menu-item-name">Choco Chip Muffin</div>
+          <div class="menu-item-description">Classic muffin packed with chocolate chips.</div>
+          <div class="menu-item-price">₹65</div>
+        </div>
+      </div>
+    </div>
+    <div class="menu-category">
+      <h2>🍫 Confections & Chocolates</h2>
+      <div class="menu-items-grid">
+        <div class="menu-card">
+          <img src="https://images.unsplash.com/photo-1543353071-873f17a7a088?auto=format&fit=crop&w=400&q=80" alt="Chocolate Truffles">
+          <div class="menu-item-name">Chocolate Truffles</div>
+          <div class="menu-item-description">Rich chocolate ganache truffles dusted with cocoa.</div>
+          <div class="menu-item-price">₹80</div>
+        </div>
+        <div class="menu-card">
+          <img src="https://images.unsplash.com/photo-1506368083636-6defb67639f0?auto=format&fit=crop&w=400&q=80" alt="Fudge Squares">
+          <div class="menu-item-name">Fudge Squares</div>
+          <div class="menu-item-description">Chewy, chocolatey fudge cut into bite-sized squares.</div>
+          <div class="menu-item-price">₹60</div>
+        </div>
+        <div class="menu-card">
+          <img src="https://images.unsplash.com/photo-1519864600265-abb23847ef2c?auto=format&fit=crop&w=400&q=80" alt="Caramel Popcorn">
+          <div class="menu-item-name">Caramel Popcorn</div>
+          <div class="menu-item-description">Crunchy popcorn coated with golden caramel.</div>
+          <div class="menu-item-price">₹50</div>
+        </div>
+        <div class="menu-card">
+          <img src="https://images.unsplash.com/photo-1467003909585-2f8a72700288?auto=format&fit=crop&w=400&q=80" alt="Nougat Bites">
+          <div class="menu-item-name">Nougat Bites</div>
+          <div class="menu-item-description">Soft, nutty nougat pieces with a hint of honey.</div>
+          <div class="menu-item-price">₹70</div>
+        </div>
+        <div class="menu-card">
+          <img src="https://images.unsplash.com/photo-1517248135467-4c7edcad34c4?auto=format&fit=crop&w=400&q=80" alt="Marshmallow Treats">
+          <div class="menu-item-name">Marshmallow Treats</div>
+          <div class="menu-item-description">Sweet marshmallows, plain or dipped in chocolate.</div>
+          <div class="menu-item-price">₹50</div>
+        </div>
+      </div>
+    </div>
+    <div class="menu-category">
+      <h2>🥤 Drinks & Shakes</h2>
+      <div class="menu-items-grid">
+        <div class="menu-card">
+          <img src="https://images.unsplash.com/photo-1513104890138-7c749659a591?auto=format&fit=crop&w=400&q=80" alt="Classic Milkshake">
+          <div class="menu-item-name">Classic Milkshake (Strawberry, Vanilla, Chocolate)</div>
+          <div class="menu-item-description">Choose your favorite flavor, topped with whipped cream.</div>
+          <div class="menu-item-price">₹80</div>
+        </div>
+        <div class="menu-card">
+          <img src="https://images.unsplash.com/photo-1464306076886-debca5e8a6b0?auto=format&fit=crop&w=400&q=80" alt="Oreo Crunch Shake">
+          <div class="menu-item-name">Oreo Crunch Shake</div>
+          <div class="menu-item-description">Creamy shake blended with Oreo cookies and chocolate.</div>
+          <div class="menu-item-price">₹90</div>
+        </div>
+        <div class="menu-card">
+          <img src="https://images.unsplash.com/photo-1506368083636-6defb67639f0?auto=format&fit=crop&w=400&q=80" alt="Mocha Frappe">
+          <div class="menu-item-name">Mocha Frappe</div>
+          <div class="menu-item-description">Iced coffee blended with chocolate and topped with cream.</div>
+          <div class="menu-item-price">₹100</div>
+        </div>
+        <div class="menu-card">
+          <img src="https://images.unsplash.com/photo-1519125323398-675f0ddb6308?auto=format&fit=crop&w=400&q=80" alt="Hot Chocolate with Marshmallows">
+          <div class="menu-item-name">Hot Chocolate with Marshmallows</div>
+          <div class="menu-item-description">Rich hot chocolate topped with fluffy marshmallows.</div>
+          <div class="menu-item-price">₹70</div>
+        </div>
+        <div class="menu-card">
+          <img src="https://images.unsplash.com/photo-1504674900247-0877df9cc836?auto=format&fit=crop&w=400&q=80" alt="Iced Caramel Latte">
+          <div class="menu-item-name">Iced Caramel Latte</div>
+          <div class="menu-item-description">Chilled coffee with caramel syrup and ice.</div>
+          <div class="menu-item-price">₹90</div>
+        </div>
+      </div>
+    </div>
+    <div class="menu-category">
+      <h2>🍮 Specialty Desserts</h2>
+      <div class="menu-items-grid">
+        <div class="menu-card">
+          <img src="https://images.unsplash.com/photo-1543353071-873f17a7a088?auto=format&fit=crop&w=400&q=80" alt="Molten Lava Cake">
+          <div class="menu-item-name">Molten Lava Cake</div>
+          <div class="menu-item-description">Warm chocolate cake with a gooey molten center.</div>
+          <div class="menu-item-price">₹110</div>
+        </div>
+        <div class="menu-card">
+          <img src="https://images.unsplash.com/photo-1513104890138-7c749659a591?auto=format&fit=crop&w=400&q=80" alt="Churros with Chocolate Dip">
+          <div class="menu-item-name">Churros with Chocolate Dip</div>
+          <div class="menu-item-description">Crispy Spanish churros served with thick chocolate sauce.</div>
+          <div class="menu-item-price">₹100</div>
+        </div>
+        <div class="menu-card">
+          <img src="https://images.unsplash.com/photo-1467003909585-2f8a72700288?auto=format&fit=crop&w=400&q=80" alt="Crème Brûlée">
+          <div class="menu-item-name">Crème Brûlée</div>
+          <div class="menu-item-description">Silky custard with a crisp caramelized sugar top.</div>
+          <div class="menu-item-price">₹120</div>
+        </div>
+        <div class="menu-card">
+          <img src="https://images.unsplash.com/photo-1517248135467-4c7edcad34c4?auto=format&fit=crop&w=400&q=80" alt="Waffles with Berries & Syrup">
+          <div class="menu-item-name">Waffles with Berries & Syrup</div>
+          <div class="menu-item-description">Warm waffles topped with fresh berries and maple syrup.</div>
+          <div class="menu-item-price">₹100</div>
+        </div>
+        <div class="menu-card">
+          <img src="https://images.unsplash.com/photo-1506368083636-6defb67639f0?auto=format&fit=crop&w=400&q=80" alt="Pancake Stack with Maple & Cream">
+          <div class="menu-item-name">Pancake Stack with Maple & Cream</div>
+          <div class="menu-item-description">Fluffy pancakes stacked high with maple syrup and whipped cream.</div>
+          <div class="menu-item-price">₹110</div>
+        </div>
+      </div>
+    </div>
+    <a href="restaurants.html" class="back-link">← Back to Restaurants</a>
+  </section>
+</body>
+</html>

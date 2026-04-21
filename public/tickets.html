@@ -1,0 +1,324 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Amusement Park Ticket Booking</title>
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            background-color: #f4f7f6;
+            margin: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+        }
+
+        .container {
+            background-color: #ffffff;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+            width: 90%;
+            max-width: 800px;
+        }
+
+        h1 {
+            text-align: center;
+            font-size: 32px;
+            color: #4CAF50;
+        }
+
+        h2 {
+            text-align: center;
+            margin-top: 10px;
+            color: #333;
+        }
+
+        .section {
+            display: none;
+        }
+
+        button {
+            width: 100%;
+            padding: 12px;
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            font-size: 16px;
+            cursor: pointer;
+            margin-top: 20px;
+            border-radius: 8px;
+        }
+
+        button:hover {
+            background-color: #45a049;
+        }
+
+        .ticket-section,
+        .meal-option {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            background-color: #f9f9f9;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            margin-bottom: 15px;
+            cursor: pointer;
+            transition: transform 0.3s ease;
+            position: relative;
+        }
+
+        .ticket-section:hover,
+        .meal-option:hover {
+            transform: scale(1.05);
+        }
+
+        .ticket-description,
+        .meal-description {
+            font-size: 14px;
+            color: #555;
+        }
+
+        .ticket-price,
+        .meal-price {
+            font-size: 18px;
+            font-weight: bold;
+            color: #4CAF50;
+            margin-top: 10px;
+        }
+
+        .ticket-section img,
+        .meal-option img {
+            max-width: 100%;
+            height: auto;
+            border-radius: 8px;
+            position: absolute;
+            top: -50px; /* Adjusts the position outside the block */
+            left: 50%;
+            transform: translateX(-50%);
+            z-index: -1;
+        }
+
+        .ticket-section.selected,
+        .meal-option.selected {
+            border: 2px solid #4CAF50;
+            background-color: #e8f5e8;
+        }
+
+        .quantity-selector {
+            margin-top: 10px;
+        }
+
+        .quantity-selector input {
+            width: 50px;
+            padding: 5px;
+            text-align: center;
+            border-radius: 5px;
+        }
+
+        .meal-options {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+            gap: 15px;
+        }
+
+        .park-timings p {
+            font-size: 16px;
+            color: #333;
+        }
+
+        .ticket-cards {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 20px;
+        }
+
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Amusement Park Ticket Booking</h1>
+
+        <!-- Ticket Selection Page -->
+        <div id="ticket-selection" class="section">
+            <h2>Select Date</h2>
+            <div class="park-timings">
+                <input type="date" id="ticket-date" required>
+                <p><strong>Park Timings:</strong> 9:00 AM - 6:00 PM</p>
+            </div>
+            <button id="proceed-button">Proceed</button>
+        </div>
+
+        <!-- Ticket Type and Criteria Page -->
+        <div id="ticket-type" class="section">
+            <h2>Select Ticket Type</h2>
+            <div class="ticket-cards">
+                <!-- Regular Ticket -->
+                <div class="ticket-section" id="regular-ticket">
+                    <img src="regular-ticket.jpg" alt="Regular Ticket">
+                    <h3>Regular Ticket</h3>
+                    <p class="ticket-description">Access to all park rides and attractions.</p>
+                    <p class="ticket-price">$15</p>
+                    <div class="quantity-selector">
+                        <label for="regular-child-quantity">Child Tickets:</label>
+                        <input type="number" id="regular-child-quantity" value="0" min="0">
+                        <label for="regular-adult-quantity">Adult Tickets:</label>
+                        <input type="number" id="regular-adult-quantity" value="0" min="0">
+                    </div>
+                </div>
+
+                <!-- VIP Ticket -->
+                <div class="ticket-section" id="vip-ticket">
+                    <img src="vip-ticket.jpg" alt="VIP Ticket">
+                    <h3>VIP Ticket</h3>
+                    <p class="ticket-description">Access to VIP lounges, priority line, and special rides.</p>
+                    <p class="ticket-price">$30</p>
+                    <div class="quantity-selector">
+                        <label for="vip-child-quantity">Child Tickets:</label>
+                        <input type="number" id="vip-child-quantity" value="0" min="0">
+                        <label for="vip-adult-quantity">Adult Tickets:</label>
+                        <input type="number" id="vip-adult-quantity" value="0" min="0">
+                    </div>
+                </div>
+            </div>
+            <button id="proceed-type-button">Proceed</button>
+        </div>
+
+        <!-- Meal Package and Combo Page -->
+        <div id="meal-selection" class="section">
+            <h2>Select Meal Package</h2>
+            <div class="meal-options">
+                <!-- Lunch Package -->
+                <div class="meal-option" id="lunch-package">
+                    <img src="lunch-package.jpg" alt="Lunch Package">
+                    <h3>Lunch Package</h3>
+                    <p class="meal-description">Full meal with choice of entree, sides, and drink.</p>
+                    <p class="meal-price">$15</p>
+                </div>
+
+                <!-- Snacks Package -->
+                <div class="meal-option" id="snacks-package">
+                    <img src="snacks-package.jpg" alt="Snacks Package">
+                    <h3>Snacks Package</h3>
+                    <p class="meal-description">Includes chips, cookies, and a drink.</p>
+                    <p class="meal-price">$8</p>
+                </div>
+
+                <!-- Combo Package -->
+                <div class="meal-option" id="combo-package">
+                    <img src="combo-package.jpg" alt="Combo Package">
+                    <h3>Combo Package</h3>
+                    <p class="meal-description">A combination of a meal and snack pack.</p>
+                    <p class="meal-price">$20</p>
+                </div>
+
+                <!-- Lunch + Snack Combo -->
+                <div class="meal-option" id="lunch-snack-combo">
+                    <img src="lunch-snack-combo.jpg" alt="Lunch + Snack Combo">
+                    <h3>Lunch + Snack Combo</h3>
+                    <p class="meal-description">Lunch with a side of snacks for a full experience.</p>
+                    <p class="meal-price">$22</p>
+                </div>
+
+                <!-- No Meal Option -->
+                <div class="meal-option" id="no-meal-option">
+                    <h3>No Meal Package</h3>
+                    <p class="meal-description">Choose this option if you do not want a meal.</p>
+                </div>
+            </div>
+            <button id="proceed-meal-button">Proceed</button>
+        </div>
+
+        <!-- Booking Confirmation Page -->
+        <div id="booking-confirmation" class="section">
+            <h2>Confirm Your Booking</h2>
+            <div id="ticket-summary"></div>
+            <div id="personal-details">
+                <label for="name">Full Name:</label>
+                <input type="text" id="name" required>
+                <label for="contact">Contact Number:</label>
+                <input type="text" id="contact" required>
+            </div>
+            <button id="confirm-booking-button">Confirm Booking</button>
+        </div>
+    </div>
+
+    <script>
+        document.getElementById('ticket-selection').style.display = 'block';
+
+        // Handle "Proceed" button in the ticket selection step
+        document.getElementById('proceed-button').addEventListener('click', () => {
+            const date = document.getElementById('ticket-date').value;
+            if (date) {
+                document.getElementById('ticket-selection').style.display = 'none';
+                document.getElementById('ticket-type').style.display = 'block';
+            } else {
+                alert('Please select a valid date.');
+            }
+        });
+
+        // Handle "Proceed" button in the ticket type selection step
+        document.getElementById('proceed-type-button').addEventListener('click', () => {
+            const regularChildQuantity = document.getElementById('regular-child-quantity').value;
+            const regularAdultQuantity = document.getElementById('regular-adult-quantity').value;
+            const vipChildQuantity = document.getElementById('vip-child-quantity').value;
+            const vipAdultQuantity = document.getElementById('vip-adult-quantity').value;
+
+            if (regularChildQuantity || regularAdultQuantity || vipChildQuantity || vipAdultQuantity) {
+                document.getElementById('ticket-type').style.display = 'none';
+                document.getElementById('meal-selection').style.display = 'block';
+            } else {
+                alert('Please select the number of tickets.');
+            }
+        });
+
+        // Handle "Proceed" button in the meal selection step
+        document.getElementById('proceed-meal-button').addEventListener('click', () => {
+            const selectedMeal = document.querySelector('.meal-option.selected');
+            const noMealSelected = document.getElementById('no-meal-option').classList.contains('selected');
+
+            document.getElementById('meal-selection').style.display = 'none';
+            document.getElementById('booking-confirmation').style.display = 'block';
+            displayTicketSummary(selectedMeal, noMealSelected);
+        });
+
+        // Highlight selected meal option
+        document.querySelectorAll('.meal-option').forEach(meal => {
+            meal.addEventListener('click', () => {
+                document.querySelectorAll('.meal-option').forEach(m => m.classList.remove('selected'));
+                meal.classList.add('selected');
+            });
+        });
+
+        // Display ticket summary
+        function displayTicketSummary(selectedMeal, noMealSelected) {
+            const date = document.getElementById('ticket-date').value;
+            const regularChildQuantity = document.getElementById('regular-child-quantity').value;
+            const regularAdultQuantity = document.getElementById('regular-adult-quantity').value;
+            const vipChildQuantity = document.getElementById('vip-child-quantity').value;
+            const vipAdultQuantity = document.getElementById('vip-adult-quantity').value;
+
+            let ticketSummary = `
+                <p><strong>Regular Tickets (Child):</strong> ${regularChildQuantity} x $15</p>
+                <p><strong>Regular Tickets (Adult):</strong> ${regularAdultQuantity} x $15</p>
+                <p><strong>VIP Tickets (Child):</strong> ${vipChildQuantity} x $30</p>
+                <p><strong>VIP Tickets (Adult):</strong> ${vipAdultQuantity} x $30</p>
+            `;
+
+            if (noMealSelected) {
+                ticketSummary += `<p><strong>Meal Package:</strong> No meal selected</p>`;
+            } else if (selectedMeal) {
+                ticketSummary += `
+                    <p><strong>Meal Package:</strong> ${selectedMeal.querySelector('h3').textContent}</p>
+                    <p><strong>Meal Price:</strong> ${selectedMeal.querySelector('.meal-price').textContent}</p>
+                `;
+            }
+
+            document.getElementById('ticket-summary').innerHTML = ticketSummary;
+        }
+    </script>
+</body>
+</html>

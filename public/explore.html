@@ -1,0 +1,264 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Amusement Park Rides</title>
+  <style>
+    body {
+      font-family: 'Segoe UI', sans-serif;
+      background: #f0f8ff;
+      margin: 0;
+      padding: 20px;
+    }
+
+    h1 {
+      text-align: center;
+      color: #0d6efd;
+    }
+
+    .nav-buttons {
+      text-align: center;
+      margin: 20px 0;
+    }
+
+    .nav-buttons button {
+      padding: 10px 20px;
+      margin: 0 10px;
+      border-radius: 20px;
+      border: 2px solid #0d6efd;
+      background: white;
+      color: #0d6efd;
+      cursor: pointer;
+      font-size: 16px;
+      transition: all 0.3s ease;
+    }
+
+    .nav-buttons button.active,
+    .nav-buttons button:hover {
+      background: #0d6efd;
+      color: white;
+    }
+
+    .ride-container {
+      display: none;
+      grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+      gap: 20px;
+    }
+
+    .ride-container.active {
+      display: grid;
+    }
+
+    .ride-card {
+      background: white;
+      border-radius: 12px;
+      overflow: hidden;
+      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+      cursor: pointer;
+      transition: 0.3s ease;
+    }
+
+    .ride-card img {
+      width: 100%;
+      height: 160px;
+      object-fit: cover;
+    }
+
+    .ride-card h3 {
+      padding: 10px;
+      margin: 0;
+      font-size: 18px;
+      color: #0d6efd;
+    }
+
+    /* Full-screen modal styling */
+    #rideModal {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(0, 0, 0, 0.7);
+      display: none;
+      justify-content: center;
+      align-items: center;
+      color: white;
+      padding: 20px;
+      z-index: 1000;
+    }
+
+    #rideModal.active {
+      display: flex;
+    }
+
+    .modal-content {
+      background: #fff;
+      color: #0d6efd;
+      padding: 20px;
+      border-radius: 12px;
+      max-width: 800px;
+      width: 100%;
+      height: auto;
+      box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+      text-align: center;
+      overflow: auto;
+    }
+
+    .modal-content h2 {
+      font-size: 30px;
+      margin-bottom: 20px;
+    }
+
+    .modal-content p {
+      font-size: 18px;
+      line-height: 1.6;
+    }
+
+    .modal-content ul {
+      list-style-type: none;
+      padding-left: 0;
+    }
+
+    .modal-content ul li {
+      font-size: 16px;
+      margin-bottom: 10px;
+    }
+
+    .close-btn {
+      position: absolute;
+      top: 10px;
+      right: 10px;
+      background: #0d6efd;
+      color: white;
+      padding: 10px;
+      border-radius: 50%;
+      border: none;
+      cursor: pointer;
+      font-size: 20px;
+    }
+
+    .close-btn:hover {
+      background: #ff0000;
+    }
+
+    .cancel-btn {
+      margin-top: 20px;
+      padding: 10px 20px;
+      background: #ff0000;
+      color: white;
+      border: none;
+      border-radius: 20px;
+      cursor: pointer;
+      font-size: 16px;
+      transition: background 0.3s;
+    }
+
+    .cancel-btn:hover {
+      background: #d90000;
+    }
+  </style>
+</head>
+<body>
+
+<h1>🎡 Explore Our Rides</h1>
+
+<div class="nav-buttons">
+  <button class="active" onclick="showSection('land', this)">Land Rides</button>
+  <button onclick="showSection('water', this)">Water Rides</button>
+  <button onclick="showSection('kids', this)">Kids Rides</button>
+</div>
+
+<div id="land" class="ride-container active"></div>
+<div id="water" class="ride-container"></div>
+<div id="kids" class="ride-container"></div>
+
+<!-- Full-screen Modal -->
+<div id="rideModal">
+  <div class="modal-content">
+    <button class="close-btn" onclick="closeModal()">×</button>
+    <h2 id="rideTitle"></h2>
+    <p id="rideDescription"></p>
+    <ul id="rideCriteria"></ul>
+    <button class="cancel-btn" onclick="closeModal()">Cancel</button>
+  </div>
+</div>
+
+<script>
+  const rideData = {
+    land: [
+      ["Thunder Coaster", "Thunder Coaster is the ultimate high-speed ride that loops and twists in the air. Feel the rush as you soar through the sky and experience multiple drops at terrifying speeds!", "Age: 12+ | Height: 140cm+ | Thrill: High"],
+      ["Haunted Mansion", "Step into the Haunted Mansion and discover its spooky secrets! It's a dark ride filled with eerie sounds and mysterious figures that will keep you on the edge of your seat.", "Age: 10+ | Height: 130cm+ | Thrill: Medium"],
+      ["Go Kart Blitz", "Race your friends in high-speed electric go-karts! Compete on a winding track full of sharp turns and exciting overtakes.", "Age: 10+ | Height: 120cm+ | Thrill: Medium"],
+      ["Sky Screamer", "Take your adventure to new heights with Sky Screamer. This ride sends you flying 200 feet into the air, spinning you around as you get the best view of the park.", "Age: 12+ | Height: 135cm+ | Thrill: High"],
+      ["Tilt Tower", "Experience the ultimate free-fall with Tilt Tower. This vertical drop ride will give you the sensation of weightlessness as you plummet to the ground.", "Age: 12+ | Height: 140cm+ | Thrill: High"],
+      ["Monster Truck Run", "Get behind the wheel of a monster truck and tackle a bumpy off-road course filled with steep climbs and thrilling descents.", "Age: 9+ | Height: 125cm+ | Thrill: Medium"],
+      ["Wild Safari", "Take a scenic drive through the Wild Safari, where you’ll encounter animatronic animals and learn about wildlife conservation in an immersive experience.", "Age: 8+ | Height: 110cm+ | Thrill: Low"],
+      ["Spin Out", "Hold on tight as you spin out of control! This ride will have you twisting and turning at high speeds, leaving you dizzy and exhilarated.", "Age: 10+ | Height: 130cm+ | Thrill: High"],
+      ["Dragon Loop", "Feel the fire of adventure as you ride through Dragon Loop. This coaster features intense loops and twists that will test your bravery.", "Age: 10+ | Height: 130cm+ | Thrill: High"],
+      ["Free Fall Zone", "Prepare for a heart-stopping drop in Free Fall Zone! This ride takes you straight up before letting you plummet back down in a dramatic freefall.", "Age: 12+ | Height: 140cm+ | Thrill: High"]
+    ],
+    water: [
+      ["Wave Pool", "Simulated ocean waves.", "Age: All | Height: 100cm+ | Thrill: Low"],
+      ["Splash Slide", "Colorful tube slide.", "Age: 8+ | Height: 120cm+ | Thrill: High"],
+      ["Lazy River", "Relaxing floating path.", "Age: All | Height: 90cm+ | Thrill: Low"],
+      ["Aqua Loop", "Looped water slide.", "Age: 10+ | Height: 130cm+ | Thrill: High"],
+      ["Tsunami Twister", "Twisty drop slide.", "Age: 12+ | Height: 135cm+ | Thrill: High"],
+      ["Hydro Racer", "Multi-lane race slide.", "Age: 8+ | Height: 120cm+ | Thrill: Medium"],
+      ["Water Vortex", "Spinning splash bowl.", "Age: 10+ | Height: 125cm+ | Thrill: High"],
+      ["Rainfall Ride", "Misting tunnels & drops.", "Age: All | Height: 100cm+ | Thrill: Low"],
+      ["Typhoon Tunnel", "Dark slide adventure.", "Age: 9+ | Height: 120cm+ | Thrill: Medium"],
+      ["Bubbly Bay", "Kid-friendly splash zone.", "Age: 3-8 | Height: Any | Thrill: Low"]
+    ],
+    kids: [
+      ["Magical Carousel", "Ride unicorns and ponies.", "Age: 3-10 | Height: 90cm+ | Thrill: Low"],
+      ["Mini Ferris", "Small wheel ride.", "Age: 4-10 | Height: 100cm+ | Thrill: Low"],
+      ["Pony Express", "Track pony ride.", "Age: 3-8 | Height: 85cm+ | Thrill: Low"],
+      ["Bumper Boats", "Safe water bump boats.", "Age: 5-10 | Height: 95cm+ | Thrill: Low"],
+      ["Junior Jet", "Mini plane flight.", "Age: 4-9 | Height: 90cm+ | Thrill: Low"],
+      ["Happy Swings", "Swing gently in a circle.", "Age: 4-10 | Height: 100cm+ | Thrill: Low"],
+      ["Tiny Trains", "Scenic train journey.", "Age: 3-7 | Height: 85cm+ | Thrill: Low"],
+      ["Dino Land", "Mini dino-themed park.", "Age: 3-9 | Height: Any | Thrill: Low"],
+      ["Clown Car Chase", "Funny kid ride with cars.", "Age: 3-8 | Height: Any | Thrill: Low"],
+      ["Fairy Tale Castle", "Magical fantasy castle.", "Age: 3-10 | Height: Any | Thrill: Low"]
+    ]
+  };
+
+
+  function renderRides(type) {
+    const container = document.getElementById(type);
+    container.innerHTML = rideData[type].map((ride, i) => `
+      <div class="ride-card" onclick="showRideDetails('${type}', ${i})">
+        <img src="https://via.placeholder.com/400x160?text=${encodeURIComponent(ride[0])}" />
+        <h3>${ride[0]}</h3>
+      </div>
+    `).join('');
+  }
+
+  function showRideDetails(type, index) {
+    const [title, description, criteria] = rideData[type][index];
+    document.getElementById('rideModal').classList.add('active');
+    document.getElementById('rideTitle').innerText = title;
+    document.getElementById('rideDescription').innerText = description;
+    document.getElementById('rideCriteria').innerHTML = `<li>${criteria}</li>`;
+  }
+
+  function closeModal() {
+    document.getElementById('rideModal').classList.remove('active');
+  }
+
+  function showSection(section, btn) {
+    document.querySelectorAll('.ride-container').forEach(div => div.classList.remove('active'));
+    document.querySelectorAll('.nav-buttons button').forEach(b => b.classList.remove('active'));
+    document.getElementById(section).classList.add('active');
+    btn.classList.add('active');
+  }
+
+  // Initial rendering
+  renderRides('land');
+  renderRides('water');
+  renderRides('kids');
+</script>
+
+</body>
+</html>

@@ -1,0 +1,917 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>All Rides | IndoorFun Adventure Park</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <!-- Google Fonts -->
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@700&family=Quicksand:wght@400;700&display=swap" rel="stylesheet">
+  <script src="https://cdn.socket.io/4.7.5/socket.io.min.js"></script>
+
+  <style>
+    :root {
+      --primary: #ff5e62;
+      --secondary: #ff9966;
+      --accent: #36d1c4;
+      --bg: #0f2027;
+      --glass: rgba(255,255,255,0.22);
+      --blur: 18px;
+      --land: #f8ffae;
+      --water: #43cea2;
+      --kids: #ffb6b9;
+    }
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      font-family: 'Quicksand', Arial, sans-serif;
+      background: linear-gradient(135deg, #0f2027 0%, #203a43 50%, #2c5364 100%);
+      min-height: 100vh;
+      color: #fff;
+      overflow-x: hidden;
+    }
+    .navbar {
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      background: rgba(24, 34, 54, 0.95);
+      backdrop-filter: blur(8px);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 1.1rem 2.5rem;
+      box-shadow: 0 2px 24px #0005;
+    }
+    .logo {
+      font-family: 'Montserrat', sans-serif;
+      font-size: 2.2rem;
+      color: var(--primary);
+      font-weight: bold;
+      letter-spacing: 2px;
+      cursor: pointer;
+    }
+    .nav-links a {
+      text-decoration: none;
+      color: #fff;
+      margin: 0 1.2rem;
+      font-size: 1.1rem;
+      font-weight: 700;
+      transition: color 0.2s;
+    }
+    .nav-links a:hover {
+      color: var(--secondary);
+    }
+    .section-title {
+      font-size: 2.2rem;
+      color: var(--accent);
+      text-align: center;
+      margin: 3rem 0 1.5rem 0;
+      font-family: 'Montserrat', sans-serif;
+      letter-spacing: 1px;
+    }
+    .rides-section {
+      margin-bottom: 3rem;
+    }
+    .rides-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+      gap: 2rem;
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 1.5rem 1rem 0 1rem;
+    }
+    .ride-card {
+      background: var(--glass);
+      border-radius: 22px;
+      box-shadow: 0 8px 40px #36d1c433, 0 1.5px 18px #fff2;
+      min-height: 350px;
+      cursor: pointer;
+      perspective: 1200px;
+      border: 2px solid #fff4;
+      position: relative;
+      transition: box-shadow 0.3s, border-color 0.3s;
+      will-change: transform;
+    }
+    .ride-card:hover {
+      box-shadow: 0 16px 64px #ff5e6233, 0 3px 24px #36d1c433;
+      border-color: var(--accent);
+      z-index: 3;
+    }
+    .ride-inner {
+      position: relative;
+      width: 100%;
+      height: 100%;
+      transition: transform 0.7s cubic-bezier(.42,0,.58,1);
+      transform-style: preserve-3d;
+      min-height: 350px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+    }
+    .ride-card.flipped .ride-inner {
+      transform: rotateY(180deg);
+    }
+    .ride-front, .ride-back {
+      position: absolute;
+      width: 100%; height: 100%;
+      top: 0; left: 0;
+      backface-visibility: hidden;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      border-radius: 22px;
+      padding: 1.8rem 1.1rem 1.5rem 1.1rem;
+      transition: background 0.4s;
+    }
+    .ride-front {
+      background: rgba(255,255,255,0.18);
+    }
+    .ride-back {
+      background: linear-gradient(135deg, var(--accent), var(--secondary));
+      color: #fff;
+      transform: rotateY(180deg);
+      padding: 2rem 1rem;
+      font-size: 1.1rem;
+      text-align: left;
+    }
+    .ride-img {
+      width: 100px;
+      height: 100px;
+      object-fit: cover;
+      border-radius: 50%;
+      margin-bottom: 1rem;
+      border: 4px solid var(--primary);
+      box-shadow: 0 2px 16px #005fa344;
+      background: #fff;
+      transition: border 0.4s, filter 0.4s;
+      filter: grayscale(20%) brightness(1.1);
+    }
+    .ride-title {
+      font-size: 1.25rem;
+      color: var(--accent);
+      font-weight: 700;
+      margin-bottom: 0.7rem;
+      letter-spacing: 0.5px;
+      text-shadow: 0 1px 6px #fff4;
+      text-align: center;
+    }
+    .ride-tags {
+      margin-bottom: 0.7rem;
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.5rem;
+      justify-content: center;
+    }
+    .ride-tags span {
+      background: linear-gradient(90deg, var(--primary), var(--accent));
+      color: #fff;
+      border-radius: 1rem;
+      padding: 0.2rem 0.8rem;
+      font-size: 0.85rem;
+      font-weight: bold;
+      box-shadow: 0 1px 6px #fff3;
+    }
+    .ride-desc {
+      color: #222;
+      font-size: 1rem;
+      margin-bottom: 0.5rem;
+      text-align: center;
+      text-shadow: 0 1px 6px #fff4;
+    }
+    .ride-criteria {
+      background: rgba(0,0,0,0.16);
+      padding: 0.7rem 1rem;
+      border-radius: 12px;
+      margin-top: 1rem;
+      font-size: 1rem;
+      color: #fff;
+    }
+    .cancelled-badge {
+      position: absolute;
+      top: 18px;
+      left: 18px;
+      background: #ff5e62;
+      color: #fff;
+      font-weight: bold;
+      font-size: 1.1rem;
+      padding: 0.3em 1em;
+      border-radius: 1em;
+      box-shadow: 0 2px 8px #0005;
+      z-index: 20;
+      letter-spacing: 1px;
+      display: none;
+    }
+    .ride-card.disabled {
+      filter: grayscale(1) brightness(0.7);
+      pointer-events: none;
+      opacity: 0.6;
+      cursor: not-allowed;
+    }
+    .ride-card.disabled .cancelled-badge {
+      display: block;
+    }
+    /* Section backgrounds */
+    .land-bg .ride-front { background: linear-gradient(135deg, #f8ffae 60%, #43cea2 100%);}
+    .water-bg .ride-front { background: linear-gradient(135deg, #43cea2 60%, #185a9d 100%);}
+    .kids-bg .ride-front { background: linear-gradient(135deg, #ffb6b9 60%, #fae3d9 100%);}
+    .land-bg .ride-back { background: linear-gradient(135deg, #43cea2, #f8ffae);}
+    .water-bg .ride-back { background: linear-gradient(135deg, #185a9d, #43cea2);}
+    .kids-bg .ride-back { background: linear-gradient(135deg, #fae3d9, #ffb6b9);}
+    /* Booking CTA */
+    .booking-cta {
+      text-align: center;
+      padding: 4rem 1rem;
+      background: linear-gradient(135deg, #ff5e62, #ff9966);
+      margin-top: 3rem;
+      border-radius: 2rem 2rem 0 0;
+      box-shadow: 0 -2px 24px #0005;
+    }
+    .booking-cta h2 {
+      color: #fff;
+      font-family: 'Montserrat', sans-serif;
+      font-size: 2rem;
+      margin-bottom: 1.3rem;
+      letter-spacing: 1px;
+    }
+    .sticky-book {
+      background: linear-gradient(90deg, var(--primary), var(--accent));
+      color: #fff;
+      padding: 1rem 2.2rem;
+      border-radius: 2rem;
+      font-size: 1.2rem;
+      font-weight: bold;
+      box-shadow: 0 4px 32px #ff5e6244;
+      border: none;
+      cursor: pointer;
+      transition: transform 0.18s, box-shadow 0.18s;
+      margin-top: 1.5rem;
+    }
+    .sticky-book:hover {
+      transform: scale(1.08) rotate(-2deg);
+      box-shadow: 0 8px 48px #36d1c444;
+    }
+    /* Responsive */
+    @media (max-width: 900px) {
+      .rides-grid { grid-template-columns: 1fr 1fr;}
+      .section-title { font-size: 1.4rem;}
+      .navbar { padding: 1rem 1rem;}
+    }
+    @media (max-width: 600px) {
+      .rides-grid { grid-template-columns: 1fr;}
+      .section-title { font-size: 1.1rem;}
+      .ride-card { min-height: 340px;}
+      .booking-cta { padding: 2rem 0.5rem;}
+    }
+  </style>
+</head>
+<body>
+  <!-- Navigation Bar -->
+  <div class="navbar">
+    <span class="logo" onclick="window.location.href='index2.html'">Adventure Awaits!</span>
+    <div class="nav-links">
+      <a href="index2.html">Home</a>
+      <a href="#land">Land</a>
+      <a href="#water">Water</a>
+      <a href="#kids">Kids</a>
+      <a href="restaurants.html">Restaurants</a>
+      <a href="#book">Book</a>
+    </div>
+  </div>
+
+  <!-- LAND RIDES -->
+  <section class="rides-section land-bg" id="land">
+    <h2 class="section-title">🌍 Land Adventures</h2>
+    <div class="rides-grid">
+      <!-- Example Land Ride 1 -->
+      <div class="ride-card" data-ride-id="sky-rocket" onclick="toggleRideInfo(this)">
+        <div class="ride-inner">
+          <div class="ride-front">
+            <div class="cancelled-badge">Cancelled</div>
+            <img src="https://www.kennywood.com/content/dam/knw/images/attractions/sky-rocket/Sky-Rocket-Attractions-Kennywood-2.jpg" class="ride-img" alt="Sky Rocket">
+            <div class="ride-title">Sky Rocket</div>
+            <div class="ride-tags"><span>Thrill</span><span>120cm+</span></div>
+            <div class="ride-desc">360° rotating coaster with 3 inversions.</div>
+          </div>
+          <div class="ride-back">
+            <div class="ride-title">Sky Rocket</div>
+            <div>Soar at 80km/h! India's fastest indoor coaster.</div>
+            <div class="ride-criteria">
+              <div>📏 Min Height: 120cm</div>
+              <div>🚫 Heart Patients</div>
+              <div>⏱️ 2:30 mins</div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <!-- Example Land Ride 2 -->
+      <div class="ride-card" data-ride-id="bumper-cars" onclick="toggleRideInfo(this)">
+        <div class="ride-inner">
+          <div class="ride-front">
+            <div class="cancelled-badge">Cancelled</div>
+            <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/7/72/Bumper_Cars_9944_%2814762891777%29.jpg/1200px-Bumper_Cars_9944_%2814762891777%29.jpg" class="ride-img" alt="Bumper Cars">
+            <div class="ride-title">Bumper Cars</div>
+            <div class="ride-tags"><span>Family</span><span>All Ages</span></div>
+            <div class="ride-desc">Classic fun, neon-lit, and safe for all!</div>
+          </div>
+          <div class="ride-back">
+            <div class="ride-title">Bumper Cars</div>
+            <div>Crash, spin, and laugh with friends and family.</div>
+            <div class="ride-criteria">
+              <div>👨‍👩‍👧‍👦 All Ages</div>
+              <div>👶 Kids under 5 with adult</div>
+              <div>⏱️ 3 mins</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="ride-card" data-ride-id="Laser-tag" onclick="toggleRideInfo(this)">
+        <div class="ride-inner">
+          <div class="ride-front">
+            <div class="cancelled-badge">Cancelled</div>
+            <img src="https://i.redd.it/5xg8szu5uj6a1.jpg" class="ride-img" alt="Laser Tag">
+            <div class="ride-title">Laser Tag Arena</div>
+            <div class="ride-tags"><span>Action</span><span>8yrs+</span></div>
+            <div class="ride-desc">Battle in a neon-lit, fog-filled maze!</div>
+          </div>
+          <div class="ride-back">
+            <div class="ride-title">Laser Tag Arena</div>
+            <div>Team up & score points in a high-tech battle zone.</div>
+            <div class="ride-criteria">
+              <div>📏 Min Age: 8yrs</div>
+              <div>👟 Sports shoes required</div>
+              <div>⏱️ 10 mins</div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <!-- Add more rides here, each with a unique data-ride-id and a .cancelled-badge in the .ride-front -->
+       <div class="ride-card" data-ride-id="climbing-wall" onclick="toggleRideInfo(this)">
+        <div class="ride-inner">
+          <div class="ride-front">
+            <div class="cancelled-badge">Cancelled</div>
+
+            <img src="https://www.longisland.com/site_media/images/article/ada607c0-2907-11e9-a6f7-8bd19e094bd7-rimg-w518-h350-gmir.jpg" class="ride-img" alt="Climbing Wall">
+            <div class="ride-title">Climbing Wall</div>
+            <div class="ride-tags"><span>Adventure</span><span>6yrs+</span></div>
+            <div class="ride-desc">Scale 3 stories of themed climbing!</div>
+          </div>
+          <div class="ride-back">
+            <div class="ride-title">Climbing Wall</div>
+            <div>Auto-belay safety & various difficulty levels.</div>
+            <div class="ride-criteria">
+              <div>📏 Min Age: 6yrs</div>
+              <div>🧗 Harness provided</div>
+              <div>⏱️ 5 mins</div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="ride-card" data-ride-id="go-kart-track" onclick="toggleRideInfo(this)">
+        <div class="ride-inner">
+          <div class="ride-front">
+            <div class="cancelled-badge">Cancelled</div>
+
+            <img src="https://d2u1z1lopyfwlx.cloudfront.net/thumbnails/2aacd9c8-0c7e-5aea-b7bc-51f06c1b974d/44a1fa61-d7ea-5550-af2a-9daf590112d3.jpg" class="ride-img" alt="Go Kart">
+            <div class="ride-title">Go Kart Track</div>
+            <div class="ride-tags"><span>Racing</span><span>10yrs+</span></div>
+            <div class="ride-desc">Zoom around a multi-level indoor track!</div>
+          </div>
+          <div class="ride-back">
+            <div class="ride-title">Go Kart Track</div>
+            <div>Electric karts, lap timing, and leaderboards.</div>
+            <div class="ride-criteria">
+              <div>📏 Min Age: 10yrs</div>
+              <div>🪖 Helmet provided</div>
+              <div>⏱️ 7 mins</div>
+            </div>
+          </div>
+        </div>
+      </div>
+      
+      <div class="ride-card" data-ride-id="mini-golf" onclick="toggleRideInfo(this)">
+        <div class="ride-inner">
+          <div class="ride-front">
+            <div class="cancelled-badge">Cancelled</div>
+
+            <img src="https://d2u1z1lopyfwlx.cloudfront.net/thumbnails/7b16e0a3-36d9-5f54-9813-c17eab63f7ef/0149d690-d7d9-5047-b24f-40ad7bd0acf5.jpg" class="ride-img" alt="Mini Golf">
+            <div class="ride-title">Glow Mini Golf</div>
+            <div class="ride-tags"><span>Family</span><span>All Ages</span></div>
+            <div class="ride-desc">18 holes of glowing, themed mini golf!</div>
+          </div>
+          <div class="ride-back">
+            <div class="ride-title">Glow Mini Golf</div>
+            <div>Fun for all, with UV lighting and wild obstacles.</div>
+            <div class="ride-criteria">
+              <div>👨‍👩‍👧‍👦 All Ages</div>
+              <div>⏱️ 20 mins</div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="ride-card" data-ride-id="mirror-maze" onclick="toggleRideInfo(this)">
+        <div class="ride-inner">
+          <div class="ride-front">
+            <div class="cancelled-badge">Cancelled</div>
+
+            <img src="https://d2u1z1lopyfwlx.cloudfront.net/thumbnails/8665cef7-22d6-5f4b-ba0b-af00e4f493df/a92ea09e-dc28-5bef-a960-d150baf0dc20.jpg" class="ride-img" alt="Maze">
+            <div class="ride-title">Mirror Maze</div>
+            <div class="ride-tags"><span>Puzzle</span><span>All Ages</span></div>
+            <div class="ride-desc">Get lost in a dazzling maze of mirrors!</div>
+          </div>
+          <div class="ride-back">
+            <div class="ride-title">Mirror Maze</div>
+            <div>Find your way out of the mind-bending labyrinth.</div>
+            <div class="ride-criteria">
+              <div>👨‍👩‍👧‍👦 All Ages</div>
+              <div>⏱️ 10 mins</div>
+            </div>
+          </div>
+        </div>
+      </div>
+  </section>
+
+  <!-- WATER RIDES -->
+  <section class="rides-section water-bg" id="water">
+    <h2 class="section-title">🌊 Water Adventures</h2>
+    <div class="rides-grid">
+      <!-- 10 Water Rides -->
+      <div class="ride-card"  data-ride-id="tornado-funnel" onclick="toggleRideInfo(this)">
+        <div class="ride-inner">
+          <div class="ride-front">
+            <div class="cancelled-badge">Cancelled</div>
+
+            <img src="https://d2u1z1lopyfwlx.cloudfront.net/thumbnails/e05c5dcd-389c-586e-a269-1ff380261d59/f6cdf92b-9724-50b7-bca3-3075a9c3fa17.jpg" class="ride-img" alt="Tornado Funnel">
+            <div class="ride-title">Tornado Funnel</div>
+            <div class="ride-tags"><span>Family</span><span>8yrs+</span></div>
+            <div class="ride-desc">60° drop into a giant funnel vortex!</div>
+          </div>
+          <div class="ride-back">
+            <div class="ride-title">Tornado Funnel</div>
+            <div>Spin in a huge water funnel with friends.</div>
+            <div class="ride-criteria">
+              <div>👨‍👩‍👧‍👦 2-4 Riders</div>
+              <div>📏 Min Age: 8yrs</div>
+              <div>⏱️ 1:45 mins</div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="ride-card"  data-ride-id="wave-pool" onclick="toggleRideInfo(this)">
+        <div class="ride-inner">
+          <div class="ride-front">
+            <div class="cancelled-badge">Cancelled</div>
+
+            <img src="https://d2u1z1lopyfwlx.cloudfront.net/thumbnails/ad473be9-44da-55c0-98bb-568a0a224d90/0f23b40f-1b34-526b-9423-5ac7c549d839.jpg" class="ride-img" alt="Wave Pool">
+            <div class="ride-title">Wave Pool</div>
+            <div class="ride-tags"><span>Relax</span><span>All Ages</span></div>
+            <div class="ride-desc">Swim and splash in ocean-like waves!</div>
+          </div>
+          <div class="ride-back">
+            <div class="ride-title">Wave Pool</div>
+            <div>Gentle or wild waves every 20 minutes.</div>
+            <div class="ride-criteria">
+              <div>👨‍👩‍👧‍👦 All Ages</div>
+              <div>🦺 Life jackets for kids</div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="ride-card"  data-ride-id="body-slides" onclick="toggleRideInfo(this)">
+        <div class="ride-inner">
+          <div class="ride-front">
+            <div class="cancelled-badge">Cancelled</div>
+
+            <img src="https://5.imimg.com/data5/LY/UJ/MY-4069005/body-slides-250x250.jpg" class="ride-img" alt="Body Slides">
+            <div class="ride-title">Body Slides</div>
+            <div class="ride-tags"><span>Thrill</span><span>110cm+</span></div>
+            <div class="ride-desc">Twist, turn, and splash down fast slides!</div>
+          </div>
+          <div class="ride-back">
+            <div class="ride-title">Body Slides</div>
+            <div>Choose from 3 different slides for max fun.</div>
+            <div class="ride-criteria">
+              <div>📏 Min Height: 110cm</div>
+              <div>⏱️ 0:45 mins</div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="ride-card" data-ride-id="lazy-river"  onclick="toggleRideInfo(this)">
+        <div class="ride-inner">
+          <div class="ride-front">
+            <div class="cancelled-badge">Cancelled</div>
+
+            <img src="https://d2u1z1lopyfwlx.cloudfront.net/thumbnails/ab7a13bd-9f43-5c87-9fb9-eb17e5e46e35/ba82527b-b95f-56bb-9f4b-076b5d42b153.jpg" class="ride-img" alt="Lazy River">
+            <div class="ride-title">Lazy River</div>
+            <div class="ride-tags"><span>Relax</span><span>All Ages</span></div>
+            <div class="ride-desc">Float along a gentle, scenic river.</div>
+          </div>
+          <div class="ride-back">
+            <div class="ride-title">Lazy River</div>
+            <div>Grab a tube and drift for as long as you like.</div>
+            <div class="ride-criteria">
+              <div>👨‍👩‍👧‍👦 All Ages</div>
+              <div>🦺 Life jackets for kids</div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="ride-card" data-ride-id="splash-playground" onclick="toggleRideInfo(this)">
+        <div class="ride-inner">
+          <div class="ride-front">
+            <div class="cancelled-badge">Cancelled</div>
+
+            <img src="https://www.archboldbuckeye.com/wp-content/uploads/images/2020-12-16/36p1.jpg" class="ride-img" alt="Splash Playground">
+            <div class="ride-title">Splash Playground</div>
+            <div class="ride-tags"><span>Kids</span><span>All Ages</span></div>
+            <div class="ride-desc">Water jets, tipping buckets, and slides!</div>
+          </div>
+          <div class="ride-back">
+            <div class="ride-title">Splash Playground</div>
+            <div>Safe, shallow play area for little ones.</div>
+            <div class="ride-criteria">
+              <div>👶 Supervised</div>
+              <div>🦺 Life jackets available</div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="ride-card" data-ride-id="family-raft-ride" onclick="toggleRideInfo(this)">
+        <div class="ride-inner">
+          <div class="ride-front">
+            <div class="cancelled-badge">Cancelled</div>
+
+            <img src="https://d2u1z1lopyfwlx.cloudfront.net/thumbnails/b2c90783-da94-592c-bb38-9b85ea903225/4cf0f79f-bae9-5f8d-aa41-75da44080850.jpg" class="ride-img" alt="Family Raft">
+            <div class="ride-title">Family Raft Ride</div>
+            <div class="ride-tags"><span>Family</span><span>4-6 Riders</span></div>
+            <div class="ride-desc">Big raft, big splashes, big fun!</div>
+          </div>
+          <div class="ride-back">
+            <div class="ride-title">Family Raft Ride</div>
+            <div>Ride together on a giant, twisting slide.</div>
+            <div class="ride-criteria">
+              <div>👨‍👩‍👧‍👦 4-6 per raft</div>
+              <div>📏 Min Height: 100cm</div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="ride-card" data-ride-id="aqua-loop" onclick="toggleRideInfo(this)">
+        <div class="ride-inner">
+          <div class="ride-front">
+            <div class="cancelled-badge">Cancelled</div>
+
+            <img src="https://www.scoutmag.ph/wp-content/uploads/2019/05/Copy-of-Hurricane-1200x675.jpg" class="ride-img" alt="Aqua Loop">
+            <div class="ride-title">Aqua Loop</div>
+            <div class="ride-tags"><span>Thrill</span><span>120cm+</span></div>
+            <div class="ride-desc">360° looping water slide!</div>
+          </div>
+          <div class="ride-back">
+            <div class="ride-title">Aqua Loop</div>
+            <div>Step in, drop down, and loop the loop!</div>
+            <div class="ride-criteria">
+              <div>📏 Min Height: 120cm</div>
+              <div>⏱️ 0:30 mins</div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="ride-card" data-ride-id="surf-simulator" onclick="toggleRideInfo(this)">
+        <div class="ride-inner">
+          <div class="ride-front">
+            <div class="cancelled-badge">Cancelled</div>
+
+            <img src="https://www.flowrider.com/wp-content/uploads/2021/04/The-Bay-Waterpark.jpg" class="ride-img" alt="Surf Simulator">
+            <div class="ride-title">Surf Simulator</div>
+            <div class="ride-tags"><span>Adventure</span><span>10yrs+</span></div>
+            <div class="ride-desc">Ride the waves indoors!</div>
+          </div>
+          <div class="ride-back">
+            <div class="ride-title">Surf Simulator</div>
+            <div>Test your balance on our wave machine.</div>
+            <div class="ride-criteria">
+              <div>📏 Min Age: 10yrs</div>
+              <div>⏱️ 2 mins</div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="ride-card" data-ride-id="water-basketball" onclick="toggleRideInfo(this)">
+        <div class="ride-inner">
+          <div class="ride-front">
+            <div class="cancelled-badge">Cancelled</div>
+
+            <img src="https://d2u1z1lopyfwlx.cloudfront.net/thumbnails/5420abc0-3c4e-5246-a787-59ec13264aeb/6ec43c2e-8151-5983-8bc3-3716bf34650e.jpg" class="ride-img" alt="Water Basketball">
+            <div class="ride-title">Water Basketball</div>
+            <div class="ride-tags"><span>Sports</span><span>All Ages</span></div>
+            <div class="ride-desc">Shoot hoops in the pool!</div>
+          </div>
+          <div class="ride-back">
+            <div class="ride-title">Water Basketball</div>
+            <div>Poolside basketball for all ages and skill.</div>
+            <div class="ride-criteria">
+              <div>👨‍👩‍👧‍👦 All Ages</div>
+              <div>⏱️ Unlimited</div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="ride-card" data-ride-id="kids-slides" onclick="toggleRideInfo(this)">
+        <div class="ride-inner">
+          <div class="ride-front">
+            <div class="cancelled-badge">Cancelled</div>
+
+            <img src="https://d2u1z1lopyfwlx.cloudfront.net/thumbnails/7536cbde-a015-5086-824f-5b6cbf8aefa6/d2837552-f90a-525d-879f-66f5b22a1fe9.jpg" class="ride-img" alt="Kids Slides">
+            <div class="ride-title">Kids Slides</div>
+            <div class="ride-tags"><span>Kids</span><span>2-8yrs</span></div>
+            <div class="ride-desc">Mini slides for our youngest guests.</div>
+          </div>
+          <div class="ride-back">
+            <div class="ride-title">Kids Slides</div>
+            <div>Gentle, safe slides in shallow water.</div>
+            <div class="ride-criteria">
+              <div>👶 Ages 2-8</div>
+              <div>🦺 Supervised</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- KIDS RIDES -->
+  <section class="rides-section kids-bg" id="kids">
+    <h2 class="section-title">🧸 Kids Zone</h2>
+    <div class="rides-grid">
+      <!-- 10 Kids Rides -->
+      <div class="ride-card" data-ride-id="soft-play-area" onclick="toggleRideInfo(this)">
+        <div class="ride-inner">
+          <div class="ride-front">
+            <div class="cancelled-badge">Cancelled</div>
+
+            <img src="https://d2u1z1lopyfwlx.cloudfront.net/thumbnails/8452c76a-1fed-5314-92a6-d6ed8c2f0669/9e17585b-a6ed-5fad-92f8-457e2de3fd7a.jpg" class="ride-img" alt="Soft Play">
+            <div class="ride-title">Soft Play Area</div>
+            <div class="ride-tags"><span>Kids</span><span>2-6yrs</span></div>
+            <div class="ride-desc">Climb, crawl, and slide in safe play zones!</div>
+          </div>
+          <div class="ride-back">
+            <div class="ride-title">Soft Play Area</div>
+            <div>Colorful, padded, and always supervised.</div>
+            <div class="ride-criteria">
+              <div>👶 Ages 2-6</div>
+              <div>🦺 Supervised</div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="ride-card" data-ride-id="mini-carousel" onclick="toggleRideInfo(this)">
+        <div class="ride-inner">
+          <div class="ride-front">
+            <div class="cancelled-badge">Cancelled</div>
+            <img src="https://d2u1z1lopyfwlx.cloudfront.net/thumbnails/2fbb7f9e-9c06-569f-bfed-72b9f73cf373/0af98422-8d5d-5204-9f00-361f34eddb23.jpg" class="ride-img" alt="Mini Carousel">
+            <div class="ride-title">Mini Carousel</div>
+            <div class="ride-tags"><span>Kids</span><span>2-8yrs</span></div>
+            <div class="ride-desc">Gentle spinning fun for little ones.</div>
+          </div>
+          <div class="ride-back">
+            <div class="ride-title">Mini Carousel</div>
+            <div>Bright animals, music, and smiles for all!</div>
+            <div class="ride-criteria">
+              <div>👶 Ages 2-8</div>
+              <div>⏱️ 3 mins</div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="ride-card" data-ride-id="ball-pit" onclick="toggleRideInfo(this)">
+        <div class="ride-inner">
+          <div class="ride-front">
+            <div class="cancelled-badge">Cancelled</div>
+            <img src="https://d2u1z1lopyfwlx.cloudfront.net/thumbnails/303f2c49-2e9e-5169-a410-c7de015f6d0d/01a84265-e09c-5682-92ce-681c89a1afe2.jpg" class="ride-img" alt="Ball Pit">
+            <div class="ride-title">Ball Pit</div>
+            <div class="ride-tags"><span>Kids</span><span>2-6yrs</span></div>
+            <div class="ride-desc">Dive into thousands of colorful balls!</div>
+          </div>
+          <div class="ride-back">
+            <div class="ride-title">Ball Pit</div>
+            <div>Soft, clean, and tons of fun for little ones.</div>
+            <div class="ride-criteria">
+              <div>👶 Ages 2-6</div>
+              <div>🦺 Supervised</div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="ride-card" data-ride-id="mini-train" onclick="toggleRideInfo(this)">
+        <div class="ride-inner">
+          <div class="ride-front">
+            <div class="cancelled-badge">Cancelled</div>
+
+            <img src="https://5.imimg.com/data5/SELLER/Default/2023/6/319690333/UT/BP/DQ/119016107/amusement-park-trackless-train.jpeg" class="ride-img" alt="Mini Train">
+            <div class="ride-title">Mini Train</div>
+            <div class="ride-tags"><span>Kids</span><span>2-8yrs</span></div>
+            <div class="ride-desc">Ride the rails around the kids zone!</div>
+          </div>
+          <div class="ride-back">
+            <div class="ride-title">Mini Train</div>
+            <div>Colorful train, gentle ride, big smiles.</div>
+            <div class="ride-criteria">
+              <div>👶 Ages 2-8</div>
+              <div>⏱️ 4 mins</div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="ride-card" data-ride-id="mini-ferris-wheel" onclick="toggleRideInfo(this)">
+        <div class="ride-inner">
+          <div class="ride-front">
+            <div class="cancelled-badge">Cancelled</div>
+
+            <img src="https://d2u1z1lopyfwlx.cloudfront.net/thumbnails/912e706f-0f88-535a-80b1-1e87439f51ce/a92ea09e-dc28-5bef-a960-d150baf0dc20.jpg" class="ride-img" alt="Mini Ferris Wheel">
+            <div class="ride-title">Mini Ferris Wheel</div>
+            <div class="ride-tags"><span>Kids</span><span>3-8yrs</span></div>
+            <div class="ride-desc">See the whole park from up high!</div>
+          </div>
+          <div class="ride-back">
+            <div class="ride-title">Mini Ferris Wheel</div>
+            <div>Safe, slow, and perfect for little ones.</div>
+            <div class="ride-criteria">
+              <div>👶 Ages 3-8</div>
+              <div>⏱️ 5 mins</div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="ride-card" data-ride-id="tiny-slides" onclick="toggleRideInfo(this)">
+        <div class="ride-inner">
+          <div class="ride-front">
+            <div class="cancelled-badge">Cancelled</div>
+
+            <img src="https://d2u1z1lopyfwlx.cloudfront.net/thumbnails/56dd0cb7-4d3d-5ea6-ba2d-51bc9525329e/e6a2a48e-fe96-58e0-afb3-138f8c603738.jpg" class="ride-img" alt="Tiny Slides">
+            <div class="ride-title">Tiny Slides</div>
+            <div class="ride-tags"><span>Kids</span><span>2-5yrs</span></div>
+            <div class="ride-desc">Small slides, big giggles!</div>
+          </div>
+          <div class="ride-back">
+            <div class="ride-title">Tiny Slides</div>
+            <div>Gentle, safe slides for toddlers.</div>
+            <div class="ride-criteria">
+              <div>👶 Ages 2-5</div>
+              <div>🦺 Supervised</div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="ride-card" data-ride-id="mini-swings" onclick="toggleRideInfo(this)">
+        <div class="ride-inner">
+          <div class="ride-front">
+            <div class="cancelled-badge">Cancelled</div>
+
+            <img src="https://d2u1z1lopyfwlx.cloudfront.net/thumbnails/82060734-fb16-51d5-9a92-80bd3ed65c5e/6781c981-1e9e-5ac7-b17e-ffee066770e3.jpg" class="ride-img" alt="Mini Swings">
+            <div class="ride-title">Mini Swings</div>
+            <div class="ride-tags"><span>Kids</span><span>3-8yrs</span></div>
+            <div class="ride-desc">Swing around in a safe circle!</div>
+          </div>
+          <div class="ride-back">
+            <div class="ride-title">Mini Swings</div>
+            <div>Colorful, gentle, and always fun.</div>
+            <div class="ride-criteria">
+              <div>👶 Ages 3-8</div>
+              <div>⏱️ 3 mins</div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="ride-card" data-ride-id="mini-cars" onclick="toggleRideInfo(this)">
+        <div class="ride-inner">
+          <div class="ride-front">
+            <div class="cancelled-badge">Cancelled</div>
+
+            <img src="https://image.made-in-china.com/202f0j00kgeUqDBKhaoh/Children-Mini-Shuttle-Electric-Train-Climbing-Car-Amusement-Park-Rides-Kddie-Used.webp" class="ride-img" alt="Mini Cars">
+            <div class="ride-title">mini cars</div>
+            <div class="ride-tags"><span>Kids</span><span>3-8yrs</span></div>
+            <div class="ride-desc">Drive tiny cars on a safe track!</div>
+          </div>
+          <div class="ride-back">
+            <div class="ride-title">Mini Cars</div>
+            <div>Battery-powered, slow, and safe.</div>
+            <div class="ride-criteria">
+              <div>👶 Ages 3-8</div>
+              <div>⏱️ 4 mins</div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="ride-card" data-ride-id="junior-jungle" onclick="toggleRideInfo(this)">
+        <div class="ride-inner">
+          <div class="ride-front">
+            <div class="cancelled-badge">Cancelled</div>
+
+            <img src="https://d2u1z1lopyfwlx.cloudfront.net/thumbnails/c97f59c7-96a5-5303-9b1a-91b07a99c3aa/809fedd3-0b4f-5530-9209-06131a5bd0d5.jpg" class="ride-img" alt="Junior Jungle">
+            <div class="ride-title">Junior Jungle</div>
+            <div class="ride-tags"><span>Kids</span><span>2-8yrs</span></div>
+            <div class="ride-desc">Climbing, slides, and tunnels!</div>
+          </div>
+          <div class="ride-back">
+            <div class="ride-title">Junior Jungle</div>
+            <div>All play areas are padded and supervised.</div>
+            <div class="ride-criteria">
+              <div>👶 Ages 2-8</div>
+              <div>🦺 Supervised</div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="ride-card" data-ride-id="kids-arcade" onclick="toggleRideInfo(this)">
+        <div class="ride-inner">
+          <div class="ride-front">
+            <div class="cancelled-badge">Cancelled</div>
+            <img src="https://www.fantasyislandresort.co.uk/wp-content/uploads/2018/12/FI-Website-FEC-2-1024x683.jpg" class="ride-img" alt="Kids Arcade">
+            <div class="ride-title">Kids Arcade</div>
+            <div class="ride-tags"><span>Games</span><span>All Ages</span></div>
+            <div class="ride-desc">Arcade games just for kids!</div>
+          </div>
+          <div class="ride-back">
+            <div class="ride-title">Kids Arcade</div>
+            <div>Win tickets and prizes in our kids arcade.</div>
+            <div class="ride-criteria">
+              <div>👨‍👩‍👧‍👦 All Ages</div>
+              <div>⏱️ Unlimited</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- BOOK TICKETS CTA -->
+  <section class="booking-cta" id="book">
+    <h2>Ready for Adventure?</h2>
+    <button class="sticky-book" onclick="window.location.href='booking.html'">
+      🎫 Book Tickets Now
+    </button>
+  </section>
+
+ <script>
+const API_BASE = 'http://localhost:3000/api/rides-state';
+
+// Existing functions...
+function toggleRideInfo(card) {
+  if (!card.classList.contains('disabled')) {
+    card.classList.toggle('flipped');
+  }
+}
+
+async function fetchAndApplyRideStates() {
+  try {
+    const res = await fetch(API_BASE);
+    const state = await res.json();
+    document.querySelectorAll('.ride-card').forEach(card => {
+      const id = card.getAttribute('data-ride-id');
+      const badge = card.querySelector('.cancelled-badge');
+      if (state[id] === true) {
+        card.classList.add('enabled');
+        card.classList.remove('disabled');
+        if (badge) badge.style.display = 'none';
+      } else {
+        card.classList.add('disabled');
+        card.classList.remove('enabled');
+        card.classList.remove('flipped');
+        if (badge) badge.style.display = 'block';
+      }
+    });
+  } catch (e) {
+    alert('Could not load ride states from server.');
+  }
+}
+
+// Initial load
+fetchAndApplyRideStates();
+
+// --- SOCKET.IO REAL-TIME UPDATES ---
+const socket = io('http://localhost:3000');
+
+socket.on('rideStateChanged', ({ rideId, enabled }) => {
+  // Update only the affected card
+  const card = document.querySelector(`.ride-card[data-ride-id="${rideId}"]`);
+  if (card) {
+    const badge = card.querySelector('.cancelled-badge');
+    if (enabled) {
+      card.classList.add('enabled');
+      card.classList.remove('disabled');
+      if (badge) badge.style.display = 'none';
+    } else {
+      card.classList.add('disabled');
+      card.classList.remove('enabled');
+      card.classList.remove('flipped');
+      if (badge) badge.style.display = 'block';
+    }
+  }
+});
+</script>
+
+
+</body>
+</html>

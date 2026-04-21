@@ -1,0 +1,225 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Admin Feedback | Adventure Awaits Amusement Park</title>
+  <link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@400;700&family=Baloo+2:wght@600&display=swap" rel="stylesheet" />
+  <style>
+    :root {
+      --primary: #36d1c4;
+      --secondary: #ff5e62;
+      --bg1: #0f2027;
+      --bg2: #203a43;
+      --bg3: #2c5364;
+      --card-bg: rgba(255,255,255,0.12);
+      --text-light: #ddd;
+      --text-dark: #fff;
+      --table-header-bg: rgba(54,209,196,0.3);
+      --table-row-hover: rgba(54,209,196,0.15);
+    }
+    body {
+      margin: 0;
+      font-family: 'Fredoka', 'Baloo 2', Arial, sans-serif;
+      min-height: 100vh;
+      background: linear-gradient(135deg, var(--bg1) 0%, var(--bg2) 50%, var(--bg3) 100%);
+      color: var(--text-dark);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding: 2rem 1rem;
+    }
+    h1 {
+      font-family: 'Baloo 2', cursive;
+      font-size: 2.5rem;
+      color: var(--secondary);
+      margin-bottom: 1rem;
+      text-shadow: 0 2px 12px #ff5e6244;
+      text-align: center;
+    }
+    table {
+      width: 100%;
+      max-width: 1100px;
+      border-collapse: collapse;
+      background: var(--card-bg);
+      border-radius: 16px;
+      overflow: hidden;
+      box-shadow: 0 8px 40px #36d1c433, 0 1.5px 18px #fff2;
+      backdrop-filter: blur(14px);
+      color: var(--text-light);
+    }
+    thead {
+      background: var(--table-header-bg);
+      font-weight: 700;
+      font-size: 1.1rem;
+    }
+    thead th {
+      padding: 1rem 1.2rem;
+      text-align: left;
+      border-bottom: 2px solid var(--primary);
+    }
+    tbody tr {
+      transition: background-color 0.3s;
+      cursor: default;
+    }
+    tbody tr:hover {
+      background-color: var(--table-row-hover);
+    }
+    tbody td {
+      padding: 0.9rem 1.2rem;
+      border-bottom: 1px solid rgba(255,255,255,0.1);
+      font-size: 1rem;
+    }
+    .rating {
+      color: #ff5e62;
+      font-weight: 700;
+      letter-spacing: 1.2px;
+      font-size: 1.2rem;
+    }
+    .feedback-text {
+      font-style: italic;
+      color: #eee;
+      max-width: 280px;
+      white-space: normal;
+      word-wrap: break-word;
+    }
+    .no-feedback {
+      text-align: center;
+      margin-top: 3rem;
+      font-size: 1.3rem;
+      color: #ff5e62;
+    }
+    .btn-back {
+      margin: 1.5rem auto 0 auto;
+      display: inline-block;
+      background: linear-gradient(90deg, var(--secondary), var(--primary));
+      color: #fff;
+      padding: 0.7rem 2rem;
+      border-radius: 2rem;
+      font-size: 1.1rem;
+      font-weight: bold;
+      box-shadow: 0 4px 32px var(--secondary)88;
+      border: none;
+      cursor: pointer;
+      text-decoration: none;
+      text-align: center;
+      transition: transform 0.18s, box-shadow 0.18s, background 0.3s;
+    }
+    .btn-back:hover,
+    .btn-back:focus {
+      transform: scale(1.07) rotate(-2deg);
+      box-shadow: 0 8px 48px var(--primary)cc;
+      background: linear-gradient(90deg, var(--primary), var(--secondary));
+    }
+    @media (max-width: 900px) {
+      table, thead, tbody, th, td, tr {
+        display: block;
+      }
+      thead tr {
+        position: absolute;
+        top: -9999px;
+        left: -9999px;
+      }
+      tbody tr {
+        margin-bottom: 1.5rem;
+        border-radius: 14px;
+        background: var(--card-bg);
+        padding: 1rem;
+      }
+      tbody td {
+        border: none;
+        padding-left: 50%;
+        position: relative;
+        font-size: 0.95rem;
+      }
+      tbody td::before {
+        position: absolute;
+        top: 0.9rem;
+        left: 1rem;
+        width: 45%;
+        white-space: nowrap;
+        font-weight: 700;
+        color: var(--primary);
+      }
+      tbody td:nth-of-type(1)::before { content: "Booking ID"; }
+      tbody td:nth-of-type(2)::before { content: "Name"; }
+      tbody td:nth-of-type(3)::before { content: "Email"; }
+      tbody td:nth-of-type(4)::before { content: "Rating"; }
+      tbody td:nth-of-type(5)::before { content: "Feedback"; }
+    }
+  </style>
+</head>
+<body>
+  <h1>📋 Customer Feedback</h1>
+  <table id="feedbackTable" aria-label="Customer Feedback Table">
+    <thead>
+      <tr>
+        <th>Booking ID</th>
+        <th>Name</th>
+        <th>Email</th>
+        <th>Rating</th>
+        <th>Feedback</th>
+      </tr>
+    </thead>
+    <tbody>
+      <!-- Feedback rows inserted here -->
+    </tbody>
+  </table>
+  <div class="no-feedback" id="noFeedbackMsg" style="display:none;">No feedback found.</div>
+  <a href="adminpanel.html" class="btn-back" aria-label="Back to Admin Dashboard">← Admin Home</a>
+
+  <script>
+    async function loadFeedback() {
+      const tbody = document.querySelector('#feedbackTable tbody');
+      const noFeedbackMsg = document.getElementById('noFeedbackMsg');
+      tbody.innerHTML = '<tr><td colspan="5" style="text-align:center;">Loading feedback...</td></tr>';
+      try {
+        const res = await fetch('/api/bookings');
+        if (!res.ok) throw new Error('Failed to fetch');
+        const bookings = await res.json();
+        // Filter bookings with rating or feedback
+        const feedbacks = bookings.filter(b => b.rating || b.feedback);
+        if (feedbacks.length === 0) {
+          tbody.innerHTML = '';
+          noFeedbackMsg.style.display = 'block';
+          return;
+        }
+        noFeedbackMsg.style.display = 'none';
+        tbody.innerHTML = feedbacks.map(b => `
+          <tr>
+            <td>${b._id}</td>
+            <td>${escapeHtml(b.name)}</td>
+            <td>${escapeHtml(b.email)}</td>
+            <td class="rating">${renderStars(b.rating)}</td>
+            <td class="feedback-text">${b.feedback ? escapeHtml(b.feedback) : '-'}</td>
+          </tr>
+        `).join('');
+      } catch (err) {
+        tbody.innerHTML = `<tr><td colspan="5" style="color:#ff5e62; text-align:center;">Failed to load feedback.</td></tr>`;
+        noFeedbackMsg.style.display = 'none';
+        console.error(err);
+      }
+    }
+
+    // Render stars as ★★★☆☆ style
+    function renderStars(rating) {
+      if (!rating) return '-';
+      let stars = '';
+      for (let i = 1; i <= 5; i++) {
+        stars += i <= rating ? '★' : '☆';
+      }
+      return stars;
+    }
+
+    // Escape HTML to prevent XSS
+    function escapeHtml(text) {
+      if (!text) return '';
+      return text.replace(/[&<>"']/g, function(m) {
+        return {'&':'&amp;', '<':'&lt;', '>':'&gt;', '"':'&quot;', "'":'&#39;'}[m];
+      });
+    }
+
+    loadFeedback();
+  </script>
+</body>
+</html>

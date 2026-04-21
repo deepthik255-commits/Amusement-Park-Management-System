@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Restaurants | Wonderla</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Arial, sans-serif;
+            margin: 0;
+            background: #f7f7f7;
+            color: #222;
+        }
+        header {
+            background: #005baa;
+            color: #fff;
+            padding: 30px 0 20px 0;
+            text-align: center;
+        }
+        nav {
+            background: #003366;
+            padding: 10px 0;
+            text-align: center;
+        }
+        nav a {
+            color: #fff;
+            text-decoration: none;
+            margin: 0 16px;
+            font-weight: 500;
+            transition: color 0.2s;
+        }
+        nav a:hover {
+            color: #ffd700;
+        }
+        .container {
+            max-width: 1100px;
+            margin: 30px auto;
+            background: #fff;
+            border-radius: 8px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+            padding: 32px;
+        }
+        h1 {
+            font-size: 2.5em;
+            margin-bottom: 8px;
+        }
+        .intro {
+            font-size: 1.2em;
+            color: #555;
+            margin-bottom: 32px;
+            text-align: center;
+        }
+        .restaurant-list {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 32px;
+            justify-content: center;
+        }
+        .restaurant-card {
+            background: #f1f6fa;
+            border-radius: 8px;
+            box-shadow: 0 1px 4px rgba(0,0,0,0.07);
+            width: 300px;
+            padding: 22px;
+            text-align: center;
+            transition: transform 0.2s;
+        }
+        .restaurant-card:hover {
+            transform: translateY(-5px) scale(1.03);
+        }
+        .restaurant-card img {
+            width: 100%;
+            height: 160px;
+            object-fit: cover;
+            border-radius: 6px;
+            margin-bottom: 12px;
+        }
+        .restaurant-card h3 {
+            margin: 10px 0 8px 0;
+            color: #005baa;
+        }
+        .restaurant-card p {
+            color: #444;
+            font-size: 1em;
+        }
+        footer {
+            background: #003366;
+            color: #fff;
+            text-align: center;
+            padding: 20px 0 10px 0;
+            margin-top: 40px;
+        }
+        .contact-info {
+            margin: 16px 0;
+            font-size: 1em;
+            line-height: 1.7;
+        }
+        @media (max-width: 900px) {
+            .container {
+                padding: 10px;
+            }
+            .restaurant-list {
+                gap: 16px;
+            }
+            .restaurant-card {
+                width: 90vw;
+                max-width: 350px;
+            }
+        }
+        @media (max-width: 600px) {
+            h1 {
+                font-size: 1.5em;
+            }
+            .restaurant-card {
+                padding: 12px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <h1>Restaurants at Wonderla</h1>
+        <div class="intro">
+            Enjoy a variety of delicious cuisines and snacks at our world-class restaurants. Whether you crave Indian, Chinese, Continental, or quick bites, we have something for everyone!
+        </div>
+    </header>
+    <nav>
+        <a href="#">Home</a>
+        <a href="#">Parks</a>
+        <a href="#">Rides</a>
+        <a href="#">Restaurants</a>
+        <a href="#">Tickets</a>
+        <a href="#">Contact</a>
+    </nav>
+    <div class="container">
+        <div class="restaurant-list">
+
+            <div class="restaurant-card">
+                <img src="https://images.unsplash.com/photo-1504674900247-0877df9cc836?auto=format&fit=crop&w=600&q=80" alt="Park View Restaurant">
+                <h3>Park View Restaurant</h3>
+                <p>Relish multi-cuisine delicacies in a cozy, family-friendly atmosphere. Perfect for lunch and dinner breaks during your adventure.</p>
+            </div>
+
+            <div class="restaurant-card">
+                <img src="https://images.unsplash.com/photo-1517248135467-4c7edcad34c4?auto=format&fit=crop&w=600&q=80" alt="Waves Food Court">
+                <h3>Waves Food Court</h3>
+                <p>Choose from a wide variety of fast food, beverages, and desserts. Quick service and vibrant seating make it a favorite!</p>
+            </div>
+
+            <div class="restaurant-card">
+                <img src="https://images.unsplash.com/photo-1525610553991-2bede1a236e2?auto=format&fit=crop&w=600&q=80" alt="Chillies Restaurant">
+                <h3>Chillies Restaurant</h3>
+                <p>Savor spicy South Indian and North Indian dishes, freshly prepared by our expert chefs. Vegetarian and non-vegetarian options available.</p>
+            </div>
+
+            <div class="restaurant-card">
+                <img src="https://images.unsplash.com/photo-1464306076886-debca5e8a6b0?auto=format&fit=crop&w=600&q=80" alt="Snack Shack">
+                <h3>Snack Shack</h3>
+                <p>Grab a quick bite between rides! Sandwiches, burgers, fries, and ice creams to keep you energized all day.</p>
+            </div>
+
+            <div class="restaurant-card">
+                <img src="https://images.unsplash.com/photo-1506368083636-6defb67639f0?auto=format&fit=crop&w=600&q=80" alt="Cafe Wonder">
+                <h3>Cafe Wonder</h3>
+                <p>Relax with a cup of coffee, fresh juices, and light snacks. The perfect spot to unwind and recharge.</p>
+            </div>
+
+        </div>
+    </div>
+    <footer>
+        <div class="contact-info">
+            <strong>Wonderla Amusement Park</strong><br>
+            28th Km, Mysore Road, Bangalore - 562109<br>
+            Phone: +91 80 37230333 | Email: info@wonderla.com
+        </div>
+        &copy; 2025 Wonderla Holidays Ltd. All Rights Reserved.
+    </footer>
+</body>
+</html>

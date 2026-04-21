@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Amusement Park Ticket Booking</title>
+
+  <!-- Link to Font Awesome -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
+
+  <!-- Link to your external userStyling.css -->
+  <link rel="stylesheet" href="userStyling.css" />
+
+  
+</head>
+
+<body>
+  <!-- Sidebar -->
+  <div class="sidebar">
+    <a href="dashboard.html"><i class="fas fa-home"></i> Dashboard</a>
+    <a href="rides.html"><i class="fas fa-rocket"></i> Rides</a>
+    <a href="tickets.html"><i class="fas fa-ticket-alt"></i> Tickets</a>
+    <a href="food.html"><i class="fas fa-utensils"></i> Food & Beverages</a>
+    <a href="events.html"><i class="fas fa-calendar-alt"></i> Events</a>
+    <a href="reviews.html"><i class="fas fa-comment-dots"></i> Visitor Feedback</a>
+    <a href="settings.html"><i class="fas fa-cogs"></i> Settings</a>
+    <a href="/api/logout" class="logout"><i class="fas fa-sign-out-alt"></i> Logout</a>
+  </div>
+
+  <!-- Main Content -->
+  <div class="content">
+    <div class="dashboard-header">Book Your Tickets</div>
+
+    <div class="card">
+      <h5>Fill in your details</h5>
+      <form action="/api/book-ticket" method="POST">
+        <div class="form-group">
+          <label for="visitorName">Full Name</label>
+          <input type="text" id="visitorName" name="visitorName" required placeholder="Enter your full name" />
+        </div>
+
+        <div class="form-group">
+          <label for="visitorEmail">Email Address</label>
+          <input type="email" id="visitorEmail" name="visitorEmail" required placeholder="Enter your email" />
+        </div>
+
+        <div class="form-group">
+          <label for="visitorPhone">Phone Number</label>
+          <input type="tel" id="visitorPhone" name="visitorPhone" required placeholder="Enter your phone number" />
+        </div>
+
+        <div class="form-group">
+          <label for="visitorAge">Age</label>
+          <input type="number" id="visitorAge" name="visitorAge" required placeholder="Enter your age" />
+        </div>
+
+       
+
+        <div class="form-group">
+          <label for="ticketType">Ticket Type</label>
+          <select id="ticketType" name="ticketType" required>
+            <option value="amusement">Amusement Park</option>
+            <option value="water">Water Park</option>
+            <option value="combo">Combo (Amusement + Water Park)</option>
+          </select>
+        </div>
+
+        <div class="form-group">
+          <label for="visitDate">Date of Visit</label>
+          <input type="date" id="visitDate" name="visitDate" required />
+        </div>
+
+        <div class="form-group">
+          <label for="ticketQuantity">Number of Tickets</label>
+          <input type="number" id="ticketQuantity" name="ticketQuantity" min="1" required />
+        </div>
+
+        <div class="form-group">
+          <label for="mealPlan">Meal Plan</label>
+          <select id="mealPlan" name="mealPlan">
+            <option value="none">None</option>
+            <option value="buffet">Buffet</option>
+            <option value="allDay">All-Day Meal Plan</option>
+          </select>
+        </div>
+
+        <div class="form-group">
+          <label for="addons">Add-ons</label>
+          <select id="addons" name="addons">
+            <option value="none">None</option>
+            <option value="locker">Locker Rental</option>
+            <option value="photo">Photo Package</option>
+          </select>
+        </div>
+
+       
+
+        <div class="form-group">
+          <button type="submit" class="btn">Book Tickets</button>
+        </div>
+      </form>
+    </div>
+  </div>
+</body>
+
+</html>

@@ -1,0 +1,494 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Your Booking | Adventure Awaits Amusement Park</title>
+  <link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@400;700&family=Baloo+2:wght@600&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --primary: #36d1c4;
+      --secondary: #ff5e62;
+      --bg1: #0f2027;
+      --bg2: #203a43;
+      --bg3: #2c5364;
+      --card-bg: rgba(255,255,255,0.12);
+      --text-light: #ddd;
+      --text-dark: #fff;
+    }
+    body {
+      margin: 0;
+      font-family: 'Fredoka', 'Baloo 2', Arial, sans-serif;
+      min-height: 100vh;
+      background: linear-gradient(135deg, var(--bg1) 0%, var(--bg2) 50%, var(--bg3) 100%);
+      color: var(--text-dark);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      overflow-x: hidden;
+      position: relative;
+    }
+    /* ... (keep all your existing CSS here, unchanged) ... */
+    /* Snowfall */
+    .snowfall {
+      position: fixed;
+      top: 0; left: 0;
+      width: 100vw; height: 100vh;
+      pointer-events: none;
+      overflow: hidden;
+      z-index: 1;
+    }
+    .snowflake {
+      position: absolute;
+      top: -10px;
+      width: 12px;
+      height: 12px;
+      background: white;
+      border-radius: 50%;
+      opacity: 0.8;
+      filter: drop-shadow(0 0 4px #fff) blur(1px);
+      left: calc(var(--i) * 9vw + 2vw);
+      animation:
+        fall calc(10s + var(--i) * 1.5s) linear infinite,
+        sway 3s ease-in-out infinite;
+      animation-delay:
+        calc(var(--i) * -1.5s),
+        calc(var(--i) * -0.5s);
+    }
+    @keyframes fall {
+      0% { transform: translateY(-10px); opacity: 0.8; }
+      90% { opacity: 0.8;}
+      100% { transform: translateY(110vh); opacity: 0; }
+    }
+    @keyframes sway {
+      0%, 100% { transform: translateX(0); }
+      50% { transform: translateX(15px); }
+    }
+
+    /* Animated background floating shapes */
+    .bg-shapes {
+      position: fixed;
+      z-index: 2;
+      top: 0; left: 0; width: 100vw; height: 100vh;
+      pointer-events: none;
+      overflow: hidden;
+    }
+    .bg-shape {
+      position: absolute;
+      border-radius: 50%;
+      opacity: 0.13;
+      filter: blur(20px);
+      animation: float 7s infinite alternate cubic-bezier(.42,0,.58,1);
+    }
+    .bg-shape1 { width: 280px; height: 280px; background: var(--secondary); top: 5%; left: 8%; animation-delay: 0s;}
+    .bg-shape2 { width: 200px; height: 200px; background: var(--primary); top: 60%; left: 70%; animation-delay: 2s;}
+    .bg-shape3 { width: 180px; height: 180px; background: var(--secondary); top: 70%; left: 10%; animation-delay: 1.5s;}
+    .bg-shape4 { width: 120px; height: 120px; background: var(--primary); top: 25%; left: 80%; animation-delay: 3s;}
+    @keyframes float {
+      0% { transform: translateY(0) scale(1);}
+      100% { transform: translateY(-30px) scale(1.08);}
+    }
+    .hero {
+      padding: 2.5rem 1rem 1rem 1rem;
+      text-align: center;
+      background: rgba(255,255,255,0.10);
+      border-radius: 0 0 40px 40px;
+      box-shadow: 0 4px 24px #0008;
+      margin-bottom: 2rem;
+      position: relative;
+      z-index: 3;
+      animation: fade-in-down 1.2s cubic-bezier(.42,0,.58,1);
+      color: var(--text-light);
+    }
+    .hero h1 {
+      font-family: 'Baloo 2', cursive;
+      font-size: 2.5rem;
+      color: var(--secondary);
+      margin: 0 0 0.5rem 0;
+      letter-spacing: 1px;
+      text-shadow: 0 2px 12px #ff5e6244;
+      animation: pop-in 1.3s cubic-bezier(.42,0,.58,1);
+    }
+    .hero p {
+      font-size: 1.1rem;
+      margin-bottom: 0.5rem;
+      animation: fade-in-up 1.4s cubic-bezier(.42,0,.58,1);
+    }
+    .booking-card {
+      background: var(--card-bg);
+      border-radius: 30px;
+      box-shadow: 0 8px 40px #36d1c433, 0 1.5px 18px #fff2;
+      max-width: 440px;
+      width: 95vw;
+      margin: 1.5rem auto 2rem auto;
+      padding: 2.2rem 2rem 1.5rem 2rem;
+      text-align: left;
+      position: relative;
+      z-index: 3;
+      animation: fade-in-up 1.1s cubic-bezier(.42,0,.58,1);
+      transition: box-shadow 0.3s, transform 0.3s;
+      color: var(--text-light);
+      border: 1.5px solid rgba(255,255,255,0.2);
+      backdrop-filter: blur(14px);
+    }
+    .booking-card:hover {
+      box-shadow: 0 12px 48px var(--primary)88, 0 2px 24px var(--secondary)44;
+      transform: translateY(-6px) scale(1.02) rotate(-1deg);
+    }
+    .booking-img {
+      width: 100%;
+      max-height: 180px;
+      object-fit: cover;
+      border-radius: 22px;
+      margin-bottom: 1.2rem;
+      box-shadow: 0 2px 16px var(--primary)33;
+      animation: img-pop-in 1.3s cubic-bezier(.42,0,.58,1);
+      border: 3px solid var(--primary);
+    }
+    .booking-title {
+      font-family: 'Baloo 2', cursive;
+      font-size: 1.7rem;
+      color: var(--secondary);
+      margin: 0 0 1rem 0;
+      letter-spacing: 1px;
+    }
+    .booking-details {
+      font-size: 1.1rem;
+      margin-bottom: 1.1rem;
+      line-height: 1.7;
+      animation: fade-in-up 1.5s cubic-bezier(.42,0,.58,1);
+      background: rgba(54,209,196,0.12);
+      border-radius: 14px;
+      padding: 1rem 1.2rem;
+      box-shadow: 0 1px 8px #0003;
+      color: #222;
+    }
+    .booking-details strong {
+      color: var(--primary);
+      font-weight: bold;
+    }
+    .booking-total {
+      font-size: 1.3rem;
+      color: var(--primary);
+      font-weight: bold;
+      margin-top: 1rem;
+      text-shadow: 0 2px 8px var(--primary);
+      animation: pop-in 1.6s cubic-bezier(.42,0,.58,1);
+      letter-spacing: 1px;
+    }
+    .success-anim {
+      width: 90px;
+      height: 90px;
+      margin: 0 auto 1.2rem auto;
+      display: block;
+      animation: tick-pop 1.1s cubic-bezier(.42,0,.58,1);
+      filter: drop-shadow(0 0 4px var(--primary));
+    }
+    .actions {
+      margin-top: 1.5rem;
+      text-align: center;
+      animation: fade-in-up 1.8s cubic-bezier(.42,0,.58,1);
+    }
+    .btn {
+      display: inline-block;
+      background: linear-gradient(90deg, var(--secondary), var(--primary));
+      color: #fff;
+      padding: 0.7rem 2rem;
+      border-radius: 2rem;
+      font-size: 1.1rem;
+      font-weight: bold;
+      box-shadow: 0 4px 32px var(--secondary)88;
+      border: none;
+      cursor: pointer;
+      margin: 0 0.7rem 0.5rem 0.7rem;
+      transition: transform 0.18s, box-shadow 0.18s, background 0.3s;
+      text-decoration: none;
+      outline: none;
+      border: 2px solid transparent;
+    }
+    .btn:hover,
+    .btn:focus {
+      transform: scale(1.07) rotate(-2deg);
+      box-shadow: 0 8px 48px var(--primary)cc;
+      background: linear-gradient(90deg, var(--primary), var(--secondary));
+      border: 2px solid var(--primary);
+    }
+    @keyframes fade-in-up {
+      from { opacity: 0; transform: translateY(80px);}
+      to { opacity: 1; transform: translateY(0);}
+    }
+    @keyframes fade-in-down {
+      from { opacity: 0; transform: translateY(-40px);}
+      to { opacity: 1; transform: translateY(0);}
+    }
+    @keyframes pop-in {
+      0% { opacity: 0; transform: scale(0.7);}
+      80% { opacity: 1; transform: scale(1.12);}
+      100% { opacity: 1; transform: scale(1);}
+    }
+    @keyframes img-pop-in {
+      0% { opacity: 0; transform: scale(1.2) rotate(-2deg);}
+      100% { opacity: 1; transform: scale(1) rotate(0);}
+    }
+    @keyframes tick-pop {
+      0% { opacity: 0; transform: scale(0.6);}
+      70% { opacity: 1; transform: scale(1.2);}
+      100% { opacity: 1; transform: scale(1);}
+    }
+    @media (max-width: 600px) {
+      .hero h1 { font-size: 1.5rem;}
+      .booking-card { padding: 1.2rem 0.7rem;}
+      .booking-title { font-size: 1.1rem;}
+      .booking-details { font-size: 0.95rem;}
+    }
+
+    /* Rating stars */
+    .rating-stars {
+      display: inline-block;
+      margin: 0.5em 0;
+    }
+    .rating-star {
+      font-size: 2.2rem;
+      color: #aaa;
+      cursor: pointer;
+      transition: color 0.2s;
+      user-select: none;
+    }
+    .rating-star.selected,
+    .rating-star:hover,
+    .rating-star.hovered {
+      color: #ff5e62;
+      text-shadow: 0 0 8px #fff2;
+    }
+    .rating-section {
+      margin-top: 2rem;
+      text-align: center;
+      animation: fade-in-up 1.2s cubic-bezier(.42,0,.58,1);
+      background: rgba(255,255,255,0.08);
+      border-radius: 16px;
+      padding: 1.2em 0.7em 1.4em 0.7em;
+      box-shadow: 0 2px 16px #36d1c433;
+      max-width: 440px;
+      margin-left: auto;
+      margin-right: auto;
+    }
+    .rating-section h3 {
+      color: var(--primary);
+      font-family: 'Baloo 2', cursive;
+      font-size: 1.3rem;
+      margin-bottom: 0.3em;
+    }
+    .rating-section .btn {
+      margin-top: 1em;
+      font-size: 1em;
+      padding: 0.6em 1.5em;
+    }
+    .rating-msg {
+      margin-top: 1em;
+      font-size: 1.05em;
+      color: #27ae60;
+      font-weight: bold;
+      min-height: 1.3em;
+    }
+    .rating-section .btn[disabled] {
+      background: #aaa;
+      color: #fff;
+      cursor: not-allowed;
+      border: 2px solid #aaa;
+      box-shadow: none;
+    }
+  </style>
+</head>
+<body>
+  <!-- Snowfall effect -->
+  <div class="snowfall">
+    <div class="snowflake" style="--i:1;"></div>
+    <div class="snowflake" style="--i:2;"></div>
+    <div class="snowflake" style="--i:3;"></div>
+    <div class="snowflake" style="--i:4;"></div>
+    <div class="snowflake" style="--i:5;"></div>
+    <div class="snowflake" style="--i:6;"></div>
+    <div class="snowflake" style="--i:7;"></div>
+    <div class="snowflake" style="--i:8;"></div>
+    <div class="snowflake" style="--i:9;"></div>
+    <div class="snowflake" style="--i:10;"></div>
+    <div class="snowflake" style="--i:11;"></div>
+    <div class="snowflake" style="--i:12;"></div>
+    <div class="snowflake" style="--i:13;"></div>
+    <div class="snowflake" style="--i:14;"></div>
+    <div class="snowflake" style="--i:15;"></div>
+  </div>
+  <!-- Animated background shapes -->
+  <div class="bg-shapes">
+    <div class="bg-shape bg-shape1"></div>
+    <div class="bg-shape bg-shape2"></div>
+    <div class="bg-shape bg-shape3"></div>
+    <div class="bg-shape bg-shape4"></div>
+  </div>
+  <section class="hero">
+    <h1>🎉 Booking Confirmed!</h1>
+    <p>Thank you for booking with <strong>Adventure Awaits Amusement Park</strong>.<br />
+      Your adventure is about to begin!</p>
+  </section>
+  <div class="booking-card" id="bookingCard">
+    <svg class="success-anim" viewBox="0 0 52 52">
+      <circle cx="26" cy="26" r="25" fill="#fff" stroke="#36d1c4" stroke-width="2" />
+      <path fill="none" stroke="#36d1c4" stroke-width="4" d="M14 28 l8 8 l16 -16" stroke-linecap="round"
+        stroke-linejoin="round" />
+    </svg>
+    <img class="booking-img" id="bookingImg"
+      src="https://images.unsplash.com/photo-1506744038136-46273834b3fb?auto=format&fit=crop&w=600&q=80"
+      alt="Amusement Park" />
+    <div class="booking-title">Your Ticket Details</div>
+    <div class="booking-details" id="bookingDetails">
+      <!-- Filled by JS -->
+    </div>
+    <div class="booking-total" id="bookingTotal"></div>
+    <div class="actions">
+      <a href="index2.html" class="btn">🏠 Home</a>
+      <a href="booking.html" class="btn">+ Book Another</a>
+      <a href="booking.html" class="btn">🔄📅 Reschedule and Edit Your Bookings</a>
+      <a href="rides.html" class="btn">🎢 View Rides</a>
+      <a href="restaurants.html" class="btn" style="display: inline-flex; align-items: center; gap: 0.5em;">
+        <svg xmlns="http://www.w3.org/2000/svg" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" 
+             width="20" height="20" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+          <path d="M3 2v20h18V2H3zM8 9h8M8 15h8M8 12h8" />
+        </svg>
+        View Restaurants
+      </a>
+    </div>
+  </div>
+  <!-- Rating Section -->
+  <div class="rating-section" id="ratingSection" style="display:none;">
+    <h3>How was your booking experience?</h3>
+    <div class="rating-stars" id="ratingStars"></div>
+    <button class="btn" id="submitRatingBtn" disabled>Submit Rating</button>
+    <div class="rating-msg" id="ratingMsg"></div>
+  </div>
+  <script>
+    // Fun images for variety!
+    const images = [
+      "https://images.unsplash.com/photo-1506744038136-46273834b3fb?auto=format&fit=crop&w=600&q=80",
+      "https://images.unsplash.com/photo-1464983953574-0892a716854b?auto=format&fit=crop&w=600&q=80",
+      "https://images.unsplash.com/photo-1509228468518-c5eeecbff44a?auto=format&fit=crop&w=600&q=80",
+      "https://images.unsplash.com/photo-1519125323398-675f0ddb6308?auto=format&fit=crop&w=600&q=80"
+    ];
+    document.getElementById('bookingImg').src = images[Math.floor(Math.random() * images.length)];
+
+    // Get latest booking from localStorage
+    const latestBooking = JSON.parse(localStorage.getItem('latestBooking'));
+    const detailsDiv = document.getElementById('bookingDetails');
+    const totalDiv = document.getElementById('bookingTotal');
+
+    // Helper: Render bookings
+    function renderBookings(bookings) {
+      if (!bookings || bookings.length === 0) {
+        detailsDiv.innerHTML = `<div style="color:#ff5e62;">No bookings found for this email.</div>`;
+        totalDiv.textContent = '';
+        return;
+      }
+      detailsDiv.innerHTML = bookings.map((booking, idx) => `
+        <div style="margin-bottom:1.1em;${idx>0?'border-top:1px solid #eee; padding-top:1em;':''}">
+          <div><strong>Date:</strong> ${booking.date}</div>
+          <div><strong>Park Timings:</strong> ${booking.timing}</div>
+          <div><strong>Ticket Type:</strong> ${booking.type}</div>
+          <div><strong>Adults:</strong> ${booking.adults}</div>
+          <div><strong>Kids:</strong> ${booking.kids}</div>
+          <div><strong>Name:</strong> ${booking.name}</div>
+          <div><strong>Email:</strong> ${booking.email}</div>
+          <div style="color:#36d1c4; font-weight:bold;">Total Paid: ₹${booking.total}</div>
+        </div>
+      `).join('');
+      totalDiv.textContent = '';
+    }
+
+    let latestBookingId = null;
+
+    if (latestBooking && latestBooking.email) {
+      // Fetch all bookings for this email from backend
+      fetch(`/api/bookings/${encodeURIComponent(latestBooking.email)}`)
+        .then(res => res.json())
+        .then(bookings => {
+          renderBookings(bookings);
+          // Find the most recent booking (assume last is latest)
+          if (bookings && bookings.length) {
+            latestBookingId = bookings[bookings.length - 1]._id;
+            // Show rating section if not already rated
+            if (!bookings[bookings.length - 1].rating) {
+              document.getElementById('ratingSection').style.display = '';
+            } else {
+              document.getElementById('ratingSection').style.display = '';
+              document.getElementById('ratingMsg').textContent = "Thank you for your feedback! (You rated: " + "★".repeat(bookings[bookings.length-1].rating) + ")";
+              document.getElementById('submitRatingBtn').style.display = "none";
+              document.getElementById('ratingStars').style.pointerEvents = "none";
+              renderStars(bookings[bookings.length-1].rating);
+            }
+          }
+        })
+        .catch(() => {
+          detailsDiv.innerHTML = `<div style="color:#ff5e62;">Failed to load bookings from server.</div>`;
+          totalDiv.textContent = '';
+        });
+    } else {
+      detailsDiv.innerHTML = `<div style="color:#ff5e62;">No booking found. Please book your ticket first.</div>`;
+      totalDiv.textContent = '';
+    }
+
+    // --- Rating stars logic ---
+    let selectedRating = 0;
+    const ratingStarsDiv = document.getElementById('ratingStars');
+    const submitRatingBtn = document.getElementById('submitRatingBtn');
+    const ratingMsg = document.getElementById('ratingMsg');
+
+    function renderStars(rating = 0) {
+      ratingStarsDiv.innerHTML = '';
+      for (let i = 1; i <= 5; i++) {
+        const star = document.createElement('span');
+        star.className = 'rating-star' + (i <= rating ? ' selected' : '');
+        star.textContent = '★';
+        star.setAttribute('data-value', i);
+        star.addEventListener('mouseenter', () => highlightStars(i));
+        star.addEventListener('mouseleave', () => highlightStars(selectedRating));
+        star.addEventListener('click', () => {
+          selectedRating = i;
+          renderStars(selectedRating);
+          submitRatingBtn.disabled = false;
+        });
+        ratingStarsDiv.appendChild(star);
+      }
+    }
+    function highlightStars(rating) {
+      const stars = ratingStarsDiv.querySelectorAll('.rating-star');
+      stars.forEach((star, idx) => {
+        if (idx < rating) star.classList.add('hovered');
+        else star.classList.remove('hovered');
+      });
+    }
+    renderStars();
+
+    submitRatingBtn.onclick = async function() {
+      if (!selectedRating || !latestBookingId) return;
+      submitRatingBtn.disabled = true;
+      ratingMsg.textContent = "Submitting...";
+      try {
+        const resp = await fetch(`/api/bookings/${latestBookingId}/rating`, {
+          method: "POST",
+          headers: {"Content-Type": "application/json"},
+          body: JSON.stringify({ rating: selectedRating })
+        });
+        if (resp.ok) {
+          ratingMsg.textContent = "Thank you for your feedback!";
+          submitRatingBtn.style.display = "none";
+          ratingStarsDiv.style.pointerEvents = "none";
+        } else {
+          ratingMsg.textContent = "Failed to submit rating.";
+          submitRatingBtn.disabled = false;
+        }
+      } catch (e) {
+        ratingMsg.textContent = "Failed to submit rating.";
+        submitRatingBtn.disabled = false;
+      }
+    };
+  </script>
+</body>
+</html>

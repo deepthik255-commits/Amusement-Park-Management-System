@@ -1,0 +1,241 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Park View Cafe Menu | Adventure Awaits Amusement Park</title>
+  <link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@400;700&family=Baloo+2:wght@600&display=swap" rel="stylesheet">
+  <style>
+    body {
+      margin: 0;
+      background: linear-gradient(135deg, #0f2027 0%, #203a43 50%, #2c5364 100%);
+      font-family: 'Fredoka', 'Baloo 2', Arial, sans-serif;
+      color: #f2f7fa;
+      min-height: 100vh;
+    }
+    header {
+      background: rgba(44, 83, 100, 0.95);
+      color: #fff;
+      text-align: center;
+      padding: 36px 0 16px 0;
+      border-bottom: 4px solid #5bbcff;
+    }
+    h1 {
+      font-family: 'Baloo 2', cursive;
+      font-size: 2em;
+      margin-bottom: 8px;
+      letter-spacing: 1px;
+    }
+    .intro {
+      font-size: 1.1em;
+      color: #b3d2e6;
+      margin-bottom: 30px;
+      text-align: center;
+      max-width: 700px;
+      margin-left: auto;
+      margin-right: auto;
+    }
+    .menu-section {
+      max-width: 1100px;
+      margin: 40px auto;
+      background: rgba(32, 58, 67, 0.92);
+      border-radius: 18px;
+      box-shadow: 0 4px 16px rgba(44, 83, 100, 0.15);
+      padding: 40px 24px;
+    }
+    .menu-category {
+      margin-bottom: 40px;
+    }
+    .menu-category h2 {
+      color: #5bbcff;
+      font-family: 'Baloo 2', cursive;
+      margin-bottom: 18px;
+      font-size: 1.3em;
+      border-bottom: 2px solid #5bbcff;
+      display: inline-block;
+      padding-bottom: 4px;
+    }
+    .menu-items-grid {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 20px;
+      justify-content: flex-start;
+    }
+    .menu-card {
+      background: #1b2a38;
+      border-radius: 15px;
+      box-shadow: 0 2px 12px rgba(44, 83, 100, 0.13);
+      width: 170px;
+      padding: 10px 8px 12px 8px;
+      text-align: center;
+      border: 2px solid #203a43;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      transition: transform 0.3s, box-shadow 0.3s, border-color 0.3s;
+      position: relative;
+    }
+    .menu-card:hover {
+      transform: translateY(-7px) scale(1.04);
+      box-shadow: 0 8px 24px 0 rgba(44, 83, 100, 0.22);
+      border-color: #5bbcff;
+    }
+    .menu-card img {
+      width: 100%;
+      height: 75px;
+      object-fit: cover;
+      border-radius: 10px;
+      margin-bottom: 8px;
+      border: 1.5px solid #5bbcff55;
+      background: #e6f4ff;
+    }
+    .menu-item-name {
+      font-weight: 700;
+      color: #fff;
+      font-size: 1em;
+      margin-bottom: 4px;
+      font-family: 'Baloo 2', cursive;
+    }
+    .menu-item-description {
+      font-size: 0.78em;
+      color: #a9c5e0;
+      margin-bottom: 8px;
+    }
+    .menu-item-price {
+      color: #b3d2e6;
+      font-weight: 600;
+      font-size: 0.98em;
+      margin-bottom: 0;
+      margin-top: auto;
+    }
+    .back-link {
+      display: inline-block;
+      margin-top: 30px;
+      padding: 10px 22px;
+      background: #5bbcff;
+      color: #fff;
+      border-radius: 8px;
+      text-decoration: none;
+      font-family: 'Fredoka', Arial, sans-serif;
+      font-weight: 700;
+      transition: background 0.2s;
+    }
+    .back-link:hover {
+      background: #3399cc;
+    }
+    @media (max-width: 800px) {
+      .menu-items-grid {
+        gap: 18px;
+        justify-content: center;
+      }
+      .menu-card {
+        width: 80vw;
+        max-width: 270px;
+      }
+    }
+    @media (max-width: 500px) {
+      .menu-section {
+        padding: 12px 2vw;
+      }
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <h1>Park View Cafe Menu</h1>
+    <div class="intro">
+      Discover a blend of Indian street food, wraps, and fusion snacks at Park View Cafe. Enjoy hearty meals and refreshing beverages in a cozy park-side setting!
+    </div>
+  </header>
+  <section class="menu-section">
+    <div class="menu-category">
+      <h2>🌯 Wraps & Rolls</h2>
+      <div class="menu-items-grid">
+        <div class="menu-card">
+          <img src="https://images.ctfassets.net/izjiv8mj8dix/7hjLdgNPSykKspl3ybbW95/1be96d18fad52730e452b55d0681dfb9/Chicken_Mayo_Wrap.jpeg?w=2411&h=1599&fl=progressive&q=80&fm=jpg" alt="Mixed Veg Mayo Wrap">
+          <div class="menu-item-name">Mixed Veg Mayo Wrap</div>
+          <div class="menu-item-description">A medley of fresh veggies tossed in creamy mayo, wrapped in a soft tortilla.</div>
+          <div class="menu-item-price">₹160</div>
+        </div>
+        <div class="menu-card">
+          <img src="https://d2u1z1lopyfwlx.cloudfront.net/thumbnails/c06f0552-5975-5926-aec6-f9a1a3ad3a9f/a35383e7-168d-5690-aa79-a6b9fcaa45df.jpg" alt="Schezwan Cheese Butter Dosa Masala Wrap">
+          <div class="menu-item-name">Schezwan Cheese Butter Dosa Masala Wrap</div>
+          <div class="menu-item-description">Spicy Schezwan masala, cheese, and dosa flavors in a fusion wrap.</div>
+          <div class="menu-item-price">₹250</div>
+        </div>
+        <div class="menu-card">
+          <img src="https://d2u1z1lopyfwlx.cloudfront.net/thumbnails/9581d633-ef23-5932-ba9b-ee4fe129ee5c/9470e0cb-14b0-5a31-8c53-27abad328de1.jpg" alt="Aloo Methi Veg Wrap">
+          <div class="menu-item-name">Aloo Methi Veg Wrap</div>
+          <div class="menu-item-description">Potato and fenugreek filling with Indian spices in a soft wrap.</div>
+          <div class="menu-item-price">₹160</div>
+        </div>
+        <div class="menu-card">
+          <img src="https://d2u1z1lopyfwlx.cloudfront.net/thumbnails/20888b1a-5322-592f-b33e-b253c45979fd/61c5e626-020f-5357-a60b-10a08b0d7a2d.jpg" alt="Chicken Tikka Wrap">
+          <div class="menu-item-name">Chicken Tikka Wrap</div>
+          <div class="menu-item-description">Tender chicken tikka pieces, onions, and mint chutney wrapped up warm.</div>
+          <div class="menu-item-price">₹190</div>
+        </div>
+      </div>
+    </div>
+    <div class="menu-category">
+      <h2>🍛 Indian Street Eats</h2>
+      <div class="menu-items-grid">
+        <div class="menu-card">
+          <img src="https://d2u1z1lopyfwlx.cloudfront.net/thumbnails/b91abadf-6871-553e-8dfc-cd821316f127/e2de1f29-5f13-51cd-87d6-d7622ce22a74.jpg" alt="Chole Bhature">
+          <div class="menu-item-name">Chole Bhature</div>
+          <div class="menu-item-description">Fluffy bhature served with spicy chickpea curry, onions, and pickle.</div>
+          <div class="menu-item-price">₹120</div>
+        </div>
+        <div class="menu-card">
+          <img src="https://d2u1z1lopyfwlx.cloudfront.net/thumbnails/3677bde1-0f5f-5906-af9e-eb5d6d8f0c44/c66889da-a74d-56f5-8abc-370dc42769ae.jpg" alt="Pav Bhaji">
+          <div class="menu-item-name">Pav Bhaji</div>
+          <div class="menu-item-description">Mumbai-style mashed vegetable curry served with buttered pav buns.</div>
+          <div class="menu-item-price">₹110</div>
+        </div>
+        <div class="menu-card">
+          <img src="https://d2u1z1lopyfwlx.cloudfront.net/thumbnails/1bed4edb-b471-5a99-8c6f-83852d1c99e5/947daa00-54ba-5aa2-8e9a-2bb3c559b164.jpg" alt="Masala Omelette">
+          <div class="menu-item-name">Masala Omelette</div>
+          <div class="menu-item-description">Egg omelette with onions, tomatoes, green chilies, and coriander.</div>
+          <div class="menu-item-price">₹80</div>
+        </div>
+        <div class="menu-card">
+          <img src="https://ichef.bbc.co.uk/ace/standard/1600/food/recipes/curry_carrot_and_parsnip_33941_16x9.jpg.webp" alt="Onion Bhajia">
+          <div class="menu-item-name">Onion Bhajia</div>
+          <div class="menu-item-description">Crispy onion fritters, golden-fried and lightly spiced.</div>
+          <div class="menu-item-price">₹70</div>
+        </div>
+      </div>
+    </div>
+    <div class="menu-category">
+      <h2>🥤 Beverages & Desserts</h2>
+      <div class="menu-items-grid">
+        <div class="menu-card">
+          <img src="https://athome.starbucks.com/sites/default/files/styles/recipe_xlarge_normal/public/2025-05/LayItOut_RecipeRLPImage_420x580_2x.png.webp?itok=TBkAuLQy" alt="Cold Coffee">
+          <div class="menu-item-name">Cold Coffee</div>
+          <div class="menu-item-description">Chilled, creamy coffee with a hint of chocolate syrup.</div>
+          <div class="menu-item-price">₹60</div>
+        </div>
+        <div class="menu-card">
+          <img src="https://d2u1z1lopyfwlx.cloudfront.net/thumbnails/abb27b36-babd-58e3-b302-d39b9e71274e/30a33c1c-655c-58f2-a983-d4fcd217ebb2.jpg" alt="Ice Cream Cup">
+          <div class="menu-item-name">Ice Cream Cup</div>
+          <div class="menu-item-description">Choice of strawberry, chocolate, or vanilla ice cream in a cup.</div>
+          <div class="menu-item-price">₹50</div>
+        </div>
+        <div class="menu-card">
+          <img src="https://d2u1z1lopyfwlx.cloudfront.net/thumbnails/676f5f70-a089-530b-951f-de5e0006a3d6/0e872870-3050-5981-be74-cdd82dd1e7aa.jpg" alt="Gulab Jamun">
+          <div class="menu-item-name">Gulab Jamun</div>
+          <div class="menu-item-description">Soft milk dumplings soaked in rose-cardamom sugar syrup.</div>
+          <div class="menu-item-price">₹70</div>
+        </div>
+        <div class="menu-card">
+          <img src="https://d2u1z1lopyfwlx.cloudfront.net/thumbnails/a990e326-1b2d-5c60-8a29-4f02f405e00d/5a02852e-7b2a-5797-8181-46f2b39c5a9d.jpg" alt="Sweet Lassi">
+          <div class="menu-item-name">Sweet Lassi</div>
+          <div class="menu-item-description">Refreshing yogurt drink, sweetened and served chilled.</div>
+          <div class="menu-item-price">₹40</div>
+        </div>
+      </div>
+    </div>
+    <a href="restaurants.html" class="back-link">← Back to Restaurants</a>
+  </section>
+</body>
+</html>

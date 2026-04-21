@@ -1,0 +1,470 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Login - Adventure Awaits</title>
+    <link href="https://fonts.googleapis.com/css2?family=Fredoka&display=swap" rel="stylesheet">
+    <style>
+        /* General Styles */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Arial', sans-serif;
+            background: linear-gradient(to bottom right, #ffecd2, #230b4f);
+            height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        /* Login Container Styles */
+        .login-container {
+            background: white;
+            padding: 2rem 3rem;
+            border-radius: 1rem;
+            box-shadow: 0 8px 20px rgba(226, 51, 51, 0.2);
+            width: 100%;
+            max-width: 400px;
+            text-align: center;
+            position: relative; /* Added for modal positioning */
+        }
+
+        .login-container h2 {
+            color: #be2121;
+            margin-bottom: 1.5rem;
+        }
+
+        .login-container input {
+            width: 100%;
+            padding: 0.8rem;
+            margin: 0.5rem 0;
+            border: 1px solid #ccc;
+            border-radius: 0.5rem;
+            font-size: 1rem;
+        }
+
+        .login-container button {
+            width: 100%;
+            padding: 0.8rem;
+            margin-top: 1rem;
+            background-color: #3811d5;
+            color: white;
+            font-size: 1.1rem;
+            border: none;
+            border-radius: 0.5rem;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+
+        .login-container button:hover {
+            background-color: #bd1696;
+        }
+
+        .login-container p {
+            margin-top: 1rem;
+            font-size: 0.9rem;
+        }
+
+        .login-container a {
+            color: #e91e63;
+            text-decoration: none;
+        }
+
+        .login-container a:hover {
+            text-decoration: underline;
+        }
+
+        .error-message,
+        .validation-message {
+            color: red;
+            font-size: 0.85rem;
+            margin-top: 0.25rem;
+            text-align: left;
+        }
+
+        .success-message {
+            color: green;
+            margin-top: 1rem;
+            font-size: 0.95rem;
+        }
+
+        /* Forgot Password Link */
+        .forgot-password-link {
+            display: block;
+            margin-top: 10px;
+            text-align: right;
+            font-size: 0.9rem;
+        }
+        .forgot-password-link a {
+            color: #3811d5;
+            text-decoration: none;
+        }
+        .forgot-password-link a:hover {
+            text-decoration: underline;
+        }
+
+        /* Modal Styles */
+        .modal {
+            display: none; /* Hidden by default */
+            position: fixed; /* Stay in place */
+            z-index: 1000; /* Sit on top */
+            left: 0;
+            top: 0;
+            width: 100%; /* Full width */
+            height: 100%; /* Full height */
+            overflow: auto; /* Enable scroll if needed */
+            background-color: rgba(0,0,0,0.6); /* Black w/ opacity */
+            /* REMOVE THIS LINE: display: flex; */
+            justify-content: center;
+            align-items: center;
+        }
+
+        .modal-content {
+            background-color: #fefefe;
+            margin: auto;
+            padding: 25px;
+            border-radius: 10px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+            width: 90%;
+            max-width: 450px;
+            position: relative;
+            text-align: center;
+        }
+
+        .modal-content h3 {
+            color: #be2121;
+            margin-bottom: 20px;
+            font-size: 1.5rem;
+        }
+
+        .modal-content input {
+            width: calc(100% - 20px); /* Adjust for padding */
+            padding: 10px;
+            margin-bottom: 15px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            font-size: 1rem;
+        }
+
+        .modal-content button {
+            width: calc(100% - 20px);
+            padding: 10px;
+            background-color: #3811d5;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 1.05rem;
+            transition: background-color 0.3s ease;
+        }
+
+        .modal-content button:hover {
+            background-color: #bd1696;
+        }
+
+        .close-button {
+            color: #aaa;
+            position: absolute;
+            right: 15px;
+            top: 10px;
+            font-size: 28px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: color 0.3s ease;
+        }
+
+        .close-button:hover,
+        .close-button:focus {
+            color: #333;
+            text-decoration: none;
+            cursor: pointer;
+        }
+
+        .modal-message {
+            margin-top: 15px;
+            font-size: 0.9rem;
+            color: #555;
+        }
+
+        .modal-message.error {
+            color: red;
+        }
+
+        .modal-message.success {
+            color: green;
+        }
+
+        /* Step-specific display */
+        .modal-step {
+            display: none;
+        }
+
+        .modal-step.active {
+            display: block;
+        }
+    </style>
+</head>
+<body>
+    <div class="login-container">
+        <h2>Login to Adventure Awaits</h2>
+        <form id="loginForm" method="POST" action="/api/login">
+            <input type="email" name="email" id="email" placeholder="Email" required />
+            <div id="emailValidation" class="validation-message"></div>
+
+            <input type="password" name="password" id="password" placeholder="Password" required />
+            <div id="passwordValidation" class="validation-message"></div>
+
+            <button type="submit">Login</button>
+            <div id="message" class="error-message"></div>
+            <p>Don't have an account? <a href="./register.html">Register here</a></p>
+            <p class="forgot-password-link"><a href="#" id="forgotPasswordLink">Forgot Password?</a></p>
+        </form>
+    </div>
+
+    <div id="forgotPasswordModal" class="modal">
+        <div class="modal-content">
+            <span class="close-button" id="closeModal">&times;</span>
+            <div id="step1" class="modal-step active">
+                <h3>Reset Password - Step 1</h3>
+                <input type="email" id="resetEmail" placeholder="Enter your registered email" required />
+                <div id="resetEmailMessage" class="modal-message"></div>
+                <button type="button" id="sendOtpButton">Send OTP</button>
+            </div>
+
+            <div id="step2" class="modal-step">
+                <h3>Reset Password - Step 2</h3>
+                <input type="text" id="otp" placeholder="Enter OTP" maxlength="6" required />
+                <input type="password" id="newPassword" placeholder="New Password (min 8 characters)" required />
+                <input type="password" id="confirmNewPassword" placeholder="Confirm New Password" required />
+                <div id="resetPasswordMessage" class="modal-message"></div>
+                <button type="button" id="resetPasswordButton">Reset Password</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const emailInput = document.getElementById("email");
+        const passwordInput = document.getElementById("password");
+        const emailValidation = document.getElementById("emailValidation");
+        const passwordValidation = document.getElementById("passwordValidation");
+        const forgotPasswordLink = document.getElementById("forgotPasswordLink");
+        const forgotPasswordModal = document.getElementById("forgotPasswordModal");
+        const closeModalButton = document.getElementById("closeModal");
+        const step1 = document.getElementById("step1");
+        const step2 = document.getElementById("step2");
+        const sendOtpButton = document.getElementById("sendOtpButton");
+        const resetPasswordButton = document.getElementById("resetPasswordButton");
+        const resetEmailInput = document.getElementById("resetEmail");
+        const otpInput = document.getElementById("otp");
+        const newPasswordInput = document.getElementById("newPassword");
+        const confirmNewPasswordInput = document.getElementById("confirmNewPassword");
+        const resetEmailMessage = document.getElementById("resetEmailMessage");
+        const resetPasswordMessage = document.getElementById("resetPasswordMessage");
+
+        // --- Frontend Form Validations for Login ---
+        emailInput.addEventListener("input", () => {
+            const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+            emailValidation.textContent = emailPattern.test(emailInput.value)
+                ? ""
+                : "Please enter a valid email address.";
+        });
+
+        passwordInput.addEventListener("input", () => {
+            passwordValidation.textContent = passwordInput.value.length >= 8
+                ? ""
+                : "Password must be at least 8 characters.";
+        });
+
+        // --- Forgot Password Modal Logic ---
+
+        // Show the modal
+        forgotPasswordLink.addEventListener("click", (e) => {
+            e.preventDefault();
+            forgotPasswordModal.style.display = "flex"; // This correctly shows the modal
+            step1.classList.add("active");
+            step2.classList.remove("active");
+            resetEmailInput.value = ''; // Clear fields
+            otpInput.value = '';
+            newPasswordInput.value = '';
+            confirmNewPasswordInput.value = '';
+            resetEmailMessage.textContent = ''; // Clear messages
+            resetPasswordMessage.textContent = '';
+        });
+
+        // Close the modal
+        closeModalButton.addEventListener("click", () => {
+            forgotPasswordModal.style.display = "none";
+        });
+
+        // Close modal if click outside content
+        forgotPasswordModal.addEventListener("click", (e) => {
+            if (e.target === forgotPasswordModal) {
+                forgotPasswordModal.style.display = "none";
+            }
+        });
+
+        // --- Send OTP Functionality ---
+        sendOtpButton.addEventListener("click", async () => {
+            const email = resetEmailInput.value.trim();
+            resetEmailMessage.textContent = ''; // Clear previous messages
+
+            if (!email) {
+                resetEmailMessage.textContent = "Please enter your email.";
+                resetEmailMessage.classList.add('error');
+                return;
+            }
+            const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+            if (!emailPattern.test(email)) {
+                resetEmailMessage.textContent = "Please enter a valid email address.";
+                resetEmailMessage.classList.add('error');
+                return;
+            }
+
+            resetEmailMessage.textContent = "Sending OTP...";
+            resetEmailMessage.classList.remove('error');
+            resetEmailMessage.classList.remove('success');
+
+            try {
+                // Assuming your backend URL is the same as the current host for simplicity
+                const response = await fetch('/api/send-otp', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ email })
+                });
+                const result = await response.json();
+
+                if (response.ok) {
+                    resetEmailMessage.textContent = result.message || "OTP sent successfully!";
+                    resetEmailMessage.classList.add('success');
+                    setTimeout(() => {
+                        step1.classList.remove("active");
+                        step2.classList.add("active");
+                        resetEmailMessage.textContent = ''; // Clear message after transition
+                    }, 1000); // Small delay before transition
+                } else {
+                    resetEmailMessage.textContent = result.error || "Failed to send OTP.";
+                    resetEmailMessage.classList.add('error');
+                }
+            } catch (error) {
+                console.error('Network error sending OTP:', error);
+                resetEmailMessage.textContent = "Network error. Please try again.";
+                resetEmailMessage.classList.add('error');
+            }
+        });
+
+        // --- Reset Password Functionality ---
+        resetPasswordButton.addEventListener("click", async () => {
+            const email = resetEmailInput.value.trim(); // Get email from step 1 input
+            const otp = otpInput.value.trim();
+            const newPassword = newPasswordInput.value;
+            const confirmNewPassword = confirmNewPasswordInput.value;
+            resetPasswordMessage.textContent = ''; // Clear previous messages
+
+            if (!email || !otp || !newPassword || !confirmNewPassword) {
+                resetPasswordMessage.textContent = "All fields are required.";
+                resetPasswordMessage.classList.add('error');
+                return;
+            }
+
+            if (newPassword.length < 8) {
+                resetPasswordMessage.textContent = "New password must be at least 8 characters.";
+                resetPasswordMessage.classList.add('error');
+                return;
+            }
+
+            if (newPassword !== confirmNewPassword) {
+                resetPasswordMessage.textContent = "Passwords do not match.";
+                resetPasswordMessage.classList.add('error');
+                return;
+            }
+
+            resetPasswordMessage.textContent = "Resetting password...";
+            resetPasswordMessage.classList.remove('error');
+            resetPasswordMessage.classList.remove('success');
+
+            try {
+                const response = await fetch('/api/reset-password', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ email, otp, newPassword })
+                });
+                const result = await response.json();
+
+                if (response.ok) {
+                    resetPasswordMessage.textContent = result.message || "Password reset successfully!";
+                    resetPasswordMessage.classList.add('success');
+                    setTimeout(() => {
+                        forgotPasswordModal.style.display = "none"; // Close modal on success
+                        document.getElementById('message').textContent = "Password reset. You can now log in.";
+                        document.getElementById('message').style.color = 'green';
+                        document.getElementById('message').classList.remove('error');
+                    }, 1500); // Small delay before closing modal
+                } else {
+                    resetPasswordMessage.textContent = result.error || "Failed to reset password.";
+                    resetPasswordMessage.classList.add('error');
+                }
+            } catch (error) {
+                console.error('Network error resetting password:', error);
+                resetPasswordMessage.textContent = "Network error. Please try again.";
+                resetPasswordMessage.classList.add('error');
+            }
+        });
+
+        // Handle form submission for initial login (keeping existing logic)
+        document.getElementById('loginForm').addEventListener('submit', async (e) => {
+            e.preventDefault(); // Prevent default form submission
+
+            const email = emailInput.value.trim();
+            const password = passwordInput.value;
+            const messageDiv = document.getElementById('message');
+            messageDiv.textContent = ''; // Clear previous messages
+
+            // Basic client-side validation
+            if (!email || !password) {
+                messageDiv.textContent = 'Both email and password are required.';
+                messageDiv.style.color = 'red';
+                return;
+            }
+            const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+            if (!emailPattern.test(email)) {
+                messageDiv.textContent = 'Please enter a valid email address.';
+                messageDiv.style.color = 'red';
+                return;
+            }
+            if (password.length < 8) {
+                messageDiv.textContent = 'Password must be at least 8 characters.';
+                messageDiv.style.color = 'red';
+                return;
+            }
+
+            try {
+                const response = await fetch('/api/login', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/x-www-form-urlencoded', // Your form uses URL-encoded
+                    },
+                    body: new URLSearchParams({ email, password }).toString()
+                });
+
+                if (response.ok) {
+                    // Assuming successful login redirects the browser
+                    window.location.href = response.url; // Follow the redirect
+                } else {
+                    const text = await response.text(); // Get response as text
+                    messageDiv.textContent = text || 'Login failed. Please check your credentials.';
+                    messageDiv.style.color = 'red';
+                }
+            } catch (error) {
+                console.error('Login network error:', error);
+                messageDiv.textContent = 'Network error. Please try again.';
+                messageDiv.style.color = 'red';
+            }
+        });
+    </script>
+</body>
+</html>

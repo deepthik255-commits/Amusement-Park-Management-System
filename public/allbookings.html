@@ -1,0 +1,190 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>All Bookings | Adventure Awaits Amusement Park</title>
+  <link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@400;700&family=Baloo+2:wght@600&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --primary: #36d1c4;
+      --secondary: #ff5e62;
+      --bg1: #0f2027;
+      --bg2: #203a43;
+      --bg3: #2c5364;
+      --card-bg: rgba(255,255,255,0.12);
+      --text-light: #ddd;
+      --text-dark: #fff;
+    }
+    body {
+      margin: 0;
+      font-family: 'Fredoka', 'Baloo 2', Arial, sans-serif;
+      min-height: 100vh;
+      background: linear-gradient(135deg, var(--bg1) 0%, var(--bg2) 50%, var(--bg3) 100%);
+      color: var(--text-dark);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      overflow-x: hidden;
+      position: relative;
+    }
+    .hero {
+      padding: 2.5rem 1rem 1rem 1rem;
+      text-align: center;
+      background: rgba(255,255,255,0.10);
+      border-radius: 0 0 40px 40px;
+      box-shadow: 0 4px 24px #0008;
+      margin-bottom: 2rem;
+      position: relative;
+      z-index: 3;
+      color: var(--text-light);
+    }
+    .hero h1 {
+      font-family: 'Baloo 2', cursive;
+      font-size: 2.2rem;
+      color: var(--secondary);
+      margin: 0 0 0.5rem 0;
+      letter-spacing: 1px;
+      text-shadow: 0 2px 12px #ff5e6244;
+    }
+    .hero p {
+      font-size: 1.1rem;
+      margin-bottom: 0.5rem;
+    }
+    .bookings-list {
+      width: 100%;
+      max-width: 680px;
+      margin: 0 auto 2rem auto;
+      z-index: 3;
+    }
+    .booking-card {
+      background: var(--card-bg);
+      border-radius: 30px;
+      box-shadow: 0 8px 40px #36d1c433, 0 1.5px 18px #fff2;
+      width: 100%;
+      margin: 1.5rem 0;
+      padding: 2.2rem 2rem 1.5rem 2rem;
+      text-align: left;
+      position: relative;
+      color: var(--text-light);
+      border: 1.5px solid rgba(255,255,255,0.2);
+      backdrop-filter: blur(14px);
+      transition: box-shadow 0.3s, transform 0.3s;
+    }
+    .booking-card:hover {
+      box-shadow: 0 12px 48px var(--primary)88, 0 2px 24px var(--secondary)44;
+      transform: translateY(-6px) scale(1.02) rotate(-1deg);
+    }
+    .booking-title {
+      font-family: 'Baloo 2', cursive;
+      font-size: 1.3rem;
+      color: var(--secondary);
+      margin-bottom: 0.7rem;
+      letter-spacing: 1px;
+    }
+    .booking-details {
+      font-size: 1.07rem;
+      margin-bottom: 0.7rem;
+      line-height: 1.7;
+      background: rgba(54,209,196,0.12);
+      border-radius: 14px;
+      padding: 1rem 1.2rem;
+      box-shadow: 0 1px 8px #0003;
+      color: #222;
+    }
+    .booking-details strong {
+      color: var(--primary);
+      font-weight: bold;
+    }
+    .booking-total {
+      font-size: 1.1rem;
+      color: var(--primary);
+      font-weight: bold;
+      margin-top: 0.7rem;
+      text-shadow: 0 2px 8px var(--primary);
+      letter-spacing: 1px;
+    }
+    .actions {
+      margin-top: 1.5rem;
+      text-align: center;
+    }
+    .btn {
+      display: inline-block;
+      background: linear-gradient(90deg, var(--secondary), var(--primary));
+      color: #fff;
+      padding: 0.7rem 2rem;
+      border-radius: 2rem;
+      font-size: 1.1rem;
+      font-weight: bold;
+      box-shadow: 0 4px 32px var(--secondary)88;
+      border: none;
+      cursor: pointer;
+      margin: 0 0.7rem 0.5rem 0.7rem;
+      transition: transform 0.18s, box-shadow 0.18s, background 0.3s;
+      text-decoration: none;
+      outline: none;
+      border: 2px solid transparent;
+    }
+    .btn:hover,
+    .btn:focus {
+      transform: scale(1.07) rotate(-2deg);
+      box-shadow: 0 8px 48px var(--primary)cc;
+      background: linear-gradient(90deg, var(--primary), var(--secondary));
+      border: 2px solid var(--primary);
+    }
+    @media (max-width: 600px) {
+      .hero h1 { font-size: 1.2rem;}
+      .booking-card { padding: 1.2rem 0.7rem;}
+      .booking-title { font-size: 1rem;}
+      .booking-details { font-size: 0.93rem;}
+      .bookings-list { max-width: 98vw;}
+    }
+  </style>
+</head>
+<body>
+  <section class="hero">
+    <h1>📋 All Bookings</h1>
+    <p>View a list of all bookings made at <strong>Adventure Awaits Amusement Park</strong>.</p>
+  </section>
+  <div class="bookings-list" id="bookingsList">
+    <!-- Booking cards will be injected here -->
+  </div>
+  <div class="actions">
+    <a href="adminpanel.html" class="btn">🏠 Home</a>
+    <!-- <a href=".html" class="btn">+ Book Ticket</a> -->
+    <a href="adminrestaurants.html" class="btn">🍽️ View Restaurants</a>
+    <a href="adminrides.html" class="btn">🎢 View Rides</a>
+  </div>
+  <script>
+    // Fetch all bookings from backend
+    async function loadBookings() {
+      const listDiv = document.getElementById('bookingsList');
+      listDiv.innerHTML = '<div style="color:#36d1c4;">Loading bookings...</div>';
+      try {
+        const res = await fetch('/api/bookings');
+        const bookings = await res.json();
+        if (!Array.isArray(bookings) || bookings.length === 0) {
+          listDiv.innerHTML = '<div style="color:#ff5e62;">No bookings found.</div>';
+          return;
+        }
+        listDiv.innerHTML = bookings.map(booking => `
+          <div class="booking-card">
+            <div class="booking-title">Booking for <strong>${booking.name}</strong> (${booking.email})</div>
+            <div class="booking-details">
+              <div><strong>Date:</strong> ${booking.date}</div>
+              <div><strong>Park Timings:</strong> ${booking.timing}</div>
+              <div><strong>Ticket Type:</strong> ${booking.type}</div>
+              <div><strong>Adults:</strong> ${booking.adults}</div>
+              <div><strong>Kids:</strong> ${booking.kids}</div>
+            </div>
+            <div class="booking-total">Total Paid: ₹${booking.total}</div>
+          </div>
+        `).join('');
+      } catch (e) {
+        listDiv.innerHTML = '<div style="color:#ff5e62;">Failed to load bookings from server.</div>';
+      }
+    }
+    loadBookings();
+  </script>
+</body>
+</html>

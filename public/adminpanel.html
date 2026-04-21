@@ -1,0 +1,362 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Admin Panel - Adventure Awaits</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
+  <!-- <link href="adminStyling.css" rel="stylesheet"> -->
+  <style>
+    body {
+  background: linear-gradient(120deg, #a8edea 0%, #fed6e3 100%);
+  min-height: 100vh;
+  font-family: 'Poppins', sans-serif;
+  margin: 0;
+  padding: 0;
+   display: flex;
+      flex-direction: column;
+      align-items: center;
+      min-height: 100vh;
+}
+h2 {
+      margin-top: 40px;
+      color: #1a2a33;
+    }
+    .chart-container {
+      width: 80vw;
+      max-width: 900px;
+      margin: 30px auto;
+      background: #fff;
+      border-radius: 12px;
+      box-shadow: 0 2px 16px rgba(0,0,0,0.04);
+      padding: 30px;
+    }
+.sidebar {
+  position: fixed;
+  top: 0; left: 0; bottom: 0;
+  width: 240px;
+  background: rgba(34, 49, 63, 0.92);
+  backdrop-filter: blur(6px);
+  box-shadow: 2px 0 12px rgba(0,0,0,0.13);
+  display: flex;
+  flex-direction: column;
+  padding-top: 32px;
+  z-index: 10;
+  transition: width 0.3s;
+}
+.sidebar {
+  height: 100vh; /* full viewport height */
+  overflow-y: auto; /* enable vertical scroll */
+  position: fixed; /* keep sidebar fixed */
+  width: 220px; /* or your sidebar width */
+}
+
+
+.sidebar a {
+  color: #fff;
+  text-decoration: none;
+  font-size: 1.15rem;
+  padding: 18px 30px;
+  margin-bottom: 6px;
+  display: flex;
+  align-items: center;
+  border-radius: 30px 0 0 30px;
+  transition: background 0.22s, color 0.22s, padding 0.22s;
+  font-weight: 500;
+  letter-spacing: 0.03em;
+}
+
+.sidebar a:hover, .sidebar a.active {
+  background: linear-gradient(90deg, #ffecd2 0%, #fcb69f 100%);
+  color: #222;
+  padding-left: 40px;
+  box-shadow: 0 2px 12px rgba(252,182,159,0.16);
+}
+
+.sidebar a i {
+  margin-right: 12px;
+  font-size: 1.25em;
+  transition: transform 0.3s;
+}
+
+.sidebar a:hover i {
+  transform: scale(1.2) rotate(-12deg);
+}
+
+.sidebar a:first-child {
+  font-size: 1.4rem;
+  font-weight: bold;
+  letter-spacing: 0.08em;
+  background: none;
+  margin-bottom: 24px;
+  pointer-events: none;
+  color: #ffd700;
+}
+
+.content {
+  margin-left: 260px;
+  padding: 40px 32px 32px 32px;
+  min-height: 100vh;
+}
+
+.section {
+  margin-bottom: 56px;
+}
+
+.section h2 {
+  font-size: 2rem;
+  font-weight: 700;
+  color: #333;
+  margin-bottom: 28px;
+  letter-spacing: 0.04em;
+  text-shadow: 0 2px 8px #fff9;
+}
+
+.card {
+  border: none;
+  border-radius: 22px;
+  background: rgba(255,255,255,0.65);
+  box-shadow: 0 8px 32px 0 rgba(31,38,135,0.18);
+  backdrop-filter: blur(4px);
+  transition: transform 0.25s, box-shadow 0.25s, background 0.3s;
+  cursor: pointer;
+  overflow: hidden;
+  position: relative;
+}
+
+.card:hover {
+  transform: translateY(-8px) scale(1.035);
+  box-shadow: 0 16px 32px 0 rgba(252,182,159,0.22);
+  background: rgba(255,255,255,0.85);
+}
+
+.card h5 {
+  font-size: 1.2rem;
+  font-weight: 700;
+  color: #ff7e5f;
+  margin-bottom: 8px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.card h5 i {
+  color: #fc466b;
+  font-size: 1.15em;
+  animation: bounce 1.5s infinite alternate;
+}
+
+@keyframes bounce {
+  from { transform: translateY(0); }
+  to   { transform: translateY(-6px);}
+}
+
+.card p {
+  color: #222;
+  font-size: 1.02rem;
+}
+
+@media (max-width: 900px) {
+  .sidebar {
+    width: 70px;
+    padding-top: 18px;
+    align-items: center;
+  }
+  .sidebar a {
+    font-size: 1.05rem;
+    padding: 12px 10px;
+    justify-content: center;
+  }
+  .sidebar a span {
+    display: none;
+  }
+  .content {
+    margin-left: 90px;
+    padding: 24px 10px 10px 10px;
+  }
+}
+
+::-webkit-scrollbar {
+  width: 8px;
+  background: #fcb69f44;
+}
+::-webkit-scrollbar-thumb {
+  background: #ffecd2cc;
+  border-radius: 8px;
+}
+
+  </style>
+</head>
+<body>
+  <div class="sidebar">
+  <a href="revenue.html"><span>🎡</span> <span>Admin Panel</span></a>
+  <a href="adminusers.html"><i class="fas fa-users"></i> <span>Users</span></a>
+  <a href="adminrides.html"><i class="fas fa-rocket"></i> <span>Rides</span></a>
+  <a href="adminevents.html"><i class="fas fa-calendar-alt"></i> <span>Events</span></a>
+  <a href="adminrestaurants.html"><i class="fas fa-utensils"></i> <span>Restaurants</span></a>
+  <a href="allbookings.html"><i class="fas fa-ticket-alt"></i> <span>Booked Tickets</span></a>
+  <a href="adminfeedback.html"><i class="fas fa-comment-dots"></i> <span>Feedback</span></a>
+  <a href="adminreports.html"><i class="fas fa-chart-line"></i> <span>Reports</span></a>
+  <a href="/api/logout"><i class="fas fa-sign-out-alt"></i> <span>Logout</span></a>
+</div>
+
+  <h2>Total Revenue Generated per Month</h2>
+  <div class="chart-container">
+    <canvas id="revenueChart"></canvas>
+  </div>
+
+  <h2>Daily Visitors</h2>
+  <div class="chart-container">
+    <canvas id="visitorsChart"></canvas>
+  </div>
+
+  <h2>Live Summary</h2>
+  <div class="cards">
+    <div class="card revenue">
+      <div class="card-title">Total Revenue</div>
+      <div class="card-value" id="totalRevenue">₹0</div>
+    </div>
+    <div class="card visitors">
+      <div class="card-title">Total Visitors</div>
+      <div class="card-value" id="totalVisitors">0</div>
+    </div>
+    </div>
+  <!-- Socket.IO client -->
+  <script src="/socket.io/socket.io.js"></script>
+
+  
+
+  
+  <!-- Chart.js CDN -->
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <script>
+    const months = [
+      'Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun',
+      'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'
+    ];
+
+    // Fetch data from backend and plot
+    fetch('/api/revenue-by-month')
+      .then(res => res.json())
+      .then(totalRevenue => {
+        const ctx = document.getElementById('revenueChart').getContext('2d');
+        new Chart(ctx, {
+          type: 'line',
+          data: {
+            labels: months,
+            datasets: [{
+              label: 'Total Revenue (Amount Paid)',
+              data: totalRevenue,
+              borderColor: 'blue',
+              backgroundColor: 'rgba(0, 0, 255, 0.07)',
+              pointBackgroundColor: 'blue',
+              pointBorderColor: 'blue',
+              pointRadius: 6,
+              pointHoverRadius: 8,
+              fill: false,
+              borderWidth: 3,
+              tension: 0.2
+            }]
+          },
+          options: {
+            responsive: true,
+            plugins: {
+              legend: { display: false }
+            },
+            scales: {
+              x: {
+                title: {
+                  display: true,
+                  text: 'Month',
+                  font: { size: 18 }
+                }
+              },
+              y: {
+                title: {
+                  display: true,
+                  text: 'Total Revenue (Amount Paid)',
+                  font: { size: 18 }
+                },
+                beginAtZero: true
+              }
+            }
+          }
+        });
+      });
+
+       fetch('/api/daily-visitors')
+      .then(res => res.json())
+      .then(data => {
+        // Prepare data for the chart
+        const labels = data.map(item => item.date);
+        const counts = data.map(item => item.count);
+
+        const ctx = document.getElementById('visitorsChart').getContext('2d');
+        new Chart(ctx, {
+          type: 'line',
+          data: {
+            labels: labels,
+            datasets: [{
+              label: 'Visitors (Bookings per Day)',
+              data: counts,
+              borderColor: 'green',
+              backgroundColor: 'rgba(0, 128, 0, 0.07)',
+              pointBackgroundColor: 'green',
+              pointBorderColor: 'green',
+              pointRadius: 5,
+              pointHoverRadius: 7,
+              fill: false,
+              borderWidth: 3,
+              tension: 0.2
+            }]
+          },
+          options: {
+            responsive: true,
+            plugins: {
+              legend: { display: false }
+            },
+            scales: {
+              x: {
+                title: {
+                  display: true,
+                  text: 'Date',
+                  font: { size: 18 }
+                }
+              },
+              y: {
+                title: {
+                  display: true,
+                  text: 'Number of Visitors',
+                  font: { size: 18 }
+                },
+                beginAtZero: true
+              }
+            }
+          }
+        });
+      });
+
+      async function fetchSummary() {
+      const res = await fetch('/api/summary');
+      const data = await res.json();
+      updateCards(data);
+    }
+    function updateCards(data) {
+      document.getElementById('totalRevenue').textContent = '₹' + (data.totalRevenue || 0);
+      document.getElementById('totalVisitors').textContent = data.totalVisitors || 0;
+    }
+
+    // Initial fetch
+    fetchSummary();
+    // Real-time updates via Socket.IO
+    const socket = io();
+
+    socket.on('summaryUpdate', data => {
+      updateCards(data);
+    });
+      </script>
+</body>
+</html>
+
+

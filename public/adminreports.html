@@ -1,0 +1,347 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Admin Reports | Adventure Awaits Amusement Park</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@400;700&family=Baloo+2:wght@600&display=swap" rel="stylesheet">
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <style>
+    :root {
+      --primary: #36d1c4;
+      --secondary: #ff5e62;
+      --bg1: #0f2027;
+      --bg2: #203a43;
+      --bg3: #2c5364;
+      --card-bg: rgba(255,255,255,0.12);
+      --text-light: #eee;
+      --text-dark: #fff;
+    }
+    body {
+      margin: 0;
+      font-family: 'Fredoka', 'Baloo 2', Arial, sans-serif;
+      min-height: 100vh;
+      background: linear-gradient(135deg, var(--bg1) 0%, var(--bg2) 50%, var(--bg3) 100%);
+      color: var(--text-dark);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      overflow-x: hidden;
+    }
+    .header {
+      padding: 2rem 1rem 1rem 1rem;
+      text-align: center;
+      background: rgba(255,255,255,0.10);
+      border-radius: 0 0 40px 40px;
+      box-shadow: 0 4px 24px #0008;
+      margin-bottom: 2rem;
+      color: var(--text-light);
+      z-index: 3;
+    }
+    .header h1 {
+      font-family: 'Baloo 2', cursive;
+      font-size: 2.5rem;
+      color: var(--secondary);
+      margin: 0 0 0.5rem 0;
+      letter-spacing: 1px;
+      text-shadow: 0 2px 12px #ff5e6244;
+    }
+    .header p {
+      font-size: 1.1rem;
+      margin-bottom: 0.5rem;
+    }
+    .reports-container {
+      width: 100%;
+      max-width: 1200px;
+      margin: 0 auto 2rem auto;
+      display: flex;
+      flex-wrap: wrap;
+      gap: 2rem;
+      justify-content: center;
+    }
+    .report-card {
+      background: var(--card-bg);
+      border-radius: 30px;
+      box-shadow: 0 8px 40px #36d1c433, 0 1.5px 18px #fff2;
+      width: 540px;
+      min-width: 320px;
+      margin: 0 0 2rem 0;
+      padding: 2rem;
+      color: var(--text-light);
+      border: 1.5px solid rgba(255,255,255,0.2);
+      backdrop-filter: blur(14px);
+      transition: box-shadow 0.3s, transform 0.3s;
+      position: relative;
+    }
+    .report-card h2 {
+      font-family: 'Baloo 2', cursive;
+      font-size: 1.3rem;
+      color: var(--primary);
+      margin-bottom: 1.2rem;
+      letter-spacing: 1px;
+      text-shadow: 0 2px 8px var(--primary)33;
+    }
+    .report-card canvas {
+      background: rgba(255,255,255,0.07);
+      border-radius: 16px;
+      padding: 0.5rem;
+    }
+    .actions {
+      margin-top: 1.5rem;
+      text-align: center;
+    }
+    .btn {
+      display: inline-block;
+      background: linear-gradient(90deg, var(--secondary), var(--primary));
+      color: #fff;
+      padding: 0.7rem 2rem;
+      border-radius: 2rem;
+      font-size: 1.1rem;
+      font-weight: bold;
+      box-shadow: 0 4px 32px var(--secondary)88;
+      border: none;
+      cursor: pointer;
+      margin: 0 0.7rem 0.5rem 0.7rem;
+      transition: transform 0.18s, box-shadow 0.18s, background 0.3s;
+      text-decoration: none;
+      outline: none;
+      border: 2px solid transparent;
+    }
+    .btn:hover,
+    .btn:focus {
+      transform: scale(1.07) rotate(-2deg);
+      box-shadow: 0 8px 48px var(--primary)cc;
+      background: linear-gradient(90deg, var(--primary), var(--secondary));
+      border: 2px solid var(--primary);
+    }
+    @media (max-width: 1200px) {
+      .reports-container { flex-direction: column; align-items: center; }
+      .report-card { width: 98vw; min-width: unset; }
+    }
+    @media (max-width: 600px) {
+      .header h1 { font-size: 1.2rem;}
+      .report-card { padding: 1.2rem 0.7rem;}
+      .report-card h2 { font-size: 1rem;}
+      .reports-container { max-width: 98vw;}
+    }
+  </style>
+</head>
+<body>
+  <section class="header">
+    <h1>📊 Admin Reports</h1>
+    <p>Comprehensive analytics for ticket sales and visitor attendance at <strong>Adventure Awaits Amusement Park</strong>.</p>
+  </section>
+
+  <div class="reports-container">
+    <!-- Ticket Sales Breakdown -->
+    <div class="report-card">
+      <h2>Ticket Sales Breakdown</h2>
+      <canvas id="salesBreakdownChart" height="230"></canvas>
+    </div>
+    <!-- Revenue by Ticket Type -->
+    <div class="report-card">
+      <h2>Revenue by Ticket Type</h2>
+      <canvas id="revenueTypeChart" height="230"></canvas>
+    </div>
+    <!-- Online vs Offline Sales -->
+    <div class="report-card">
+      <h2>Online vs. Offline Sales</h2>
+      <canvas id="channelSalesChart" height="230"></canvas>
+    </div>
+    <!-- Attendance Trends -->
+    <div class="report-card">
+      <h2>Attendance Trends (Last 30 Days)</h2>
+      <canvas id="attendanceChart" height="230"></canvas>
+    </div>
+    <!-- Peak Hours -->
+    <div class="report-card">
+      <h2>Peak Hours (Today)</h2>
+      <canvas id="peakHoursChart" height="230"></canvas>
+    </div>
+    <!-- Demographics & Repeat Visitors -->
+    <div class="report-card">
+      <h2>Demographics & Repeat Visitors</h2>
+      <canvas id="demographicsChart" height="230"></canvas>
+    </div>
+  </div>
+
+  <div class="actions">
+    <a href="admin-dashboard.html" class="btn">🏠 Admin Home</a>
+    <a href="adminusers.html" class="btn">👤 Manage Users</a>
+    <a href="adminrestaurants.html" class="btn">🍽️ Manage Restaurants</a>
+    <a href="allbookings.html" class="btn">📋 Bookings</a>
+  </div>
+
+  <script>
+    // --- MOCK DATA (replace with fetch from your backend for production) ---
+    // 1. Ticket Sales Breakdown (by day/week/month/year)
+    const salesBreakdown = {
+      labels: ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"],
+      daily: [120, 135, 150, 170, 210, 320, 290],
+      weekly: [900, 1050, 1300, 1200],
+      monthly: [4200, 5000, 4800, 5300, 6000, 5500],
+      annual: [57000, 62000, 59000, 64000]
+    };
+
+    // 2. Revenue by ticket type
+    const revenueByType = {
+      labels: ["Adult", "Child", "Group", "Senior"],
+      data: [420000, 180000, 95000, 60000]
+    };
+
+    // 3. Online vs Offline Sales
+    const channelSales = {
+      labels: ["Online", "Offline"],
+      data: [4200, 2800]
+    };
+
+    // 4. Attendance Trends (last 30 days)
+    const attendanceTrends = {
+      labels: Array.from({length: 30}, (_, i) => `Day ${i+1}`),
+      data: Array.from({length: 30}, () => Math.floor(200 + Math.random() * 200))
+    };
+
+    // 5. Peak Hours (today)
+    const peakHours = {
+      labels: ["10am", "11am", "12pm", "1pm", "2pm", "3pm", "4pm", "5pm", "6pm"],
+      data: [30, 50, 70, 120, 180, 160, 140, 90, 60]
+    };
+
+    // 6. Demographics & Repeat Visitors
+    const demographics = {
+      labels: ["Kids", "Teens", "Adults", "Seniors", "Repeat Visitors"],
+      data: [1200, 800, 2100, 400, 950]
+    };
+
+    // --- CHARTS ---
+    // 1. Ticket Sales Breakdown (daily)
+    new Chart(document.getElementById('salesBreakdownChart').getContext('2d'), {
+      type: 'bar',
+      data: {
+        labels: salesBreakdown.labels,
+        datasets: [{
+          label: 'Tickets Sold (This Week)',
+          data: salesBreakdown.daily,
+          backgroundColor: 'rgba(54,209,196,0.7)'
+        }]
+      },
+      options: {
+        plugins: { legend: { display: false }},
+        scales: {
+          y: { beginAtZero: true, ticks: { color: '#fff' }},
+          x: { ticks: { color: '#fff' }}
+        }
+      }
+    });
+
+    // 2. Revenue by Ticket Type
+    new Chart(document.getElementById('revenueTypeChart').getContext('2d'), {
+      type: 'pie',
+      data: {
+        labels: revenueByType.labels,
+        datasets: [{
+          data: revenueByType.data,
+          backgroundColor: [
+            'rgba(255,94,98,0.8)',
+            'rgba(54,209,196,0.8)',
+            'rgba(255,206,86,0.8)',
+            'rgba(44,83,100,0.8)'
+          ]
+        }]
+      },
+      options: {
+        plugins: {
+          legend: { labels: { color: '#fff', font: {weight: 'bold'} } }
+        }
+      }
+    });
+
+    // 3. Online vs Offline Sales
+    new Chart(document.getElementById('channelSalesChart').getContext('2d'), {
+      type: 'doughnut',
+      data: {
+        labels: channelSales.labels,
+        datasets: [{
+          data: channelSales.data,
+          backgroundColor: [
+            'rgba(54,209,196,0.8)',
+            'rgba(255,94,98,0.8)'
+          ]
+        }]
+      },
+      options: {
+        plugins: {
+          legend: { labels: { color: '#fff', font: {weight: 'bold'} } }
+        }
+      }
+    });
+
+    // 4. Attendance Trends (Last 30 Days)
+    new Chart(document.getElementById('attendanceChart').getContext('2d'), {
+      type: 'line',
+      data: {
+        labels: attendanceTrends.labels,
+        datasets: [{
+          label: 'Visitors',
+          data: attendanceTrends.data,
+          fill: true,
+          borderColor: 'rgba(54,209,196,1)',
+          backgroundColor: 'rgba(54,209,196,0.09)',
+          tension: 0.3
+        }]
+      },
+      options: {
+        plugins: { legend: { display: false }},
+        scales: {
+          y: { beginAtZero: true, ticks: { color: '#fff' }},
+          x: { ticks: { color: '#fff', maxTicksLimit: 8 } }
+        }
+      }
+    });
+
+    // 5. Peak Hours (Today)
+    new Chart(document.getElementById('peakHoursChart').getContext('2d'), {
+      type: 'bar',
+      data: {
+        labels: peakHours.labels,
+        datasets: [{
+          label: 'Visitors',
+          data: peakHours.data,
+          backgroundColor: 'rgba(255,94,98,0.7)'
+        }]
+      },
+      options: {
+        plugins: { legend: { display: false }},
+        scales: {
+          y: { beginAtZero: true, ticks: { color: '#fff' }},
+          x: { ticks: { color: '#fff' }}
+        }
+      }
+    });
+
+    // 6. Demographics & Repeat Visitors
+    new Chart(document.getElementById('demographicsChart').getContext('2d'), {
+      type: 'doughnut',
+      data: {
+        labels: demographics.labels,
+        datasets: [{
+          data: demographics.data,
+          backgroundColor: [
+            'rgba(255,206,86,0.8)',
+            'rgba(54,209,196,0.8)',
+            'rgba(255,94,98,0.8)',
+            'rgba(44,83,100,0.8)',
+            'rgba(255,159,64,0.8)'
+          ]
+        }]
+      },
+      options: {
+        plugins: {
+          legend: { labels: { color: '#fff', font: {weight: 'bold'} } }
+        }
+      }
+    });
+
+  </script>
+</body>
+</html>

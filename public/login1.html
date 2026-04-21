@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Login - Adventure Awaits</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: 'Arial', sans-serif;
+      background: linear-gradient(to bottom right, #ffecd2, #230b4f);
+      height: 100vh;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+
+    .login-container {
+      background: white;
+      padding: 2rem 3rem;
+      border-radius: 1rem;
+      box-shadow: 0 8px 20px rgba(226, 51, 51, 0.2);
+      width: 100%;
+      max-width: 400px;
+      text-align: center;
+    }
+
+    .login-container h2 {
+      color: #be2121;
+      margin-bottom: 1.5rem;
+    }
+
+    .login-container input {
+      width: 100%;
+      padding: 0.8rem;
+      margin: 0.5rem 0;
+      border: 1px solid #ccc;
+      border-radius: 0.5rem;
+      font-size: 1rem;
+    }
+
+    .login-container button {
+      width: 100%;
+      padding: 0.8rem;
+      margin-top: 1rem;
+      background-color: #3811d5;
+      color: white;
+      font-size: 1.1rem;
+      border: none;
+      border-radius: 0.5rem;
+      cursor: pointer;
+      transition: background-color 0.3s ease;
+    }
+
+    .login-container button:hover {
+      background-color: #bd1696;
+    }
+
+    .login-container p {
+      margin-top: 1rem;
+      font-size: 0.9rem;
+    }
+
+    .login-container a {
+      color: #e91e63;
+      text-decoration: none;
+    }
+
+    .login-container a:hover {
+      text-decoration: underline;
+    }
+
+    .error-message,
+    .validation-message {
+      color: red;
+      font-size: 0.85rem;
+      margin-top: 0.25rem;
+      text-align: left;
+    }
+
+    .success-message {
+      color: green;
+      margin-top: 1rem;
+      font-size: 0.95rem;
+    }
+  </style>
+</head>
+<body>
+  <div class="login-container">
+    <h2>Login to Adventure Awaits</h2>
+    <form id="loginForm" method="POST" action="/api/login">
+      <input type="email" name="email" id="email" placeholder="Email" required />
+      <div id="emailValidation" class="validation-message"></div>
+
+      <input type="password" name="password" id="password" placeholder="Password" required />
+      <div id="passwordValidation" class="validation-message"></div>
+
+      <button type="submit">Login</button>
+      <div id="message" class="error-message"></div>
+      <p>Don't have an account? <a href="./register.html">Register here</a></p>
+    </form>
+  </div>
+
+  <script>
+    const emailInput = document.getElementById("email");
+    const passwordInput = document.getElementById("password");
+    const emailValidation = document.getElementById("emailValidation");
+    const passwordValidation = document.getElementById("passwordValidation");
+
+    // Email validation
+    emailInput.addEventListener("input", () => {
+      const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+      emailValidation.textContent = emailPattern.test(emailInput.value)
+        ? ""
+        : "Please enter a valid email address.";
+    });
+
+    // Password validation
+    passwordInput.addEventListener("input", () => {
+      passwordValidation.textContent = passwordInput.value.length >= 8
+        ? ""
+        : "Password must be at least 8 characters.";
+    });
+  </script>
+</body>
+</html>

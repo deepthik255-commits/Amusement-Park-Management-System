@@ -1,0 +1,631 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Book Tickets | IndoorFun Adventure Park</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <!-- Google Fonts -->
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@700&family=Quicksand:wght@400;700&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --primary: #ff5e62;
+      --secondary: #ff9966;
+      --accent: #36d1c4;
+      --bg: #0f2027;
+      --glass: rgba(255,255,255,0.22);
+      --blur: 18px;
+    }
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      font-family: 'Quicksand', Arial, sans-serif;
+      background: linear-gradient(135deg, #0f2027 0%, #203a43 50%, #2c5364 100%);
+      min-height: 100vh;
+      color: #fff;
+      overflow-x: hidden;
+    }
+    .navbar {
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      background: rgba(24, 34, 54, 0.95);
+      backdrop-filter: blur(8px);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 1.1rem 2.5rem;
+      box-shadow: 0 2px 24px #0005;
+      animation: nav-fade-in 1.1s cubic-bezier(.42,0,.58,1);
+    }
+    @keyframes nav-fade-in {
+      from { opacity: 0; transform: translateY(-30px);}
+      to { opacity: 1; transform: translateY(0);}
+    }
+    .logo {
+      font-family: 'Montserrat', sans-serif;
+      font-size: 2.2rem;
+      color: var(--primary);
+      font-weight: bold;
+      letter-spacing: 2px;
+      text-shadow: 1px 2px 12px #ff5e6244;
+      cursor: pointer;
+      transition: color 0.3s;
+    }
+    .logo:hover { color: var(--accent);}
+    .nav-links a {
+      text-decoration: none;
+      color: #fff;
+      margin: 0 1.2rem;
+      font-size: 1.1rem;
+      font-weight: 700;
+      transition: color 0.2s, text-shadow 0.2s;
+      text-shadow: 0 1px 8px #0004;
+    }
+    .nav-links a:hover {
+      color: var(--secondary);
+      text-shadow: 0 2px 16px var(--primary);
+    }
+    .section-title {
+      font-size: 2.1rem;
+      color: var(--accent);
+      text-align: center;
+      margin: 3rem 0 1.5rem 0;
+      font-family: 'Montserrat', sans-serif;
+      letter-spacing: 1px;
+      text-shadow: 0 2px 12px #2c536444;
+    }
+    .confetti {
+      position: fixed;
+      pointer-events: none;
+      top: 0; left: 0; width: 100vw; height: 100vh;
+      z-index: 10;
+    }
+    .confetti-piece {
+      position: absolute;
+      width: 12px; height: 12px;
+      border-radius: 50%;
+      opacity: 0.7;
+      animation: confetti-fall 4s linear infinite;
+    }
+    @keyframes confetti-fall {
+      0% { transform: translateY(-20vh) scale(1) rotate(0deg); }
+      100% { transform: translateY(110vh) scale(1.2) rotate(360deg);}
+    }
+    .booking-container {
+      max-width: 1100px;
+      margin: 2rem auto 3rem auto;
+      display: flex;
+      flex-wrap: wrap;
+      gap: 2.5rem;
+      justify-content: center;
+      align-items: flex-start;
+      animation: fade-in-up 1.2s cubic-bezier(.42,0,.58,1);
+    }
+    .booking-form-card {
+      background: var(--glass);
+      border-radius: 22px;
+      box-shadow: 0 8px 40px #36d1c433, 0 1.5px 18px #fff2;
+      width: 360px;
+      min-width: 320px;
+      padding: 2.2rem 1.5rem 1.5rem 1.5rem;
+      text-align: left;
+      position: relative;
+      transition: transform 0.3s, box-shadow 0.3s;
+      overflow: hidden;
+      backdrop-filter: blur(var(--blur));
+      border: 1.5px solid #fff4;
+      animation: fade-in-up 1.1s cubic-bezier(.42,0,.58,1);
+    }
+    .booking-form-card h3 {
+      color: var(--primary);
+      font-family: 'Montserrat', sans-serif;
+      margin-top: 0;
+      margin-bottom: 1.2rem;
+    }
+    .booking-form label {
+      display: block;
+      margin-bottom: 0.5rem;
+      color: var(--accent);
+      font-weight: bold;
+      margin-top: 1.2rem;
+    }
+    .booking-form input, .booking-form select {
+      width: 100%;
+      padding: 0.7rem 1rem;
+      border-radius: 12px;
+      border: 1.5px solid #fff4;
+      margin-bottom: 1rem;
+      font-size: 1.05rem;
+      background: rgba(255,255,255,0.13);
+      color: #222;
+      transition: border 0.2s;
+      outline: none;
+    }
+    .booking-form input:focus, .booking-form select:focus {
+      border: 1.5px solid var(--accent);
+    }
+    .booking-form .criteria-list {
+      font-size: 0.97rem;
+      color: #444;
+      margin-bottom: 1.2rem;
+      background: rgba(255,255,255,0.12);
+      padding: 0.8rem 1rem;
+      border-radius: 12px;
+      box-shadow: 0 1px 8px #0001;
+    }
+    .booking-form .criteria-list li {
+      margin-bottom: 0.4rem;
+      list-style: disc inside;
+    }
+    .booking-form .ticket-options {
+      display: flex;
+      gap: 0.8rem;
+      margin-bottom: 1.2rem;
+      flex-wrap: wrap;
+    }
+    .ticket-option {
+      flex: 1 1 120px;
+      background: linear-gradient(90deg, var(--primary), var(--accent));
+      color: #fff;
+      border-radius: 1rem;
+      padding: 0.7rem 1.2rem;
+      font-size: 1.1rem;
+      font-weight: bold;
+      border: none;
+      cursor: pointer;
+      transition: transform 0.18s, box-shadow 0.18s, background 0.3s;
+      box-shadow: 0 1px 8px #ff5e6244;
+      outline: none;
+    }
+    .ticket-option.selected, .ticket-option:focus {
+      background: linear-gradient(90deg, var(--accent), var(--primary));
+      transform: scale(1.08);
+      box-shadow: 0 2px 16px #36d1c444;
+    }
+    .step-section { display: none; }
+    .step-section.active { display: block; }
+    .step-btn, .back-btn {
+      display: inline-block;
+      background: linear-gradient(90deg, var(--primary), var(--accent));
+      color: #fff;
+      padding: 0.7rem 2rem;
+      border-radius: 2rem;
+      font-size: 1.1rem;
+      font-weight: bold;
+      box-shadow: 0 4px 32px #ff5e6244;
+      border: none;
+      cursor: pointer;
+      margin-top: 1.2rem;
+      margin-right: 0.7rem;
+      margin-bottom: 0.5rem;
+      width: auto;
+      transition: transform 0.18s, box-shadow 0.18s;
+    }
+    .step-btn:hover, .back-btn:hover {
+      transform: scale(1.04) rotate(-2deg);
+      box-shadow: 0 8px 48px #36d1c444;
+    }
+    .back-btn {
+      background: linear-gradient(90deg, #185a9d, #36d1c4);
+      color: #fff;
+    }
+    .ticket-counter-group {
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+      margin-bottom: 1.2rem;
+    }
+    .ticket-counter-label {
+      flex: 1;
+      font-weight: bold;
+      color: #222;
+    }
+    .ticket-counter-controls {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+    .ticket-counter-btn {
+      width: 32px; height: 32px;
+      border-radius: 50%;
+      border: none;
+      background: var(--accent);
+      color: #fff;
+      font-size: 1.2rem;
+      font-weight: bold;
+      cursor: pointer;
+      transition: background 0.2s;
+    }
+    .ticket-counter-btn:active { background: var(--primary);}
+    .summary-card {
+      background: var(--glass);
+      border-radius: 22px;
+      box-shadow: 0 8px 40px #36d1c433, 0 1.5px 18px #fff2;
+      width: 320px;
+      min-width: 280px;
+      padding: 2rem 1.5rem;
+      margin-top: 2.5rem;
+      text-align: left;
+      position: relative;
+      animation: fade-in-up 1.3s cubic-bezier(.42,0,.58,1);
+      border: 1.5px solid #fff4;
+    }
+    .summary-card h4 {
+      color: var(--primary);
+      font-family: 'Montserrat', sans-serif;
+      margin-top: 0;
+      margin-bottom: 1rem;
+    }
+    .summary-list {
+      font-size: 1.05rem;
+      color: #222;
+      margin-bottom: 1.2rem;
+    }
+    .summary-total {
+      font-size: 1.2rem;
+      color: var(--accent);
+      font-weight: bold;
+      margin-top: 0.7rem;
+    }
+    .book-btn {
+      background: linear-gradient(90deg, var(--primary), var(--accent));
+      color: #fff;
+      padding: 1rem 2.2rem;
+      border-radius: 2rem;
+      font-size: 1.1rem;
+      font-weight: bold;
+      box-shadow: 0 4px 32px #ff5e6244;
+      border: none;
+      cursor: pointer;
+      transition: transform 0.18s, box-shadow 0.18s;
+      margin-top: 1.2rem;
+      width: 100%;
+    }
+    .book-btn:hover {
+      transform: scale(1.08) rotate(-2deg);
+      box-shadow: 0 8px 48px #36d1c444;
+    }
+    @keyframes fade-in-up {
+      from { opacity: 0; transform: translateY(80px);}
+      to { opacity: 1; transform: translateY(0);}
+    }
+    @media (max-width: 900px) {
+      .booking-container { flex-direction: column; align-items: center;}
+      .section-title { font-size: 1.4rem;}
+      .navbar { padding: 1rem 1rem;}
+    }
+    @media (max-width: 600px) {
+      .booking-form-card, .summary-card { width: 98vw; min-width: 0;}
+      .section-title { font-size: 1.1rem;}
+      .navbar { flex-direction: column; gap: 0.8rem;}
+    }
+    .ticket-price-table {
+      width:100%;
+      background:rgba(54,209,196,0.09);
+      border-radius:10px;
+      text-align:center;
+      font-size:1rem;
+      margin-bottom:1.1rem;
+      border-collapse: collapse;
+    }
+    .ticket-price-table td, .ticket-price-table th {
+      padding: 0.5em 0.7em;
+    }
+    .ticket-price-table th {
+      color:#185a9d;
+      font-weight:bold;
+      background:rgba(54,209,196,0.14);
+    }
+    .ticket-price-table tr:not(:first-child) td {
+      background:rgba(255,255,255,0.10);
+    }
+  </style>
+</head>
+<body>
+  <!-- Confetti Animation -->
+  <div class="confetti" id="confetti"></div>
+  <!-- Navigation Bar -->
+  <div class="navbar">
+    <span class="logo" onclick="window.location.href='index2.html'">IndoorFun</span>
+    <div class="nav-links">
+      <a href="index2.html">Home</a>
+      <a href="rides.html">Rides</a>
+      <a href="booking.html">Book</a>
+      <a href="contact.html">Contact</a>
+    </div>
+  </div>
+  <h2 class="section-title">🎟️ Book Your Tickets</h2>
+  <div class="booking-container">
+    <!-- Booking Form Card -->
+    <div class="booking-form-card">
+      <form class="booking-form" id="bookingForm" autocomplete="off">
+        <!-- Step 1: Date & Park Timings -->
+        <div class="step-section active" id="step1">
+          <h3>Step 1: Visit Date</h3>
+          <label for="date">Date of Visit *</label>
+          <input type="date" id="date" name="date" min="" required>
+          <label>Park Timings</label>
+          <div style="background:rgba(54,209,196,0.13);padding:0.7rem 1rem;border-radius:10px;margin-bottom:1.2rem;color:#185a9d;">
+            <strong>Weekdays (Mon-Fri):</strong> 10:00 AM – 7:00 PM<br>
+            <strong>Weekends (Sat-Sun):</strong> 9:00 AM – 9:00 PM
+          </div>
+          <button type="button" class="step-btn" id="toStep2">Proceed</button>
+        </div>
+        <!-- Step 2: Ticket Type -->
+        <div class="step-section" id="step2">
+          <h3>Step 2: Choose Ticket Type</h3>
+          <table class="ticket-price-table">
+            <tr>
+              <th>Type</th>
+              <th>Adult</th>
+              <th>Kid</th>
+            </tr>
+            <tr>
+              <td>Regular</td>
+              <td>₹500</td>
+              <td>₹350</td>
+            </tr>
+            <tr>
+              <td>VIP</td>
+              <td>₹800</td>
+              <td>₹600</td>
+            </tr>
+          </table>
+          <div class="ticket-options" id="ticketTypeOptions">
+            <button type="button" class="ticket-option" data-type="Regular">Regular (Adult ₹500, Kid ₹350)</button>
+            <button type="button" class="ticket-option" data-type="VIP">VIP (Adult ₹800, Kid ₹600)</button>
+          </div>
+          <button type="button" class="back-btn" id="backToStep1">Back</button>
+          <button type="button" class="step-btn" id="toStep3">Proceed</button>
+        </div>
+        <!-- Step 3: Select Ticket Counts -->
+        <div class="step-section" id="step3">
+          <h3>Step 3: Number of Tickets</h3>
+          <div class="ticket-counter-group">
+            <span class="ticket-counter-label">Kids (3-11 yrs)</span>
+            <div class="ticket-counter-controls">
+              <button type="button" class="ticket-counter-btn" id="kidsMinus">-</button>
+              <span id="kidsCount">0</span>
+              <button type="button" class="ticket-counter-btn" id="kidsPlus">+</button>
+            </div>
+          </div>
+          <div class="ticket-counter-group">
+            <span class="ticket-counter-label">Adults (12+ yrs)</span>
+            <div class="ticket-counter-controls">
+              <button type="button" class="ticket-counter-btn" id="adultsMinus">-</button>
+              <span id="adultsCount">0</span>
+              <button type="button" class="ticket-counter-btn" id="adultsPlus">+</button>
+            </div>
+          </div>
+          <button type="button" class="back-btn" id="backToStep2">Back</button>
+          <button type="button" class="step-btn" id="toStep4">Proceed</button>
+        </div>
+        <!-- Step 4: Personal Details -->
+        <div class="step-section" id="step4">
+          <h3>Step 4: Your Details</h3>
+          <label for="name">Full Name *</label>
+          <input type="text" id="name" name="name" required>
+          <label for="email">Email *</label>
+          <input type="email" id="email" name="email" required>
+          <label for="phone">Phone *</label>
+          <input type="tel" id="phone" name="phone" pattern="[0-9]{10}" maxlength="10" required>
+          <ul class="criteria-list">
+            <li>Children under 3 enter free with adult.</li>
+            <li>Height/age restrictions apply for some rides.</li>
+            <li>Outside food & drinks not allowed.</li>
+            <li>Tickets are non-refundable but can be rescheduled.</li>
+          </ul>
+          <button type="button" class="back-btn" id="backToStep3">Back</button>
+          <button type="button" class="step-btn" id="toStep5">Proceed</button>
+        </div>
+        <!-- Step 5: Confirm & Book -->
+        <div class="step-section" id="step5">
+          <h3>Step 5: Confirm & Book</h3>
+          <button type="button" class="back-btn" id="backToStep4">Back</button>
+          <button class="book-btn" type="submit">Book Now</button>
+        </div>
+      </form>
+    </div>
+    <!-- Summary Card -->
+    <div class="summary-card" id="summaryCard">
+      <h4>Booking Summary</h4>
+      <div class="summary-list" id="summaryList">
+        <div>Date: <span id="sumDate">-</span></div>
+        <div>Park Timings: <span id="sumTiming">-</span></div>
+        <div>Type: <span id="sumType">-</span></div>
+        <div>Kids: <span id="sumKids">0</span></div>
+        <div>Adults: <span id="sumAdults">0</span></div>
+        <div>Name: <span id="sumName">-</span></div>
+        <div>Email: <span id="sumEmail">-</span></div>
+      </div>
+      <div class="summary-total">Total: ₹<span id="sumTotal">0</span></div>
+    </div>
+  </div>
+  <script>
+    // Confetti Animation
+    function randomColor() {
+      const colors = ['#ff5e62','#ff9966','#36d1c4','#f8ffae','#43cea2','#ffb6b9','#fae3d9','#185a9d','#fff'];
+      return colors[Math.floor(Math.random()*colors.length)];
+    }
+    function createConfettiPiece() {
+      const piece = document.createElement('div');
+      piece.className = 'confetti-piece';
+      piece.style.left = Math.random()*100+'vw';
+      piece.style.background = randomColor();
+      piece.style.animationDelay = (Math.random()*4)+'s';
+      document.getElementById('confetti').appendChild(piece);
+    }
+    for(let i=0;i<30;i++) createConfettiPiece();
+
+    // Set min date to today
+    document.getElementById('date').min = new Date().toISOString().split('T')[0];
+
+    // Step navigation logic
+    function showStep(step) {
+      for(let i=1;i<=5;i++) {
+        document.getElementById('step'+i).classList.remove('active');
+      }
+      document.getElementById('step'+step).classList.add('active');
+    }
+
+    // Step 1 → 2
+    document.getElementById('toStep2').onclick = function() {
+      if(!document.getElementById('date').value) {
+        alert('Please select date!');
+        return;
+      }
+      showStep(2);
+      updateSummary();
+    };
+    // Step 2 → 1 (Back)
+    document.getElementById('backToStep1').onclick = function() {
+      showStep(1);
+      updateSummary();
+    };
+
+    // Step 2: Ticket Type selection
+    let selectedTicketType = null;
+    const ticketTypeBtns = document.querySelectorAll('#ticketTypeOptions .ticket-option');
+    ticketTypeBtns.forEach(btn => {
+      btn.onclick = function() {
+        ticketTypeBtns.forEach(b=>b.classList.remove('selected'));
+        btn.classList.add('selected');
+        selectedTicketType = btn.getAttribute('data-type');
+        updateSummary();
+      }
+    });
+    // Step 2 → 3
+    document.getElementById('toStep3').onclick = function() {
+      if(!selectedTicketType) {
+        alert('Please select a ticket type!');
+        return;
+      }
+      showStep(3);
+      updateSummary();
+    };
+    // Step 3 → 2 (Back)
+    document.getElementById('backToStep2').onclick = function() {
+      showStep(2);
+      updateSummary();
+    };
+
+    // Step 3: Ticket counts
+    let kids = 0, adults = 0;
+    function updateTicketCounters() {
+      document.getElementById('kidsCount').textContent = kids;
+      document.getElementById('adultsCount').textContent = adults;
+      updateSummary();
+    }
+    document.getElementById('kidsMinus').onclick = function() { if(kids>0){kids--; updateTicketCounters();}};
+    document.getElementById('kidsPlus').onclick = function() { if(kids<20){kids++; updateTicketCounters();}};
+    document.getElementById('adultsMinus').onclick = function() { if(adults>0){adults--; updateTicketCounters();}};
+    document.getElementById('adultsPlus').onclick = function() { if(adults<20){adults++; updateTicketCounters();}};
+
+    // Step 3 → 4
+    document.getElementById('toStep4').onclick = function() {
+      if(kids + adults === 0) {
+        alert('Please select at least one ticket!');
+        return;
+      }
+      showStep(4);
+      updateSummary();
+    };
+    // Step 4 → 3 (Back)
+    document.getElementById('backToStep3').onclick = function() {
+      showStep(3);
+      updateSummary();
+    };
+
+    // Step 4 → 5
+    document.getElementById('toStep5').onclick = function() {
+      if(!document.getElementById('name').value || !document.getElementById('email').value || !document.getElementById('phone').value) {
+        alert('Please fill all personal details!');
+        return;
+      }
+      showStep(5);
+      updateSummary();
+    };
+    // Step 5 → 4 (Back)
+    document.getElementById('backToStep4').onclick = function() {
+      showStep(4);
+      updateSummary();
+    };
+
+    // Booking Summary
+    function getParkTiming(dateStr) {
+      if(!dateStr) return '-';
+      const date = new Date(dateStr);
+      const day = date.getDay();
+      if(day === 0 || day === 6) {
+        return '9:00 AM – 9:00 PM (Weekend)';
+      } else {
+        return '10:00 AM – 7:00 PM (Weekday)';
+      }
+    }
+
+    function updateSummary() {
+      const date = document.getElementById('date').value;
+      document.getElementById('sumDate').textContent = date ? date : '-';
+      document.getElementById('sumTiming').textContent = getParkTiming(date);
+      document.getElementById('sumType').textContent = selectedTicketType ? selectedTicketType : '-';
+      document.getElementById('sumKids').textContent = kids;
+      document.getElementById('sumAdults').textContent = adults;
+      document.getElementById('sumName').textContent = document.getElementById('name').value || '-';
+      document.getElementById('sumEmail').textContent = document.getElementById('email').value || '-';
+      // Pricing logic
+      let total = 0;
+      if(selectedTicketType === 'Regular') {
+        total = kids * 350 + adults * 500;
+      } else if(selectedTicketType === 'VIP') {
+        total = kids * 600 + adults * 800;
+      }
+      document.getElementById('sumTotal').textContent = total;
+    }
+
+    // Update summary on personal details input
+    ['name','email'].forEach(id=>{
+      document.getElementById(id).addEventListener('input', updateSummary);
+    });
+
+    // FORM SUBMISSION: Save to backend and localStorage, then redirect
+    document.getElementById('bookingForm').onsubmit = function(e) {
+      e.preventDefault();
+
+      // Gather booking summary data
+      const summary = {
+        date: document.getElementById('date').value,
+        timing: getParkTiming(document.getElementById('date').value),
+        type: selectedTicketType,
+        kids: kids,
+        adults: adults,
+        name: document.getElementById('name').value,
+        email: document.getElementById('email').value,
+        total: (selectedTicketType === 'Regular')
+          ? (kids * 350 + adults * 500)
+          : (selectedTicketType === 'VIP')
+            ? (kids * 600 + adults * 800)
+            : 0
+      };
+
+      // Send booking to backend
+      fetch('http://localhost:5000/api/bookings', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(summary)
+      })
+      .then(res => {
+        if (!res.ok) throw new Error('Failed to save booking');
+        return res.json();
+      })
+      .then(data => {
+        // Save to localStorage and redirect
+        localStorage.setItem('latestBooking', JSON.stringify(data.booking));
+        window.location.href = "yourbooking.html";
+      })
+      .catch(err => {
+        alert('Booking failed: ' + err.message);
+      });
+    };
+  </script>
+</body>
+</html>

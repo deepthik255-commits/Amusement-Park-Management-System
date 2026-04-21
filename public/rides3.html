@@ -1,0 +1,374 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>All Rides | IndoorFun Adventure Park</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <!-- Google Fonts -->
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@700&family=Quicksand:wght@400;700&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --primary: #ff5e62;
+      --secondary: #ff9966;
+      --accent: #36d1c4;
+      --bg: #0f2027;
+      --glass: rgba(255,255,255,0.22);
+      --blur: 18px;
+      --land: #f8ffae;
+      --water: #43cea2;
+      --kids: #ffb6b9;
+    }
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      font-family: 'Quicksand', Arial, sans-serif;
+      background: linear-gradient(135deg, #0f2027 0%, #203a43 50%, #2c5364 100%);
+      min-height: 100vh;
+      color: #fff;
+      overflow-x: hidden;
+    }
+    .navbar {
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      background: rgba(24, 34, 54, 0.95);
+      backdrop-filter: blur(8px);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 1.1rem 2.5rem;
+      box-shadow: 0 2px 24px #0005;
+    }
+    .logo {
+      font-family: 'Montserrat', sans-serif;
+      font-size: 2.2rem;
+      color: var(--primary);
+      font-weight: bold;
+      letter-spacing: 2px;
+      cursor: pointer;
+    }
+    .nav-links a {
+      text-decoration: none;
+      color: #fff;
+      margin: 0 1.2rem;
+      font-size: 1.1rem;
+      font-weight: 700;
+      transition: color 0.2s;
+    }
+    .nav-links a:hover {
+      color: var(--secondary);
+    }
+    .section-title {
+      font-size: 2.2rem;
+      color: var(--accent);
+      text-align: center;
+      margin: 3rem 0 1.5rem 0;
+      font-family: 'Montserrat', sans-serif;
+      letter-spacing: 1px;
+    }
+    .rides-section {
+      margin-bottom: 3rem;
+    }
+    .rides-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+      gap: 2rem;
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 1.5rem 1rem 0 1rem;
+    }
+    .ride-card {
+      background: var(--glass);
+      border-radius: 22px;
+      box-shadow: 0 8px 40px #36d1c433, 0 1.5px 18px #fff2;
+      min-height: 350px;
+      cursor: pointer;
+      perspective: 1200px;
+      border: 2px solid #fff4;
+      position: relative;
+      transition: box-shadow 0.3s, border-color 0.3s;
+      will-change: transform;
+    }
+    .ride-card:hover {
+      box-shadow: 0 16px 64px #ff5e6233, 0 3px 24px #36d1c433;
+      border-color: var(--accent);
+      z-index: 3;
+    }
+    .ride-inner {
+      position: relative;
+      width: 100%;
+      height: 100%;
+      transition: transform 0.7s cubic-bezier(.42,0,.58,1);
+      transform-style: preserve-3d;
+      min-height: 350px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+    }
+    .ride-card.flipped .ride-inner {
+      transform: rotateY(180deg);
+    }
+    .ride-front, .ride-back {
+      position: absolute;
+      width: 100%; height: 100%;
+      top: 0; left: 0;
+      backface-visibility: hidden;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      border-radius: 22px;
+      padding: 1.8rem 1.1rem 1.5rem 1.1rem;
+      transition: background 0.4s;
+    }
+    .ride-front {
+      background: rgba(255,255,255,0.18);
+    }
+    .ride-back {
+      background: linear-gradient(135deg, var(--accent), var(--secondary));
+      color: #fff;
+      transform: rotateY(180deg);
+      padding: 2rem 1rem;
+      font-size: 1.1rem;
+      text-align: left;
+    }
+    .ride-img {
+      width: 100px;
+      height: 100px;
+      object-fit: cover;
+      border-radius: 50%;
+      margin-bottom: 1rem;
+      border: 4px solid var(--primary);
+      box-shadow: 0 2px 16px #005fa344;
+      background: #fff;
+      transition: border 0.4s, filter 0.4s;
+      filter: grayscale(20%) brightness(1.1);
+    }
+    .ride-title {
+      font-size: 1.25rem;
+      color: var(--accent);
+      font-weight: 700;
+      margin-bottom: 0.7rem;
+      letter-spacing: 0.5px;
+      text-shadow: 0 1px 6px #fff4;
+      text-align: center;
+    }
+    .ride-tags {
+      margin-bottom: 0.7rem;
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.5rem;
+      justify-content: center;
+    }
+    .ride-tags span {
+      background: linear-gradient(90deg, var(--primary), var(--accent));
+      color: #fff;
+      border-radius: 1rem;
+      padding: 0.2rem 0.8rem;
+      font-size: 0.85rem;
+      font-weight: bold;
+      box-shadow: 0 1px 6px #fff3;
+    }
+    .ride-desc {
+      color: #222;
+      font-size: 1rem;
+      margin-bottom: 0.5rem;
+      text-align: center;
+      text-shadow: 0 1px 6px #fff4;
+    }
+    .ride-criteria {
+      background: rgba(0,0,0,0.16);
+      padding: 0.7rem 1rem;
+      border-radius: 12px;
+      margin-top: 1rem;
+      font-size: 1rem;
+      color: #fff;
+    }
+    .cancelled-badge {
+      position: absolute;
+      top: 18px;
+      left: 18px;
+      background: #ff5e62;
+      color: #fff;
+      font-weight: bold;
+      font-size: 1.1rem;
+      padding: 0.3em 1em;
+      border-radius: 1em;
+      box-shadow: 0 2px 8px #0005;
+      z-index: 20;
+      letter-spacing: 1px;
+      display: none;
+    }
+    .ride-card.disabled {
+      filter: grayscale(1) brightness(0.7);
+      pointer-events: none;
+      opacity: 0.6;
+      cursor: not-allowed;
+    }
+    .ride-card.disabled .cancelled-badge {
+      display: block;
+    }
+    /* Section backgrounds */
+    .land-bg .ride-front { background: linear-gradient(135deg, #f8ffae 60%, #43cea2 100%);}
+    .water-bg .ride-front { background: linear-gradient(135deg, #43cea2 60%, #185a9d 100%);}
+    .kids-bg .ride-front { background: linear-gradient(135deg, #ffb6b9 60%, #fae3d9 100%);}
+    .land-bg .ride-back { background: linear-gradient(135deg, #43cea2, #f8ffae);}
+    .water-bg .ride-back { background: linear-gradient(135deg, #185a9d, #43cea2);}
+    .kids-bg .ride-back { background: linear-gradient(135deg, #fae3d9, #ffb6b9);}
+    /* Booking CTA */
+    .booking-cta {
+      text-align: center;
+      padding: 4rem 1rem;
+      background: linear-gradient(135deg, #ff5e62, #ff9966);
+      margin-top: 3rem;
+      border-radius: 2rem 2rem 0 0;
+      box-shadow: 0 -2px 24px #0005;
+    }
+    .booking-cta h2 {
+      color: #fff;
+      font-family: 'Montserrat', sans-serif;
+      font-size: 2rem;
+      margin-bottom: 1.3rem;
+      letter-spacing: 1px;
+    }
+    .sticky-book {
+      background: linear-gradient(90deg, var(--primary), var(--accent));
+      color: #fff;
+      padding: 1rem 2.2rem;
+      border-radius: 2rem;
+      font-size: 1.2rem;
+      font-weight: bold;
+      box-shadow: 0 4px 32px #ff5e6244;
+      border: none;
+      cursor: pointer;
+      transition: transform 0.18s, box-shadow 0.18s;
+      margin-top: 1.5rem;
+    }
+    .sticky-book:hover {
+      transform: scale(1.08) rotate(-2deg);
+      box-shadow: 0 8px 48px #36d1c444;
+    }
+    /* Responsive */
+    @media (max-width: 900px) {
+      .rides-grid { grid-template-columns: 1fr 1fr;}
+      .section-title { font-size: 1.4rem;}
+      .navbar { padding: 1rem 1rem;}
+    }
+    @media (max-width: 600px) {
+      .rides-grid { grid-template-columns: 1fr;}
+      .section-title { font-size: 1.1rem;}
+      .ride-card { min-height: 340px;}
+      .booking-cta { padding: 2rem 0.5rem;}
+    }
+  </style>
+</head>
+<body>
+  <!-- Navigation Bar -->
+  <div class="navbar">
+    <span class="logo" onclick="window.location.href='index2.html'">IndoorFun</span>
+    <div class="nav-links">
+      <a href="index2.html">Home</a>
+      <a href="#land">Land</a>
+      <a href="#water">Water</a>
+      <a href="#kids">Kids</a>
+      <a href="#book">Book</a>
+    </div>
+  </div>
+
+  <!-- LAND RIDES -->
+  <section class="rides-section land-bg" id="land">
+    <h2 class="section-title">🌍 Land Adventures</h2>
+    <div class="rides-grid">
+      <!-- Example Land Ride 1 -->
+      <div class="ride-card" data-ride-id="sky-rocket" onclick="toggleRideInfo(this)">
+        <div class="ride-inner">
+          <div class="ride-front">
+            <div class="cancelled-badge">Cancelled</div>
+            <img src="https://images.unsplash.com/photo-1509228468518-180dd4864904?auto=format&fit=crop&w=400&q=80" class="ride-img" alt="Sky Rocket">
+            <div class="ride-title">Sky Rocket</div>
+            <div class="ride-tags"><span>Thrill</span><span>120cm+</span></div>
+            <div class="ride-desc">360° rotating coaster with 3 inversions.</div>
+          </div>
+          <div class="ride-back">
+            <div class="ride-title">Sky Rocket</div>
+            <div>Soar at 80km/h! India's fastest indoor coaster.</div>
+            <div class="ride-criteria">
+              <div>📏 Min Height: 120cm</div>
+              <div>🚫 Heart Patients</div>
+              <div>⏱️ 2:30 mins</div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <!-- Example Land Ride 2 -->
+      <div class="ride-card" data-ride-id="bumper-cars" onclick="toggleRideInfo(this)">
+        <div class="ride-inner">
+          <div class="ride-front">
+            <div class="cancelled-badge">Cancelled</div>
+            <img src="https://images.unsplash.com/photo-1464983953574-0892a716854b?auto=format&fit=crop&w=400&q=80" class="ride-img" alt="Bumper Cars">
+            <div class="ride-title">Bumper Cars</div>
+            <div class="ride-tags"><span>Family</span><span>All Ages</span></div>
+            <div class="ride-desc">Classic fun, neon-lit, and safe for all!</div>
+          </div>
+          <div class="ride-back">
+            <div class="ride-title">Bumper Cars</div>
+            <div>Crash, spin, and laugh with friends and family.</div>
+            <div class="ride-criteria">
+              <div>👨‍👩‍👧‍👦 All Ages</div>
+              <div>👶 Kids under 5 with adult</div>
+              <div>⏱️ 3 mins</div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <!-- Add more rides here, each with a unique data-ride-id and a .cancelled-badge in the .ride-front -->
+    </div>
+  </section>
+
+  <!-- BOOK TICKETS CTA -->
+  <section class="booking-cta" id="book">
+    <h2>Ready for Adventure?</h2>
+    <button class="sticky-book" onclick="window.location.href='booking.html'">
+      🎫 Book Tickets Now
+    </button>
+  </section>
+
+ <script>
+const API_BASE = 'http://localhost:3000/api/rides-state';
+
+function toggleRideInfo(card) {
+  if (!card.classList.contains('disabled')) {
+    card.classList.toggle('flipped');
+  }
+}
+
+async function fetchAndApplyRideStates() {
+  try {
+    const res = await fetch(API_BASE);
+    const state = await res.json();
+    document.querySelectorAll('.ride-card').forEach(card => {
+      const id = card.getAttribute('data-ride-id');
+      const badge = card.querySelector('.cancelled-badge');
+      if (state[id] === true) {
+        card.classList.add('enabled');
+        card.classList.remove('disabled');
+        if (badge) badge.style.display = 'none';
+      } else {
+        card.classList.add('disabled');
+        card.classList.remove('enabled');
+        card.classList.remove('flipped');
+        if (badge) badge.style.display = 'block';
+      }
+    });
+  } catch (e) {
+    alert('Could not load ride states from server.');
+  }
+}
+
+// Call on page load
+fetchAndApplyRideStates();
+</script>
+
+</body>
+</html>

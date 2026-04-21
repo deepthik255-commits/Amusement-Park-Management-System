@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Daily Visitors</title>
+  <style>
+    body {
+      background: #fafaf6;
+      font-family: 'Segoe UI', Arial, sans-serif;
+      margin: 0;
+      padding: 0;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      min-height: 100vh;
+    }
+    h2 {
+      margin-top: 40px;
+      color: #1a2a33;
+    }
+    .chart-container {
+      width: 80vw;
+      max-width: 900px;
+      margin: 30px auto;
+      background: #fff;
+      border-radius: 12px;
+      box-shadow: 0 2px 16px rgba(0,0,0,0.04);
+      padding: 30px;
+    }
+  </style>
+</head>
+<body>
+  <h2>Daily Visitors</h2>
+  <div class="chart-container">
+    <canvas id="visitorsChart"></canvas>
+  </div>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <script>
+    fetch('/api/daily-visitors')
+      .then(res => res.json())
+      .then(data => {
+        // Prepare data for the chart
+        const labels = data.map(item => item.date);
+        const counts = data.map(item => item.count);
+
+        const ctx = document.getElementById('visitorsChart').getContext('2d');
+        new Chart(ctx, {
+          type: 'line',
+          data: {
+            labels: labels,
+            datasets: [{
+              label: 'Visitors (Bookings per Day)',
+              data: counts,
+              borderColor: 'green',
+              backgroundColor: 'rgba(0, 128, 0, 0.07)',
+              pointBackgroundColor: 'green',
+              pointBorderColor: 'green',
+              pointRadius: 5,
+              pointHoverRadius: 7,
+              fill: false,
+              borderWidth: 3,
+              tension: 0.2
+            }]
+          },
+          options: {
+            responsive: true,
+            plugins: {
+              legend: { display: false }
+            },
+            scales: {
+              x: {
+                title: {
+                  display: true,
+                  text: 'Date',
+                  font: { size: 18 }
+                }
+              },
+              y: {
+                title: {
+                  display: true,
+                  text: 'Number of Visitors',
+                  font: { size: 18 }
+                },
+                beginAtZero: true
+              }
+            }
+          }
+        });
+      });
+  </script>
+</body>
+</html>

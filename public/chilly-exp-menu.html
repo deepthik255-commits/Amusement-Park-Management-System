@@ -1,0 +1,294 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Indo-Chinese & Indian Mains Menu</title>
+  <link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@400;700&family=Baloo+2:wght@600&display=swap" rel="stylesheet">
+  <style>
+    body {
+      margin: 0;
+      background: linear-gradient(135deg, #0f2027 0%, #203a43 50%, #2c5364 100%);
+      font-family: 'Fredoka', 'Baloo 2', Arial, sans-serif;
+      color: #f2f7fa;
+      min-height: 100vh;
+    }
+    header {
+      background: rgba(44, 83, 100, 0.95);
+      color: #fff;
+      text-align: center;
+      padding: 36px 0 16px 0;
+      border-bottom: 4px solid #5bbcff;
+    }
+    h1 {
+      font-family: 'Baloo 2', cursive;
+      font-size: 2em;
+      margin-bottom: 8px;
+      letter-spacing: 1px;
+    }
+    .intro {
+      font-size: 1.1em;
+      color: #b3d2e6;
+      margin-bottom: 30px;
+      text-align: center;
+      max-width: 700px;
+      margin-left: auto;
+      margin-right: auto;
+    }
+    .menu-section {
+      max-width: 1100px;
+      margin: 40px auto;
+      background: rgba(32, 58, 67, 0.92);
+      border-radius: 18px;
+      box-shadow: 0 4px 16px rgba(44, 83, 100, 0.15);
+      padding: 40px 24px;
+    }
+    .menu-category {
+      margin-bottom: 40px;
+    }
+    .menu-category h2 {
+      color: #5bbcff;
+      font-family: 'Baloo 2', cursive;
+      margin-bottom: 18px;
+      font-size: 1.3em;
+      border-bottom: 2px solid #5bbcff;
+      display: inline-block;
+      padding-bottom: 4px;
+    }
+    .menu-items-grid {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 20px;
+      justify-content: flex-start;
+    }
+    .menu-card {
+      background: #1b2a38;
+      border-radius: 15px;
+      box-shadow: 0 2px 12px rgba(44, 83, 100, 0.13);
+      width: 170px;
+      padding: 10px 8px 12px 8px;
+      text-align: center;
+      border: 2px solid #203a43;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      transition: transform 0.3s, box-shadow 0.3s, border-color 0.3s;
+      position: relative;
+    }
+    .menu-card:hover {
+      transform: translateY(-7px) scale(1.04);
+      box-shadow: 0 8px 24px 0 rgba(44, 83, 100, 0.22);
+      border-color: #5bbcff;
+    }
+    .menu-card img {
+      width: 100%;
+      height: 75px;
+      object-fit: cover;
+      border-radius: 10px;
+      margin-bottom: 8px;
+      border: 1.5px solid #5bbcff55;
+      background: #e6f4ff;
+    }
+    .menu-item-name {
+      font-weight: 700;
+      color: #fff;
+      font-size: 1em;
+      margin-bottom: 4px;
+      font-family: 'Baloo 2', cursive;
+    }
+    .menu-item-description {
+      font-size: 0.78em;
+      color: #a9c5e0;
+      margin-bottom: 8px;
+    }
+    .menu-item-price {
+      color: #b3d2e6;
+      font-weight: 600;
+      font-size: 0.98em;
+      margin-bottom: 0;
+      margin-top: auto;
+    }
+    @media (max-width: 800px) {
+      .menu-items-grid {
+        gap: 18px;
+        justify-content: center;
+      }
+      .menu-card {
+        width: 80vw;
+        max-width: 270px;
+      }
+    }
+    @media (max-width: 500px) {
+      .menu-section {
+        padding: 12px 2vw;
+      }
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <h1>Indo-Chinese & Indian Mains</h1>
+    <div class="intro">
+      Savor the best of Indo-Chinese starters, main courses, curries, and Indian breads. Perfect for sharing or enjoying solo!
+    </div>
+  </header>
+  <section class="menu-section">
+    <!-- Starters & Appetizers -->
+    <div class="menu-category">
+      <h2>🥟 Starters & Appetizers</h2>
+      <div class="menu-items-grid">
+        <div class="menu-card">
+          <img src="https://d2u1z1lopyfwlx.cloudfront.net/thumbnails/085f7122-93f5-5cbc-bd4c-0a38ff48259b/a43937e0-71b8-5cb4-9281-8110c9ce2ddf.jpg" alt="Chilli Paneer">
+          <div class="menu-item-name">Chilli Paneer (Dry / Gravy)</div>
+          <div class="menu-item-description">Crispy fried paneer tossed in spicy, tangy Indo-Chinese sauce.</div>
+          <div class="menu-item-price">₹210</div>
+        </div>
+        <div class="menu-card">
+          <img src="https://d2u1z1lopyfwlx.cloudfront.net/thumbnails/129fd4cf-d955-599a-ac05-abf02e4daee6/1e9d8d39-784d-5f60-991b-4d868fcb8735.jpg" alt="Chicken 65">
+          <div class="menu-item-name">Chicken 65</div>
+          <div class="menu-item-description">South Indian spicy fried chicken bites with curry leaves and chilies.</div>
+          <div class="menu-item-price">₹240</div>
+        </div>
+        <div class="menu-card">
+          <img src="https://d2u1z1lopyfwlx.cloudfront.net/thumbnails/f5385a57-7924-5c1a-8798-f28510e573e5/56b754e2-f03f-5365-a929-c919cc12ddfb.jpg" alt="Gobi Manchurian">
+          <div class="menu-item-name">Gobi Manchurian</div>
+          <div class="menu-item-description">Crispy cauliflower florets in tangy Manchurian sauce.</div>
+          <div class="menu-item-price">₹180</div>
+        </div>
+        <div class="menu-card">
+          <img src="https://d2u1z1lopyfwlx.cloudfront.net/thumbnails/bc1f7668-3f85-52f1-840b-8f29255f2fbb/be1acedc-ff21-5f1c-8e6d-1784041de0b7.jpg" alt="Spicy Veg Spring Rolls">
+          <div class="menu-item-name">Spicy Veg Spring Rolls</div>
+          <div class="menu-item-description">Crisp rolls stuffed with spicy mixed vegetables.</div>
+          <div class="menu-item-price">₹160</div>
+        </div>
+        <div class="menu-card">
+          <img src="https://d2u1z1lopyfwlx.cloudfront.net/thumbnails/e8648019-5e5b-5d65-9d41-540e8bbacb76/19224aba-9d47-5c9d-b28b-9cf9a1d53f5f.jpg" alt="Schezwan Chicken Lollipop">
+          <div class="menu-item-name">Schezwan Chicken Lollipop</div>
+          <div class="menu-item-description">Drumettes tossed in fiery Schezwan sauce.</div>
+          <div class="menu-item-price">₹250</div>
+        </div>
+        <div class="menu-card">
+          <img src="https://d2u1z1lopyfwlx.cloudfront.net/thumbnails/5ebdce93-858b-5aae-92ca-ba98298976db/3aab3815-b5cc-505c-850b-5630d6943717.jpg" alt="Crispy Corn Pepper Fry">
+          <div class="menu-item-name">Crispy Corn Pepper Fry</div>
+          <div class="menu-item-description">Golden fried corn kernels tossed with pepper and herbs.</div>
+          <div class="menu-item-price">₹170</div>
+        </div>
+      </div>
+    </div>
+    <!-- Main Course -->
+    <div class="menu-category">
+      <h2>🍜 Main Course</h2>
+      <div class="menu-items-grid">
+        <div class="menu-card">
+          <img src="https://d2u1z1lopyfwlx.cloudfront.net/thumbnails/6055f8e2-bbed-5640-b122-19a5e1b830d3/5c29faab-18b7-500c-83fe-885a24450589.jpg" alt="Hakka Noodles">
+          <div class="menu-item-name">Hakka Noodles (Veg / Egg / Chicken)</div>
+          <div class="menu-item-description">Stir-fried noodles with your choice of vegetables, egg, or chicken.</div>
+          <div class="menu-item-price">₹180 / ₹200 / ₹220</div>
+        </div>
+        <div class="menu-card">
+          <img src="https://d2u1z1lopyfwlx.cloudfront.net/thumbnails/75bc1f19-1235-514e-9c94-67a453417a25/9aaba6ac-8adb-5c92-9093-1467dbc7dfe4.jpg" alt="Schezwan Fried Rice">
+          <div class="menu-item-name">Schezwan Fried Rice</div>
+          <div class="menu-item-description">Spicy rice tossed with vegetables and Schezwan sauce.</div>
+          <div class="menu-item-price">₹190</div>
+        </div>
+        <div class="menu-card">
+          <img src="https://d2u1z1lopyfwlx.cloudfront.net/thumbnails/a2dac153-82f5-5d34-8cae-6fbcfcffcd9e/43c6d8f9-1471-51ff-afb4-d44d9e63ff88.jpg" alt="Chilli Garlic Noodles">
+          <div class="menu-item-name">Chilli Garlic Noodles</div>
+          <div class="menu-item-description">Noodles tossed with garlic, chilies, and spring onions.</div>
+          <div class="menu-item-price">₹190</div>
+        </div>
+        <div class="menu-card">
+          <img src="https://ranveerbrar.com/wp-content/uploads/2021/02/Triple-Schezwan-Rice-scaled-scaled.jpg" alt="Triple Schezwan Rice">
+          <div class="menu-item-name">Triple Schezwan Rice</div>
+          <div class="menu-item-description">A spicy combo of rice, noodles, and Manchurian gravy.</div>
+          <div class="menu-item-price">₹220</div>
+        </div>
+        <div class="menu-card">
+          <img src="https://d2u1z1lopyfwlx.cloudfront.net/thumbnails/999efc83-72c6-55fc-8d68-07ec49145fc8/3aab3815-b5cc-505c-850b-5630d6943717.jpg" alt="American Chop Suey">
+          <div class="menu-item-name">American Chop Suey</div>
+          <div class="menu-item-description">Crispy noodles topped with sweet & tangy vegetable sauce.</div>
+          <div class="menu-item-price">₹210</div>
+        </div>
+        <div class="menu-card">
+          <img src="https://d2u1z1lopyfwlx.cloudfront.net/thumbnails/5d8ec8a8-7007-5f50-8500-4a6232345b5b/660005a6-989b-5b25-b4b3-10fabb584908.jpg" alt="Chicken Manchurian with Fried Rice Combo">
+          <div class="menu-item-name">Chicken Manchurian with Fried Rice Combo</div>
+          <div class="menu-item-description">Classic chicken Manchurian served with fried rice.</div>
+          <div class="menu-item-price">₹260</div>
+        </div>
+      </div>
+    </div>
+    <!-- Curries & Gravies -->
+    <div class="menu-category">
+      <h2>🥘 Curries & Gravies</h2>
+      <div class="menu-items-grid">
+        <div class="menu-card">
+          <img src="https://d2u1z1lopyfwlx.cloudfront.net/thumbnails/9de9297a-36ec-5b3f-93e1-526b6f37941e/36189271-0819-53f4-8da3-4090a975292c.jpg" alt="Paneer Butter Masala">
+          <div class="menu-item-name">Paneer Butter Masala</div>
+          <div class="menu-item-description">Soft paneer cubes in a creamy, buttery tomato gravy.</div>
+          <div class="menu-item-price">₹230</div>
+        </div>
+        <div class="menu-card">
+          <img src="https://d2u1z1lopyfwlx.cloudfront.net/thumbnails/5a3d3953-90f8-5289-b2c3-60b9d96effd2/66be4bfb-ab1d-5194-b5fb-b10ebe368aa4.jpg" alt="Veg Kolhapuri">
+          <div class="menu-item-name">Veg Kolhapuri</div>
+          <div class="menu-item-description">Spicy mixed vegetable curry in Kolhapuri style.</div>
+          <div class="menu-item-price">₹210</div>
+        </div>
+        <div class="menu-card">
+          <img src="https://d2u1z1lopyfwlx.cloudfront.net/thumbnails/f3e048e4-c91b-5dc5-a825-3d967fb5e366/b8144c60-2fb8-5ac4-bbfc-fc07c9d3c358.jpg" alt="Chicken Tikka Masala">
+          <div class="menu-item-name">Chicken Tikka Masala</div>
+          <div class="menu-item-description">Grilled chicken tikka in rich, spiced tomato gravy.</div>
+          <div class="menu-item-price">₹250</div>
+        </div>
+        <div class="menu-card">
+          <img src="https://d2u1z1lopyfwlx.cloudfront.net/thumbnails/faf3be1a-fceb-539b-b94b-9fd993b9f151/43c6d8f9-1471-51ff-afb4-d44d9e63ff88.jpg" alt="Andhra-Style Chicken Curry">
+          <div class="menu-item-name">Andhra-Style Chicken Curry</div>
+          <div class="menu-item-description">Fiery chicken curry with Andhra spices and herbs.</div>
+          <div class="menu-item-price">₹250</div>
+        </div>
+        <div class="menu-card">
+          <img src="https://d2u1z1lopyfwlx.cloudfront.net/thumbnails/7dd0cb35-d298-5f95-8cfb-5f3160162fc7/c8e1e483-7818-5437-8389-0fb6ba8c27b3.jpg" alt="Egg Masala Curry">
+          <div class="menu-item-name">Egg Masala Curry</div>
+          <div class="menu-item-description">Boiled eggs simmered in spicy onion-tomato masala.</div>
+          <div class="menu-item-price">₹180</div>
+        </div>
+      </div>
+    </div>
+    <!-- Indian Breads & Sides -->
+    <div class="menu-category">
+      <h2>🫓 Indian Breads & Sides</h2>
+      <div class="menu-items-grid">
+        <div class="menu-card">
+          <img src="https://d2u1z1lopyfwlx.cloudfront.net/thumbnails/6c4ade84-158e-5d86-b201-695763bb07a3/f36a0204-8fa2-58ec-8723-4ee56362d5d3.jpg" alt="Butter Naan">
+          <div class="menu-item-name">Butter Naan</div>
+          <div class="menu-item-description">Soft, fluffy tandoori bread brushed with butter.</div>
+          <div class="menu-item-price">₹60</div>
+        </div>
+        <div class="menu-card">
+          <img src="https://d2u1z1lopyfwlx.cloudfront.net/thumbnails/767016af-7b32-58e1-b3a3-5b1194a52b6e/1d779f9f-27e7-55b3-93a2-62e03445de12.jpg" alt="Garlic Naan">
+          <div class="menu-item-name">Garlic Naan</div>
+          <div class="menu-item-description">Tandoori naan topped with fresh garlic and herbs.</div>
+          <div class="menu-item-price">₹70</div>
+        </div>
+        <div class="menu-card">
+          <img src="https://d2u1z1lopyfwlx.cloudfront.net/thumbnails/c757d5f0-3a2a-5534-ba41-e02a6abb34b6/0387af16-f5b8-54a9-bf87-45cc2851e14a.jpg" alt="Tandoori Roti">
+          <div class="menu-item-name">Tandoori Roti</div>
+          <div class="menu-item-description">Whole wheat flatbread baked in a tandoor.</div>
+          <div class="menu-item-price">₹50</div>
+        </div>
+        <div class="menu-card">
+          <img src="https://i0.wp.com/binjalsvegkitchen.com/wp-content/uploads/2019/08/Jeera-Rice-H1.jpg?fit=600%2C900&ssl=1" alt="Jeera Rice">
+          <div class="menu-item-name">Jeera Rice</div>
+          <div class="menu-item-description">Fragrant basmati rice tempered with cumin seeds.</div>
+          <div class="menu-item-price">₹120</div>
+        </div>
+        <div class="menu-card">
+          <img src="https://d2u1z1lopyfwlx.cloudfront.net/thumbnails/ed9a4441-9d65-5279-a996-1c3e11254cbf/095267aa-a9f8-55b3-b927-7a2f83977ae6.jpg" alt="Steamed Basmati Rice">
+          <div class="menu-item-name">Steamed Basmati Rice</div>
+          <div class="menu-item-description">Perfectly steamed long-grain basmati rice.</div>
+          <div class="menu-item-price">₹110</div>
+        </div>
+      </div>
+    </div>
+  </section>
+</body>
+</html>
